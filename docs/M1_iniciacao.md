@@ -42,12 +42,21 @@ Relevante e Temporal):*
 * **Ferramentas e bibliotecas:** Pretendemos utilizar: pandas e numpy (manipulação e tratamento de dados); matplotlib e seaborn (análise exploratória e visualização); scikit-learn (implementação de algoritmos de classificação, validação cruzada e avaliação de métricas); Poderão ainda ser integradas bibliotecas adicionais ao longo do desenvolvimento do projeto, consoante as dificuldades identificadas, a complexidade dos dados e as necessidades técnicas que venham a surgir nas diferentes fases de análise e modelação.;
   
 ## 5. Análise de Viabilidade dos Dados
-* **Disponibilidade:** [Os dados já foram descarregados, estão em base de dados e prontos para começarem a ser tratados]
+* **Disponibilidade:** [Os dados já foram descarregados e foi feita a inspeção incial aos mesmos]
   
 * **Qualidade Inicial:** Numa análise preliminar, verifica-se que o dataset contém um elevado número de variáveis categóricas, muitas das quais codificadas numericamente. Será necessário avaliar a existência de valores nulos, tipos de dados incorretos e possíveis inconsistências.
 Além disso, é expectável um forte desbalanceamento entre as classes (clique vs. não clique), o que poderá exigir técnicas específicas de tratamento, como ajuste de métricas de avaliação ou técnicas de reamostragem.
 
 * **Ética:** Os dados encontram-se anonimizados, não incluindo identificação direta dos utilizadores. Serão respeitados os princípios do RGPD e da ética em ciência de dados, garantindo que os dados são utilizados exclusivamente para fins académicos e que não existe tentativa de reidentificação de indivíduos.
+
+## Secção de Descrição Técnica
+Na inspeção inicial do dataset foi utilizada a biblioteca pandas, através dos métodos df.head(), df.info() e df.describe(), com o objetivo de compreender a sua estrutura, dimensionalidade e características estatísticas básicas. O dataset analisado contém 4.577.464 registos e duas colunas (id e click). A verificação de integridade revelou que não existem valores nulos nem registos duplicados, e os tipos de dados estão coerentes: a coluna id é do tipo uint64, apropriada para identificadores numéricos, enquanto a coluna click está em float64.
+
+A análise estatística mostrou que a variável click apresenta valor constante (0,5), indicando ausência de variabilidade. Este comportamento sugere que o ficheiro corresponde ao sampleSubmission.csv, utilizado apenas como template para submissão de previsões, e não contém dados reais para treino. Embora os tipos de dados estejam tecnicamente corretos, para uma variável binária como click esperavamos o tipo int (0 ou 1).
+
+Do ponto de vista estrutural, o dataset está íntegro, sem valores em falta ou inconsistências críticas nos tipos de dados. No entanto, para análise exploratória ou modelação preditiva, é necessário recorrer ao ficheiro de treino (train.csv), que contém os dados reais e a variabilidade da variável alvo.
+
+Em resumo, a inspeção inicial confirma que o dataset apresenta boa integridade estrutural, mas não é adequado para análises estatísticas ou modelação, sendo essencial utilizar o conjunto de treino para qualquer investigação mais aprofundada sobre padrões de cliques.
 
 ## 6. Cronograma Interno
 | Fase | Data Limite | Entregável Esperado |
