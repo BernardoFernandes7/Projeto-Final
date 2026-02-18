@@ -49,7 +49,7 @@ Além disso, é expectável um forte desbalanceamento entre as classes (clique v
 
 * **Ética:** Os dados encontram-se anonimizados, não incluindo identificação direta dos utilizadores. Serão respeitados os princípios do RGPD e da ética em ciência de dados, garantindo que os dados são utilizados exclusivamente para fins académicos e que não existe tentativa de reidentificação de indivíduos.
 
-## Secção de Descrição Técnica
+## 6. Secção de Descrição Técnica
 Na inspeção inicial do dataset foi utilizada a biblioteca pandas, através dos métodos df.head(), df.info() e df.describe(), com o objetivo de compreender a sua estrutura, dimensionalidade e características estatísticas básicas. O dataset analisado contém 4.577.464 registos e duas colunas (id e click). A verificação de integridade revelou que não existem valores nulos nem registos duplicados, e os tipos de dados estão coerentes: a coluna id é do tipo uint64, apropriada para identificadores numéricos, enquanto a coluna click está em float64.
 
 A análise estatística mostrou que a variável click apresenta valor constante (0,5), indicando ausência de variabilidade. Este comportamento sugere que o ficheiro corresponde ao sampleSubmission.csv, utilizado apenas como template para submissão de previsões, e não contém dados reais para treino. Embora os tipos de dados estejam tecnicamente corretos, para uma variável binária como click esperavamos o tipo int (0 ou 1).
@@ -58,7 +58,7 @@ Do ponto de vista estrutural, o dataset está íntegro, sem valores em falta ou 
 
 Em resumo, a inspeção inicial confirma que o dataset apresenta boa integridade estrutural, mas não é adequado para análises estatísticas ou modelação, sendo essencial utilizar o conjunto de treino para qualquer investigação mais aprofundada sobre padrões de cliques.
 
-## 6. Cronograma Interno
+## 7. Cronograma Interno
 | Fase | Data Limite | Entregável Esperado |
 | :--- | :--- | :--- |
 | M1: Iniciação | [24/02/2026] | Repositório estruturado e Plano de Projeto. |
