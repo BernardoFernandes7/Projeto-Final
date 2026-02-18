@@ -11,26 +11,25 @@ Ademais, o desenvolvimento de modelos de previsão envolve desafios significativ
 ## 2. Objetivos SMART
 *Defina os objetivos do projeto seguindo a lógica SMART (Específico, Mensurável, Atingível,
 Relevante e Temporal):*
-1. **Objetivo 1:** [Desenvolver um modelo de classificação binária para prever a probabilidade de clique em anúncios online, alcançando um valor mínimo de AUC-ROC de 0,75 até ao final da Milestone 3.]
+1. **Objetivo 1:** Desenvolver e avaliar um modelo preditivo capaz de estimar a probabilidade de clique em anúncios on-line a partir de dados históricos e contextuais
 
-2. **Objetivo 2:** [Implementar um pipeline completo de ciência de dados (exploração, limpeza, engenharia de atributos, modelação e avaliação) até à conclusão da Milestone 3.]
+2. **Objetivo 2:** Estruturar um processo completo de modelagem, contemplando as etapas de exploração e tratamento dos dados, seleção e engenharia de atributos, treinamento de algoritmos de aprendizado de máquina e validação dos resultados obtidos.
 
-3. **Objetivo 3:** [Comparar pelo menos três algoritmos de classificação (por exemplo, Regressão Logística, Random Forest e Gradient Boosting), identificando o modelo com melhor capacidade de generalização.]
+3. **Objetivo 3:** Comparar diferentes abordagens de modelagem, identificando aquela que apresenta melhor desempenho em termos de capacidade de generalização e precisão preditiva.
 
-4. **Objetivo 4:** [Avaliar o desempenho do modelo utilizando métricas adequadas a problemas de classificação binária (AUC-ROC, Precision, Recall e F1-Score), garantindo coerência entre desempenho técnico e aplicabilidade prática.]
-
+4. **Objetivo 4:** Avaliar o desempenho do modelo por meio de métricas adequadas a problemas de classificação binária.
 
 ## 3. Perguntas de Investigação
 
-Quais são as variáveis que exercem maior influência na probabilidade de um utilizador clicar num anúncio?
+1. **Quais são as variáveis que exercem maior influência na probabilidade de um utilizador clicar num anúncio?
 
-Qual dos modelos de aprendizagem automática testados apresenta melhor desempenho preditivo na estimativa da taxa de cliques?
+2. **Qual dos modelos de aprendizagem automática testados apresenta melhor desempenho preditivo na estimativa da taxa de cliques?
 
-De que forma o contexto de exibição (dispositivo, horário ou posicionamento do anúncio) influencia a probabilidade de clique?
+3. **De que forma o contexto de exibição (dispositivo, horário ou posicionamento do anúncio) influencia a probabilidade de clique?
 
-O modelo desenvolvido mantém desempenho consistente quando aplicado a diferentes subconjuntos de dados?
+4. **O modelo desenvolvido mantém desempenho consistente quando aplicado a diferentes subconjuntos de dados?
 
-De que forma uma melhoria na capacidade preditiva pode contribuir para decisões mais eficientes na segmentação e alocação de recursos publicitários?
+5. **De que forma uma melhoria na capacidade preditiva pode contribuir para decisões mais eficientes na segmentação e alocação de recursos publicitários?
 
 ## 4. Metodologia de Gestão (PBL)
 * **Divisão de Tarefas:**
