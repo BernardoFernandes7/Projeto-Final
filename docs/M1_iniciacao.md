@@ -39,6 +39,8 @@ Relevante e Temporal):*
 
 * **Ferramentas de Colaboração:** [Ex: GitHub Projects, WhatsApp].
 
+* **Ferramentas e bibliotecas:** Pretendemos utilizar: pandas e numpy (manipulação e tratamento de dados); matplotlib e seaborn (análise exploratória e visualização); scikit-learn (implementação de algoritmos de classificação, validação cruzada e avaliação de métricas); Poderão ainda ser integradas bibliotecas adicionais ao longo do desenvolvimento do projeto, consoante as dificuldades identificadas, a complexidade dos dados e as necessidades técnicas que venham a surgir nas diferentes fases de análise e modelação.;
+  
 ## 5. Análise de Viabilidade dos Dados
 * **Disponibilidade:** [Os dados já foram descarregados, estão em base de dados e prontos para começarem a ser tratados]
   
