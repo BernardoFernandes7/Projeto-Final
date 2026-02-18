@@ -21,15 +21,15 @@ Relevante e Temporal):*
 
 ## 3. Perguntas de Investigação
 
-1. **Quais são as variáveis que exercem maior influência na probabilidade de um utilizador clicar num anúncio?
+1. Quais são as variáveis que exercem maior influência na probabilidade de um utilizador clicar num anúncio?
 
-2. **Qual dos modelos de aprendizagem automática testados apresenta melhor desempenho preditivo na estimativa da taxa de cliques?
+2. Qual dos modelos de aprendizagem automática testados apresenta melhor desempenho preditivo na estimativa da taxa de cliques?
 
-3. **De que forma o contexto de exibição (dispositivo, horário ou posicionamento do anúncio) influencia a probabilidade de clique?
+3. De que forma o contexto de exibição (dispositivo, horário ou posicionamento do anúncio) influencia a probabilidade de clique?
 
-4. **O modelo desenvolvido mantém desempenho consistente quando aplicado a diferentes subconjuntos de dados?
+4. O modelo desenvolvido mantém desempenho consistente quando aplicado a diferentes subconjuntos de dados?
 
-5. **De que forma uma melhoria na capacidade preditiva pode contribuir para decisões mais eficientes na segmentação e alocação de recursos publicitários?
+5. De que forma uma melhoria na capacidade preditiva pode contribuir para decisões mais eficientes na segmentação e alocação de recursos publicitários?
 
 ## 4. Metodologia de Gestão (PBL)
 * **Divisão de Tarefas:**
