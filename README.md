@@ -20,3 +20,8 @@ O projeto seguirá as fases da metodologia CRISP-DM, iniciando com a compreensã
 Para o desenvolvimento serão utilizadas bibliotecas Python amplamente empregues em ciência de dados, como pandas, scikit-learn e matplotlib, em ambiente Kaggle Notebook com controlo de versões via GitHub.
 
 O resultado esperado é um modelo robusto, interpretável e capaz de generalizar adequadamente, contribuindo para decisões mais informadas no contexto da publicidade digital.
+
+## Links Uteis
+Conjunto de Dados: https://www.kaggle.com/datasets/madhu41289/avazu-ctr-prediction-exp 
+
+Kaggle Notebook: https://www.kaggle.com/code/hugogrou/projeto-cdg
