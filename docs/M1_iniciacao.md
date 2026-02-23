@@ -1,69 +1,170 @@
 # Milestone 1: Iniciação e Definição do Projeto
 ## 1. Descrição Detalhada do Problema
-A previsão de cliques em anúncios on-line, conhecida na literatura como Click-Through Rate Prediction (CTR Prediction), constitui uma área de estudo inserida no campo da ciência de dados aplicada ao marketing digital e à publicidade programática. Tem como principal objetivo estimar a probabilidade de um usuário clicar em um anúncio específico a partir de informações históricas, comportamentais e contextuais. Em termos metodológicos, o problema é geralmente formulado como uma tarefa de classificação binária, na qual se procura prever a ocorrência ou não de um clique diante de uma determinada impressão publicitária. O crescimento exponencial da publicidade digital, impulsionado pela expansão do comércio eletrônico e pela intensificação do uso de plataformas digitais, conferiu elevada relevância a esse tema. 
 
-Atualmente, sistemas automatizados operam em larga escala e em tempo real para decidir quais anúncios devem ser exibidos a cada usuário. Tais decisões baseiam-se, em grande medida, em modelos preditivos capazes de estimar a probabilidade de interação, tornando a previsão de cliques um componente central da infraestrutura tecnológica que sustenta a publicidade on-line contemporânea. A importância deste problema é tanto econômica quanto técnica. A precisão na estimativa da taxa de cliques influencia diretamente a eficiência na alocação de recursos publicitários, o retorno sobre investimento das campanhas e a experiência do usuário, que tende a receber conteúdos mais alinhados ao seu perfil e às suas preferências.
+A previsão de cliques em anúncios online (Click-Through Rate Prediction – CTR Prediction) consiste na estimação da probabilidade de um utilizador clicar num determinado anúncio digital, com base em informação histórica, comportamental e contextual. Este problema enquadra-se na área da ciência de dados aplicada ao marketing digital e à publicidade programática, sendo normalmente formulado como uma tarefa de classificação binária, onde a variável alvo assume valor 1 (clique) ou 0 (não clique).
 
-Ademais, o desenvolvimento de modelos de previsão envolve desafios significativos, como o tratamento de grandes volumes de dados, a alta dimensionalidade das variáveis explicativas, o desbalanceamento entre classes e a necessidade de respostas em tempo real. Do ponto de vista metodológico, a área tem evoluído de abordagens estatísticas tradicionais, como a regressão logística, para técnicas mais avançadas de aprendizado de máquina, incluindo modelos baseados em árvores de decisão, métodos de fatoração e redes neurais profundas. Essa evolução reflete a crescente complexidade dos dados disponíveis e a necessidade de capturar padrões não lineares e interações sofisticadas entre características do usuário, do anúncio e do contexto de exibição. Assim, a previsão de cliques em anúncios on-line consolida-se como um campo interdisciplinar que integra conhecimentos de estatística, ciência da computação, economia e marketing, desempenhando papel fundamental na compreensão e na otimização dos processos decisórios que estruturam a publicidade digital moderna.
+No contexto atual da publicidade digital, decisões automatizadas são tomadas em milissegundos para determinar qual anúncio deve ser apresentado a cada utilizador. A eficácia destas decisões depende fortemente da precisão dos modelos preditivos utilizados. Assim, a previsão da taxa de cliques assume relevância económica significativa, pois influencia diretamente o retorno sobre investimento (ROI) das campanhas publicitárias e a eficiência na alocação de recursos.
 
+Do ponto de vista técnico, este problema apresenta desafios importantes:
 
+Elevado volume de dados (milhões de registos);
+
+Grande número de variáveis categóricas com alta cardinalidade;
+
+Forte desbalanceamento entre classes;
+
+Necessidade de modelos capazes de capturar interações complexas.
+
+O dataset utilizado neste projeto corresponde ao conjunto de treino do desafio Avazu CTR Prediction, amplamente utilizado na literatura para estudo de problemas de previsão de cliques em grande escala.
 
 ## 2. Objetivos SMART
-*Defina os objetivos do projeto seguindo a lógica SMART (Específico, Mensurável, Atingível,
-Relevante e Temporal):*
-1. **Objetivo 1:** Desenvolver e avaliar um modelo preditivo capaz de estimar a probabilidade de clique em anúncios on-line a partir de dados históricos e contextuais
+Objetivo 1
 
-2. **Objetivo 2:** Estruturar um processo completo de modelagem, contemplando as etapas de exploração e tratamento dos dados, seleção e engenharia de atributos, treinamento de algoritmos de aprendizado de máquina e validação dos resultados obtidos.
+Desenvolver e avaliar um modelo preditivo capaz de estimar a probabilidade de clique em anúncios online, utilizando o dataset Avazu CTR Prediction.
 
-3. **Objetivo 3:** Comparar diferentes abordagens de modelagem, identificando aquela que apresenta melhor desempenho em termos de capacidade de generalização e precisão preditiva.
+Objetivo 2
 
-4. **Objetivo 4:** Avaliar o desempenho do modelo por meio de métricas adequadas a problemas de classificação binária.
+Implementar um pipeline completo de ciência de dados, incluindo:
+
+Análise exploratória dos dados (EDA);
+
+Tratamento e preparação do dataset;
+
+Engenharia de atributos;
+
+Treino e validação de modelos de classificação.
+
+Objetivo 3
+
+Comparar diferentes algoritmos de aprendizagem automática (ex.: Regressão Logística, Random Forest, Gradient Boosting), identificando o modelo com melhor desempenho preditivo.
+
+Objetivo 4
+
+Avaliar os modelos através de métricas adequadas a problemas de classificação binária desbalanceada, como:
+
+AUC-ROC
+
+Log-Loss
+
+Precision, Recall e F1-score
 
 ## 3. Perguntas de Investigação
 
-1. Quais são as variáveis que exercem maior influência na probabilidade de um utilizador clicar num anúncio?
+Quais variáveis apresentam maior influência na probabilidade de clique?
 
-2. Qual dos modelos de aprendizagem automática testados apresenta melhor desempenho preditivo na estimativa da taxa de cliques?
+Qual modelo apresenta melhor capacidade de generalização?
 
-3. De que forma o contexto de exibição (dispositivo, horário ou posicionamento do anúncio) influencia a probabilidade de clique?
+Como o contexto de exibição (dispositivo, horário, tipo de site/app) afeta a probabilidade de clique?
 
-4. O modelo desenvolvido mantém desempenho consistente quando aplicado a diferentes subconjuntos de dados?
+O modelo mantém desempenho consistente em subconjuntos distintos do dataset?
 
-5. De que forma uma melhoria na capacidade preditiva pode contribuir para decisões mais eficientes na segmentação e alocação de recursos publicitários?
+Como melhorias na capacidade preditiva podem otimizar decisões de segmentação publicitária?
 
 ## 4. Metodologia de Gestão (PBL)
-* **Divisão de Tarefas:**
- * **Hugo:** Responsável pelos Dados (limpeza, tratamento e preparação do dataset).
- * **Bernardo:** Responsável pela Modelação Estatística.
- * Ambos os membros poderão executar partes das outras tarefas, em colaboração um com o outro
+Divisão de Tarefas
 
-* **Ferramentas de Colaboração:** [Ex: GitHub Projects, WhatsApp].
+Hugo: Responsável pela preparação e tratamento dos dados (EDA, limpeza, encoding, engenharia de atributos).
 
-* **Ferramentas e bibliotecas:** Pretendemos utilizar: pandas e numpy (manipulação e tratamento de dados); matplotlib e seaborn (análise exploratória e visualização); scikit-learn (implementação de algoritmos de classificação, validação cruzada e avaliação de métricas); Poderão ainda ser integradas bibliotecas adicionais ao longo do desenvolvimento do projeto, consoante as dificuldades identificadas, a complexidade dos dados e as necessidades técnicas que venham a surgir nas diferentes fases de análise e modelação.;
-  
+Bernardo: Responsável pela modelação estatística e avaliação dos algoritmos.
+
+Colaboração conjunta nas decisões metodológicas e validação dos resultados.
+
+Ferramentas
+
+GitHub (controlo de versões)
+
+WhatsApp (comunicação)
+
+Bibliotecas previstas
+
+pandas, numpy – manipulação de dados
+
+matplotlib, seaborn – visualização
+
+scikit-learn – modelação e métricas
+
+Possível integração futura de xgboost ou lightgbm, dada a natureza do problema
+
 ## 5. Análise de Viabilidade dos Dados
-* **Disponibilidade:** [Os dados já foram descarregados e foi feita a inspeção incial aos mesmos]
-  
-* **Qualidade Inicial:** Numa análise preliminar, verifica-se que o dataset contém um elevado número de variáveis categóricas, muitas das quais codificadas numericamente. Será necessário avaliar a existência de valores nulos, tipos de dados incorretos e possíveis inconsistências.
-Além disso, é expectável um forte desbalanceamento entre as classes (clique vs. não clique), o que poderá exigir técnicas específicas de tratamento, como ajuste de métricas de avaliação ou técnicas de reamostragem.
+Disponibilidade
 
-* **Ética:** Os dados encontram-se anonimizados, não incluindo identificação direta dos utilizadores. Serão respeitados os princípios do RGPD e da ética em ciência de dados, garantindo que os dados são utilizados exclusivamente para fins académicos e que não existe tentativa de reidentificação de indivíduos.
+O dataset encontra-se disponível na plataforma Kaggle e foi carregado com sucesso no ambiente de desenvolvimento. Devido à sua dimensão (aproximadamente 40 milhões de registos), a análise exploratória inicial foi realizada com uma amostra representativa de 1 milhão de observações, garantindo viabilidade computacional.
 
-## 6. Secção de Descrição Técnica
-Na inspeção inicial do dataset foi utilizada a biblioteca pandas, através dos métodos df.head(), df.info() e df.describe(), com o objetivo de compreender a sua estrutura, dimensionalidade e características estatísticas básicas. O dataset analisado contém 4.577.464 registos e duas colunas (id e click). A verificação de integridade revelou que não existem valores nulos nem registos duplicados, e os tipos de dados estão coerentes: a coluna id é do tipo uint64, apropriada para identificadores numéricos, enquanto a coluna click está em float64.
+Qualidade Inicial
 
-A análise estatística mostrou que a variável click apresenta valor constante (0,5), indicando ausência de variabilidade. Este comportamento sugere que o ficheiro corresponde ao sampleSubmission.csv, utilizado apenas como template para submissão de previsões, e não contém dados reais para treino. Embora os tipos de dados estejam tecnicamente corretos, para uma variável binária como click esperavamos o tipo int (0 ou 1).
+A inspeção preliminar do ficheiro train.csv permitiu identificar:
 
-Do ponto de vista estrutural, o dataset está íntegro, sem valores em falta ou inconsistências críticas nos tipos de dados. No entanto, para análise exploratória ou modelação preditiva, é necessário recorrer ao ficheiro de treino (train.csv), que contém os dados reais e a variabilidade da variável alvo.
+Elevado número de variáveis categóricas;
 
-Em resumo, a inspeção inicial confirma que o dataset apresenta boa integridade estrutural, mas não é adequado para análises estatísticas ou modelação, sendo essencial utilizar o conjunto de treino para qualquer investigação mais aprofundada sobre padrões de cliques.
+Presença de identificadores codificados numericamente;
+
+Variável alvo binária (click);
+
+Forte desbalanceamento entre classes (maior predominância de não cliques).
+
+Foi realizada verificação de:
+
+Valores nulos;
+
+Registos duplicados;
+
+Tipos de dados;
+
+Valores infinitos;
+
+Estatísticas descritivas numéricas e categóricas.
+
+Não foram identificados valores nulos na amostra analisada. A variável alvo apresenta distribuição desbalanceada, característica típica de problemas de CTR.
+
+Ética
+
+Os dados encontram-se anonimizados, não permitindo identificação direta dos utilizadores. O projeto será conduzido exclusivamente para fins académicos, respeitando princípios de ética em ciência de dados e conformidade com o RGPD.
+
+## 6. Descrição Técnica da Inspeção Inicial
+
+A análise exploratória foi realizada utilizando a biblioteca pandas, recorrendo aos métodos:
+
+df.head() – visualização inicial dos registos;
+
+df.info() – estrutura e tipos de dados;
+
+df.describe() – estatísticas descritivas;
+
+df.isnull().sum() – verificação de valores nulos;
+
+df.duplicated().sum() – verificação de duplicados.
+
+O dataset train.csv contém dezenas de variáveis que descrevem:
+
+Informações temporais (ex.: hour);
+
+Identificadores de site e aplicação (site_id, app_id);
+
+Informações do dispositivo (device_type, device_ip);
+
+Categorias de anúncio (ex.: C1, C14, C15, etc.);
+
+Variável alvo binária click.
+
+A inspeção revelou:
+
+Ausência de valores nulos na amostra analisada;
+
+Ausência de valores infinitos;
+
+Predominância de variáveis categóricas codificadas;
+
+Forte desbalanceamento da variável click;
+
+Alta cardinalidade em múltiplas variáveis (especialmente identificadores).
+
+Dada a dimensão do dataset completo (~40 milhões de registos), optou-se por trabalhar inicialmente com amostragem para viabilizar a análise exploratória e o desenvolvimento preliminar dos modelos.
 
 ## 7. Cronograma Interno
-| Fase | Data Limite | Entregável Esperado |
-| :--- | :--- | :--- |
-| M1: Iniciação | [24/02/2026] | Repositório estruturado e Plano de Projeto. |
-| M2: Exploração | [Data] | Notebook de EDA e Dados Processados. |
-| M3: Modelação | [Data] | Comparação de algoritmos e métricas. |
-| M4: Finalização| [Data] | Pitch e Relatório Final. |
----
-*Data de última atualização: [18/02/2026]*
+Fase	Data Limite	Entregável
+M1: Iniciação	24/02/2026	Plano de Projeto
+M2: Exploração	[Data]	Notebook EDA e Dados Tratados
+M3: Modelação	[Data]	Comparação de Modelos
+M4: Finalização	[Data]	Relatório Final e Pitch
+
+Data da última atualização: 23/02/2026
