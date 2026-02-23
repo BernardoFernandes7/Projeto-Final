@@ -163,6 +163,8 @@ Alta cardinalidade em múltiplas variáveis (especialmente identificadores).
 
 Dada a dimensão do dataset completo (~40 milhões de registos), optou-se por trabalhar inicialmente com amostragem para viabilizar a análise exploratória e o desenvolvimento preliminar dos modelos.
 
+Foi realizada uma validação automática dos tipos de dados para as principais colunas do dataset. As colunas categóricas foram tratadas como string e as variáveis numéricas foram convertidas utilizando pd.to_numeric() com tratamento de erros.
+
 ## 7. Cronograma Interno
 Fase	Data Limite	Entregável
 | **Fase**            | **Data Limite** | **Entregável Esperado**                                    |
