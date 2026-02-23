@@ -162,9 +162,12 @@ Dada a dimensão do dataset completo (~40 milhões de registos), optou-se por tr
 
 ## 7. Cronograma Interno
 Fase	Data Limite	Entregável
--M1: Iniciação	24/02/2026	Plano de Projeto
--M2: Exploração	[Data]	Notebook EDA e Dados Tratados
--M3: Modelação	[Data]	Comparação de Modelos
--M4: Finalização	[Data]	Relatório Final e Pitch
+| **Fase**            | **Data Limite** | **Entregável Esperado**                                    |
+| ------------------- | --------------- | ---------------------------------------------------------- |
+| **M1: Iniciação**   | 24/02/2026      | Repositório estruturado e Plano de Projeto                 |
+| **M2: Exploração**  | [Data]          | Notebook de Análise Exploratória (EDA) e dados processados |
+| **M3: Modelação**   | [Data]          | Comparação de algoritmos e avaliação de métricas           |
+| **M4: Finalização** | [Data]          | Relatório Final e apresentação (Pitch)                     |
+
 
 Data da última atualização: 23/02/2026
