@@ -88,7 +88,10 @@ Possível integração futura de xgboost ou lightgbm, dada a natureza do problem
 ## 5. Análise de Viabilidade dos Dados
 Disponibilidade
 
-O dataset encontra-se disponível na plataforma Kaggle e foi carregado com sucesso no ambiente de desenvolvimento. Devido à sua dimensão (aproximadamente 40 milhões de registos), a análise exploratória inicial foi realizada com uma amostra representativa de 1 milhão de observações, garantindo viabilidade computacional.
+O dataset encontra-se disponível na plataforma Kaggle e foi carregado com sucesso no ambiente de desenvolvimento.
+Devido à sua elevada dimensão (aproximadamente 40 milhões de registos), a análise exploratória inicial foi realizada de forma particionada (*chunks*), recorrendo ao parâmetro "chunksize" do "pandas". Esta abordagem permitiu percorrer integralmente o ficheiro — ou seja, todos os blocos foram processados sequencialmente até ao final — garantindo que a análise incidisse sobre a totalidade dos dados.
+A leitura em blocos foi adotada como estratégia de otimização de memória, devido ao tamanho do DataSet. Desta forma, tornou-se possível efetuar uma análise completa do dataset de forma eficiente e estável, evitando problemas de sobrecarga de memória.
+
 
 Qualidade Inicial
 
