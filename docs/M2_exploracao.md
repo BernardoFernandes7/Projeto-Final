@@ -4,17 +4,29 @@ ficheiro `docs/M1_iniciacao.md`. Caso precise de consultar o significado origina
 deve consultar essa Milestone.
 ## 1. Análise Exploratória de Dados (EDA)
 ### 1.1. Distribuição da Variável Alvo
-*Descrevam como se comporta a variável que querem prever. Está equilibrada? Segue uma distribuição
-normal?*
-> **Factos importantes:** (Ex: "A nossa variável alvo 'Churn' está desequilibrada, com 80% de
-clientes ativos e 20% que saíram.")
+A nossa variável alvo é o click (binária: 0 para não clique, 1 para clique). Através da análise do dataset completo (40.428.967 linhas), observámos o seguinte:
+
+Equilíbrio de Classes: A variável está altamente desequilibrada.
+
+Factos importantes:
+
+Classe 0 (Não Clicou): Aproximadamente 83.0% das ocorrências.
+
+Classe 1 (Clicou): Aproximadamente 17.0% das ocorrências.
+
+Implicação: Para a aprendizagem supervisionada, o modelo terá uma tendência natural para prever a classe majoritária. Será necessário utilizar métricas de avaliação como F1-Score ou AUC-ROC em vez da acurácia.
+
 ### 1.2. Correlações Relevantes
-*Quais as variáveis que têm maior relação com o problema? Incluam referências a gráficos que
-geraram no Kaggle.*
-* **Atributo A vs. Alvo:** (Ex: "Notámos que quanto maior a idade, menor a probabilidade de
-cancelamento.")
-* **Atributo B vs. Alvo:** (Ex: "O tipo de contrato mensal está fortemente ligado à saída de
-clientes.")
+
+Banner Position vs. Alvo (Análise de Localização)
+Foi realizada uma contagem total de todas as posições onde os anúncios foram exibidos. O código identificou que os dados estão concentrados em apenas dois valores principais. Os valores que aparecem raramente foram classificados como outliers de frequência. A análise consistiu em observar se esses casos raros mantêm a mesma proporção de cliques que as posições comuns, validando se a localização é um fator determinante para a variável-alvo.
+
+C14, C15, C16 (Variáveis Críticas): Estas variáveis apresentam uma alta variância e uma grande quantidade de outliers (identificados com "x" nos nossos boxplots).
+
+<img width="600" height="200" alt="image" src="https://github.com/user-attachments/assets/07909e97-d5ff-472c-af24-0e0757f89ed7" />
+
+Relevância para o Negócio: Variáveis como site_category e app_category mostram uma concentração extrema. O "Top 3" das categorias domina mais de 50% do tráfego, indicando que o contexto do site é um preditor fundamental para o sucesso do clique.
+
 ## 2. Qualidade dos Dados e Limpeza
 ### 2.1. Tratamento de Dados em Falta (Missing Data)
 * **Colunas afetadas:** [Lista de colunas]
