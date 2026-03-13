@@ -47,6 +47,7 @@ do método ganho de informação]
 3. Aceda ao Kaggle e faça upload do notebook
 4. Adicione o dataset Avazu CTR Prediction via Add Data no Kaggle
 5. Execute os notebooks seguindo a ordem numérica
+
 **Instituição:** Coimbra Business School | ISCAC
 **Curso:** Licenciatura em Ciência de Dados para a Gestão
 **Unidade Curricular:** Projeto em Ciência de Dados
