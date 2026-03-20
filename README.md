@@ -21,11 +21,13 @@ De que forma as variáveis contextuais (dispositivo, ambiente de navegação e t
 
 Desenvolver um modelo de classificação (XGBoost/Random Forest) capaz de prever a probabilidade de clique em anúncios online (CTR) no dataset Avazu com 40 milhões de registos, analisando de que forma as variáveis contextuais (dispositivo, ambiente de navegação e tempo) influenciam essa decisão, garantindo um AUC-ROC superior a 0.75 e um Log Loss inferior a 0.40, de forma a permitir às empresas otimizar o seu investimento publicitário até à entrega do Milestone 3
 
+
 ### Objetivos do Projeto
-* **Objetivo 1:** Desenvolver um modelo preditivo para estimar a probabilidade de clique
-* **Objetivo 2:** Identificar as 5 variáveis de maior impacto na decisão de clique
-* **Objetivo 3:** Comparar diferentes algoritmos (Regressão Logística, Random Forest, Gradient Boosting)
-* **Objetivo 4:** Avaliar os modelos com métricas adequadas a classes desbalanceadas (AUC-ROC, Log-Loss, F1-score)
+
+* **Objetivo 1:** Desenvolver um modelo preditivo de classificação binária capaz de estimar a probabilidade de clique em anúncios online (CTR) no dataset Avazu com 40 milhões de registos, atingindo um AUC-ROC superior a 0.75, até à entrega do Milestone 3.
+* **Objetivo 2:** Identificar as 5 variáveis de maior impacto na decisão de clique, utilizando métricas de importância de features dos modelos de árvore (Random Forest/XGBoost), até à entrega do Milestone 3.
+* **Objetivo 3:** Comparar o desempenho de pelo menos 3 algoritmos de aprendizagem automática (Regressão Logística, Random Forest e Gradient Boosting), selecionando o modelo com melhor desempenho preditivo, até à entrega do Milestone 3.
+* **Objetivo 4:** Avaliar todos os modelos treinados através de métricas adequadas a problemas de classificação binária desbalanceada, nomeadamente AUC-ROC, Log Loss inferior a 0.40, Precision, Recall e F1-score, até à entrega do Milestone 3.
 
 ### Fonte de Dados
 * **Dataset:**  https://www.kaggle.com/datasets/madhu41289/avazu-ctr-prediction-exp
