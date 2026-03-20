@@ -19,6 +19,8 @@ O objetivo principal é desenvolver um modelo preditivo capaz de estimar a proba
 
 De que forma as variáveis contextuais (dispositivo, ambiente de navegação e tempo) permitem prever com precisão a probabilidade de um utilizador clicar num anúncio de publicidade móvel?
 
+Como desenvolver um modelo de classificação (XGBoost/Random Forest) capaz de prever a probabilidade de clique em anúncios online (CTR) no dataset Avazu com 40 milhões de registos, garantindo um AUC-ROC superior a 0.75 e um Log Loss inferior a 0.40, de forma a permitir às empresas otimizar o seu investimento publicitário até à entrega do Milestone 3?
+
 ### Objetivos do Projeto
 * **Objetivo 1:** Desenvolver um modelo preditivo para estimar a probabilidade de clique
 * **Objetivo 2:** Identificar as 5 variáveis de maior impacto na decisão de clique
