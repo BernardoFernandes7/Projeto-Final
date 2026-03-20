@@ -17,7 +17,7 @@ A estrutura deste projeto segue as boas práticas de Ciência de Dados e Engenha
 ### Contexto e Problema de Negócio
 O objetivo principal é desenvolver um modelo preditivo capaz de estimar a probabilidade de clique em anúncios online (CTR), usando o dataset Avazu.
 
-De que forma as variáveis contextuais (dispositivo, localização e tempo) permitem prever com precisão a probabilidade de um utilizador clicar num anúncio de publicidade móvel?
+De que forma as variáveis contextuais (dispositivo, ambiente de navegação e tempo) permitem prever com precisão a probabilidade de um utilizador clicar num anúncio de publicidade móvel?
 
 ### Objetivos do Projeto
 * **Objetivo 1:** Desenvolver um modelo preditivo para estimar a probabilidade de clique
