@@ -34,7 +34,7 @@ O objetivo principal é desenvolver um modelo de classificação (XGBoost/Random
 * Confirmada ausência de valores em falta em todas as 24 colunas do dataset
 * Detetados e imputados valores `-1` mascarados na coluna `C20` (valores em falta não óbvios), substituídos pela moda global
 * Removidas colunas não preditivas: `id`, `device_id`, `device_ip`
-* Aplicada Codificação por Rótulo nas 7 colunas categóricas de alta cardinalidade (`site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category`, `device_model`)
+* Aplicada Codificação por Rótulo (converte variáveis categóricas em números inteiros) nas 7 colunas categóricas de alta cardinalidade (`site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category`, `device_model`)
 * Aplicada Normalização por Padronização nas colunas numéricas (`C1`, `C14`–`C21`)
 * Criadas 3 novas variáveis: `hora_do_dia` (extraída de `hour`), `banner_area` (C15 × C16) e `visibilidade_anuncio` (banner_pos / device_type + 1)
 * Detalhes completos em [`docs/M2_exploracao.md`](docs/M2_exploracao.md)
