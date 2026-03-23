@@ -15,11 +15,7 @@ A estrutura deste projeto segue as boas práticas de Ciência de Dados e Engenha
 * **`requirements.txt`**: Ficheiro de configuração com as bibliotecas necessárias.
 ## 1. Iniciação (Milestone 1)
 ### Contexto e Problema de Negócio
-O objetivo principal é desenvolver um modelo preditivo capaz de estimar a probabilidade de clique em anúncios online (CTR), usando o dataset Avazu.
-
-De que forma as variáveis contextuais (dispositivo, ambiente de navegação e tempo) permitem prever com precisão a probabilidade de um utilizador clicar num anúncio de publicidade móvel?
-
-Desenvolver um modelo de classificação (XGBoost/Random Forest) capaz de prever a probabilidade de clique em anúncios online (CTR) no dataset Avazu com 40 milhões de registos, analisando de que forma as variáveis contextuais (dispositivo, ambiente de navegação e tempo) influenciam essa decisão, garantindo um AUC-ROC superior a 0.75 e um Log Loss inferior a 0.40, de forma a permitir às empresas otimizar o seu investimento publicitário até à entrega do Milestone 3
+O objetivo principal é desenvolver um modelo de classificação (XGBoost/Random Forest) capaz de prever a probabilidade de clique em anúncios online (CTR) no dataset Avazu com 40 milhões de registos, analisando de que forma as variáveis contextuais (dispositivo, ambiente de navegação e tempo) influenciam essa decisão, garantindo um AUC-ROC superior a 0.75 e um Log Loss inferior a 0.40, de forma a permitir às empresas otimizar o seu investimento publicitário até à entrega do Milestone 3
 
 
 ### Objetivos do Projeto
