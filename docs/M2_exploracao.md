@@ -8,7 +8,7 @@
 
 ### 1.1. Distribuição da Variável Alvo
 
-A variável alvo `click` é binária (0 = não clicou, 1 = clicou) e apresenta um forte desequilíbrio de classes:
+A variável alvo `click` é binária (0 = não clicou, 1 = clicou) e apresenta um forte desequilíbrio de classes.
 
 > **Factos importantes:** A variável alvo `click` está fortemente desequilibrada, com aproximadamente **83% de não-cliques (0)** e **17% de cliques (1)**. Este desequilíbrio é esperado em problemas de CTR e justifica o uso de métricas como AUC-ROC, Log Loss e F1-score em detrimento da simples Accuracy, que seria enganosa neste contexto — um modelo que preveja sempre "0" teria 83% de accuracy sem qualquer utilidade preditiva real.
 
