@@ -30,16 +30,14 @@ O objetivo principal é desenvolver um modelo de classificação (XGBoost/Random
 * **Dimensão:** O dataset Avazu tem aproximadamente **40 milhões de linhas e 24 colunas**.
 
 ## 2. Exploração (Milestone 2)
-
 ### Limpeza e Preparação
-* Confirmada ausência de NaN padrão em todas as 24 colunas do dataset
-* Detetados e imputados valores `-1` mascarados na coluna `C20` (missing values não óbvios), substituídos pela moda global
+* Confirmada ausência de valores em falta em todas as 24 colunas do dataset
+* Detetados e imputados valores `-1` mascarados na coluna `C20` (valores em falta não óbvios), substituídos pela moda global
 * Removidas colunas não preditivas: `id`, `device_id`, `device_ip`
-* Aplicado Label Encoding nas 7 colunas categóricas de alta cardinalidade (`site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category`, `device_model`)
-* Aplicado StandardScaler nas colunas numéricas (`C1`, `C14`–`C21`)
+* Aplicada Codificação por Rótulo nas 7 colunas categóricas de alta cardinalidade (`site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category`, `device_model`)
+* Aplicada Normalização por Padronização nas colunas numéricas (`C1`, `C14`–`C21`)
 * Criadas 3 novas variáveis: `hora_do_dia` (extraída de `hour`), `banner_area` (C15 × C16) e `visibilidade_anuncio` (banner_pos / device_type + 1)
 * Detalhes completos em [`docs/M2_exploracao.md`](docs/M2_exploracao.md)
-
 ### Principais Conclusões (EDA)
 
 > *Inserir aqui o gráfico de CTR por hora do dia*
