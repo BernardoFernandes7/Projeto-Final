@@ -40,7 +40,7 @@ O objetivo principal é desenvolver um modelo de classificação (XGBoost/Random
 * Detalhes completos em docs/M2_exploracao.md; 
 ### Principais Conclusões (EDA)
 
-> *Inserir aqui o gráfico de CTR por hora do dia*
+Ver a figura CTR por hora do dia
 
 * **Sazonalidade Temporal:** O CTR varia significativamente ao longo do dia, com períodos de maior propensão de clique identificados nas primeiras horas da madrugada (0h–3h), o que contraria a intuição inicial.
 * **Desequilíbrio de Classes:** A variável alvo `click` está fortemente desequilibrada, com aproximadamente 83% de não-cliques (0) e 17% de cliques (1), justificando o uso de métricas como AUC-ROC e F1-score em vez de simples Accuracy.
