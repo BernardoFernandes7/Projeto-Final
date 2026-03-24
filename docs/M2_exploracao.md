@@ -114,21 +114,33 @@ A Engenharia de Atributos é o processo de transformar dados brutos em represent
 
 ### 3.1. Transformações Realizadas
 
+Nesta fase, o objetivo foi converter o espaço de estados original (misto entre categorias textuais e valores discretos de grande amplitude) num formato tensorial otimizado para a convergência de modelos baseados em gradiente.
+
 #### Encoding — Codificação por Rótulo (*Label Encoding*)
 
-Aplicado nas 7 colunas categóricas de alta cardinalidade: `site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category` e `device_model`. Esta técnica atribui um inteiro único a cada categoria, preservando a estrutura do dataset sem expansão dimensional.
+Para as variáveis de alta cardinalidade, como `site_id`, `app_id` e `device_model`, implementámos o **Label Encoding**.
 
-A opção pelo **Label Encoding** em detrimento do *One-Hot Encoding* justifica-se porque estas colunas têm **milhares de categorias únicas** (*high cardinality*). O *One-Hot Encoding* geraria dezenas de milhares de novas colunas, tornando o dataset inviável em termos de memória para 40 milhões de registos. Modelos baseados em árvore como XGBoost e Random Forest, que serão utilizados no Milestone 3, lidam nativamente com Label Encoding sem pressupor uma ordenação cardinal (He et al., 2014).
+**Fundamentação Técnica**:Ao contrário do One-Hot Encoding, que criaria milhares de colunas esparsas (aumentando drasticamente o consumo de memória e o risco de overfitting devido à maldição da dimensionalidade), o Label Encoding mapeia cada categoria única para um inteiro distinto.
+
+**Gestão de Memória**: Esta abordagem permitiu manter o dataset compacto, essencial para o processamento em chunks no ambiente Kaggle, preservando a identidade de cada domínio ou aplicação sem explodir a matriz de características.
+
+**Tratamento de Unseen Labels**: O pipeline foi desenhado para mapear valores desconhecidos ou residuais para um índice comum, garantindo a robustez do modelo durante a fase de teste.
 
 #### Escalonamento — Padronização (*StandardScaler*)
 
 Aplicado nas colunas numéricas `C1`, `C14`, `C15`, `C16`, `C17`, `C18`, `C19`, `C20` e `C21`. Esta transformação centra cada variável em torno da média zero e escala pelo desvio padrão: **z = (x − μ) / σ**.
 
-A padronização garante que todas as variáveis contribuem equitativamente para os algoritmos sensíveis à escala (como Regressão Logística), evitando que variáveis com valores absolutos maiores dominem o modelo. O StandardScaler foi calculado de forma **incremental** sobre o dataset completo para garantir que os parâmetros μ e σ refletem a distribuição real dos 40 milhões de registos, assegurando a ausência de *data leakage* no *pipeline*.
+**Simetria e Centragem**: Esta técnica centraliza os dados na média ($\mu=0$) e escala-os para um desvio padrão unitário ($\sigma=1$).
+
+**Prevenção de Bias de Magnitude**: Sem o escalonamento, variáveis com amplitudes maiores (como IDs de categorias representados por números elevados) exerceriam uma influência desproporcional na atualização dos pesos do modelo, "abafando" variáveis binárias ou de menor escala que podem ser altamente preditivas.
+
+**Estabilidade Numérica**: Ao colocar todas as features na mesma ordem de magnitude, facilitamos o trabalho do otimizador (ex: Adam ou SGD), resultando numa descida de gradiente mais suave e rápida, reduzindo o risco de oscilações em torno do mínimo global.
 
 #### Remoção de variáveis redundantes
 
 Foram removidas as colunas `id`, `device_id` e `device_ip` por serem identificadores únicos sem poder preditivo — identificadores únicos não generalizam para dados não vistos. A coluna `hour` foi igualmente removida após a extração da variável `hora_do_dia`.
+
+- **Racional**: Estas variáveis possuem uma cardinalidade próxima do número total de observações. Manter identificadores únicos de utilizadores levaria o modelo a "memorizar" instâncias específicas (overfitting) em vez de aprender padrões generalizáveis de comportamento, o que comprometeria seriamente a performance em dados não vistos.
 
 ---
 
