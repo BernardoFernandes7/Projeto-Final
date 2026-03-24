@@ -35,9 +35,7 @@ Ver figura: Relação entre a variável C14 e o CTR
 
 * **`hora_do_dia` vs. `click`:** A análise bivariada do CTR por hora do dia revela variações significativas ao longo das 24 horas, com as primeiras horas da madrugada (0h–3h) a apresentarem CTR mais elevado, contrariando a intuição inicial de que o período diurno seria mais eficaz.
 
-<!-- INSERIR FIGURA 4 -->
-<!-- Gráfico de linha do CTR médio por hora do dia (0–23h), com destaque nas horas 0h–3h -->
-<!-- reports/figures/fig4_ctr_por_hora.png -->
+Ver figura: Evolução da Taxa de Cliques (CTR) por Hora do Dia
 
 * **Posição do Banner (`banner_pos`)** : A análise bivariada demonstra que as posições 0 e 1 detêm a vasta maioria das impressões, mas o CTR (Click-Through Rate) varia significativamente entre elas, validando a importância desta variável para o modelo.
 
@@ -59,9 +57,9 @@ Foi realizada uma auditoria completa de valores em falta (`NaN`, `None`, célula
 
 O dataset Avazu utiliza o valor `-1` para representar informação desconhecida nas colunas anónimas — uma prática comum em datasets de publicidade computacional que codifica a ausência de informação como um inteiro, contornando problemas de serialização de dados nulos (He et al., 2014).
 
-<!-- INSERIR FIGURA 5 -->
+<!-- INSERIR FIGURA -->
 <!-- Barplot horizontal da percentagem de valores -1 por coluna (destaca C20) -->
-<!-- reports/figures/fig5_missings_codificados.png -->
+
 
 #### Colunas afetadas: 
 
@@ -88,9 +86,7 @@ Na deteção de *outliers* utilizámos o método do **Intervalo Interquartil (IQ
 
 - Resultados Criticos: Identificámos que variáveis como C15 (Largura) apresentam 10.65% de outliers e C16 (Altura) apresentam 13.04%.
 
-<!-- INSERIR FIGURA 6 -->
-<!-- Boxplots das variáveis C1, C14, banner_pos e C15/C16 para visualizar os outliers identificados pelo IQR -->
-<!-- reports/figures/fig6_boxplots_outliers.png -->
+Ver firgura: Identificação de Outliers
 
 Dado que o dataset Avazu é um dataset de comportamento real de utilizadores, os valores extremos não representam erros de medição, mas sim **comportamentos legítimos e raros**. Optou-se por **não remover** estes *outliers* para não perder informação potencialmente relevante para o modelo.
 
@@ -183,9 +179,9 @@ Listagem final das variáveis que serão entregues ao modelo na Fase 3.
 | `device_conn_type`     | Inteiro                | Tipo de ligação à internet                                     |
 | `device_model`         | Inteiro (label enc.)   | Modelo do dispositivo (codificado por rótulo)                  |
 | `C14` – `C21`          | Float (normalizado)    | Variáveis anónimas normalizadas (StandardScaler)               |
-| `hora_do_dia`          | Inteiro                | **NOVA** — Hora do dia extraída de `hour` (0–23)               |
-| `banner_area`          | Inteiro                | **NOVA** — Área do banner em píxeis (C15 × C16)                |
-| `visibilidade_anuncio` | Float                  | **NOVA** — Índice de visibilidade (banner_pos / device_type+1) |
+| `hora_do_dia`          | Inteiro                | **Nova** — Hora do dia extraída de `hour` (0–23)               |
+| `banner_area`          | Inteiro                | **Nova** — Área do banner em píxeis (C15 × C16)                |
+| `visibilidade_anuncio` | Float                  | **Nova** — Índice de visibilidade (banner_pos / device_type+1) |
 | `id`                   | —                      | **Removido** — Identificador único, sem poder preditivo        |
 | `device_id`            | —                      | **Removido** — Identificador único, sem poder preditivo        |
 | `device_ip`            | —                      | **Removido** — Identificador único, sem poder preditivo        |
