@@ -197,9 +197,9 @@ Listagem final das variáveis que serão entregues ao modelo na Fase 3.
 
 ## 5. Conclusões da Fase de Exploração
 
-A fase de exploração revelou vários padrões importantes que não eram visíveis no final do Milestone 1:
+A fase de Análise Exploratória de Dados (EDA) e Engenharia de Atributos permitiu uma compreensão profunda da dinâmica do dataset Avazu, indo muito além da simples descrição estatística inicial. As principais conclusões que fundamentam a transição para a fase de modelação são::
 
-1. **Desequilíbrio de classes severo:** O dataset apresenta uma distribuição 83%/17% que inviabiliza o uso de *Accuracy* como métrica de avaliação. O Milestone 3 adotará AUC-ROC, Log Loss e F1-score como métricas principais, em linha com os Objetivos SMART do projeto.
+1. **Validação da Qualidade e Integridade:** A estratégia de processamento em chunks e o uso de bibliotecas como Dask permitiram superar as limitações de memória, garantindo que a análise refletisse a realidade total dos 40 milhões de registos. A identificação e correção de "nulos mascarados" na coluna `C20` (46.8% de valores -1) foi um passo crítico para eliminar o ruído que, de outra forma, enviesaria a aprendizagem do modelo.
 
 2. **Padrão temporal contra-intuitivo:** As horas de madrugada (0h–3h) apresentam CTR acima da média global, contrariando o pressuposto inicial de que o período diurno seria o mais eficaz. Este *insight* é relevante para a otimização temporal de campanhas publicitárias.
 
