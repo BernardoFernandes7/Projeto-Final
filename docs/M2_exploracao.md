@@ -65,8 +65,20 @@ O dataset Avazu utiliza o valor `-1` para representar informação desconhecida 
 <!-- Barplot horizontal da percentagem de valores -1 por coluna (destaca C20) -->
 <!-- reports/figures/fig5_missings_codificados.png -->
 
-* **Colunas afetadas:** `C20`
-* **Estratégia adotada:** Substituição dos valores `-1` pela **moda global** da coluna (calculada sobre os 40 milhões de registos, excluindo os próprios `-1`). Optou-se pela moda em vez da média ou mediana porque `C20` é uma variável categórica codificada numericamente — a média de categorias não tem significado semântico, enquanto a moda representa o valor mais frequente e, portanto, mais representativo da distribuição real da população.
+#### Colunas afetadas: 
+
+`C14` a `C21` e `device_id`/`device_ip`.
+
+#### Deteção e Diagnóstico de "Hidden NaNs":
+
+Uma inspeção inicial revelou que o dataset não contém valores nulos do tipo NaN padrão. No entanto, através de uma análise de frequências, identificámos a presença de Missing Data mascarado sob os valores -1 e 0, que funcionam como placeholders operacionais. Esta prática é comum em sistemas de logging de publicidade programática para representar campos não preenchidos ou erros de sensor.
+
+#### Estratégia de Imputação para a Coluna `C20`:
+
+A variável `C20` revelou-se a mais crítica, com aproximadamente 46,8% de valores nulos mascarados como -1. Para tratar esta lacuna sem comprometer o volume de dados (visto que a remoção de quase metade do dataset introduziria um viés de seleção inaceitável), implementámos a seguinte estratégia:
+
+-   Optámos por calcular a moda (valor mais frequente) de forma incremental através de chunks, garantindo que o valor imputado fosse estatisticamente representativo do conjunto total de 40 milhões de linhas.
+-   Rejeitámos categoricamente a utilização da média ou mediana para a coluna `C20`, dado que a variável é uma variável categórica nominal anonimizada (representando um ID de sistema), o cálculo da média não possui significado físico ou lógico. Operações aritméticas sobre identificadores categóricos resultariam em valores inexistentes no domínio original, enquanto a moda preserva a natureza discreta e categórica do dado, mantendo a consistência da distribuição.
 
 ---
 
