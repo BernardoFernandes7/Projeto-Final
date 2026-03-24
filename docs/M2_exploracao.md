@@ -14,7 +14,7 @@ A Análise Exploratória de Dados (EDA) constitui uma fase fundamental no ciclo 
 
 A variável alvo `click` é binária (0 = não clicou, 1 = clicou) e apresenta um forte desequilíbrio de classes.
 
-> **Factos importantes:** A variável alvo `click` está fortemente desequilibrada, com aproximadamente **83% de não-cliques (0)** e **17% de cliques (1)**. Este desequilíbrio é esperado em problemas de CTR e justifica o uso de métricas como AUC-ROC, Log Loss e F1-score em detrimento da simples Accuracy, que seria enganosa neste contexto — um modelo que previsse sempre "0" teria 83% de *accuracy* sem qualquer utilidade preditiva real, fenómeno denominado *accuracy paradox* (Japkowicz & Stephen, 2002).
+> **Factos importantes:** A variável alvo `click` está fortemente desequilibrada, com aproximadamente **83% de não-cliques (0)** e **17% de cliques (1)**. A distribuição não é normal. O desequilíbrio exige que a performance do modelo não seja medida por Accuracy, mas sim por Log-Loss (métrica oficial do desafio Avazu) e AUC-ROC, para garantir que o modelo penaliza corretamente as falsas previsões de cliques — um modelo que previsse sempre "0" teria 83% de *accuracy* sem qualquer utilidade preditiva real, fenómeno denominado *accuracy paradox* (Japkowicz & Stephen, 2002).
 
 
 Ver figura Distribuição da variável alvo 'click' 
