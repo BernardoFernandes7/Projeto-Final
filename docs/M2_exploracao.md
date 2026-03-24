@@ -226,7 +226,7 @@ Cohen, J., Cohen, P., West, S. G., & Aiken, L. S. (2003). Applied Multiple Regre
 
 ---
 
-*Data de última atualização: 23/03/2026*
+*Data de última atualização: 24/03/2026*
 ---
 
-*Data de última atualização: 23/03/2026*
+*Data de última atualização: 24/03/2026*
