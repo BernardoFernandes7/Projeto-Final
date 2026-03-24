@@ -102,8 +102,8 @@ As colunas categóricas (`site_id`, `site_domain`, `site_category`, `app_id`, `a
 
 #### Decisão Estratégica( Normalização via `StandardScaler`) : Em vez da técnica de Capping ou Trimming (que alteraria a distribuição original), optámos pela aplicação do StandardScaler.
 
-- Mitigação do Impacto no Gradiente: Algoritmos baseados em descida de gradiente ou redes neuronais são sensíveis à magnitude dos dados. Ao transformar as variáveis para terem média $\mu=0$ e desvio padrão $\sigma=1$, garantimos que os outliers (valores com elevado $Z-score$) não dominem a função de custo durante o treino.
--   Convergência do Algoritmo: Esta abordagem "suaviza" a influência dos valores extremos, permitindo que o otimizador encontre o mínimo global de forma mais estável, mantendo a informação de que aquele anúncio possui uma dimensão fora do comum, sem que isso cause instabilidade numérica no modelo.
+- **Mitigação do Impacto no Gradiente**: Algoritmos baseados em descida de gradiente ou redes neuronais são sensíveis à magnitude dos dados. Ao transformar as variáveis para terem média $\mu=0$ e desvio padrão $\sigma=1$, garantimos que os outliers (valores com elevado $Z-score$) não dominem a função de custo durante o treino.
+-   **Convergência do Algoritmo**: Esta abordagem "suaviza" a influência dos valores extremos, permitindo que o otimizador encontre o mínimo global de forma mais estável, mantendo a informação de que aquele anúncio possui uma dimensão fora do comum, sem que isso cause instabilidade numérica no modelo.
 ---
 
 ## 3. Engenharia de Atributos (Feature Engineering)
