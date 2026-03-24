@@ -6,7 +6,7 @@
 
 ## 1. Análise Exploratória de Dados (EDA)
 
-A Análise Exploratória de Dados (EDA) constitui uma fase fundamental no ciclo de vida de qualquer projeto de Ciência de Dados. Segundo Tukey (1977), a EDA representa um conjunto de técnicas estatísticas e visuais que permite compreender a estrutura interna de um conjunto de dados antes de qualquer modelação preditiva. No contexto do presente projeto, a EDA foi conduzida de forma incremental sobre os 40 milhões de registos do dataset Avazu, utilizando processamento em *chunks* de 100.000 linhas de modo a superar as limitações de memória RAM do ambiente Kaggle.
+A Análise Exploratória de Dados (EDA) constitui uma fase fundamental no ciclo de vida de qualquer projeto de Ciência de Dados. Segundo Tukey (1977), a EDA representa um conjunto de técnicas estatísticas e visuais que permite compreender a estrutura interna de um conjunto de dados antes de qualquer modelação preditiva. No contexto do presente projeto, a EDA foi conduzida de forma incremental sobre os 40 milhões de registos do dataset Avazu, utilizando processamento em *chunks* de modo a superar as limitações de memória RAM do ambiente Kaggle.
 
 ---
 
@@ -16,19 +16,18 @@ A variável alvo `click` é binária (0 = não clicou, 1 = clicou) e apresenta u
 
 > **Factos importantes:** A variável alvo `click` está fortemente desequilibrada, com aproximadamente **83% de não-cliques (0)** e **17% de cliques (1)**. Este desequilíbrio é esperado em problemas de CTR e justifica o uso de métricas como AUC-ROC, Log Loss e F1-score em detrimento da simples Accuracy, que seria enganosa neste contexto — um modelo que previsse sempre "0" teria 83% de *accuracy* sem qualquer utilidade preditiva real, fenómeno denominado *accuracy paradox* (Japkowicz & Stephen, 2002).
 
-<!-- INSERIR FIGURA 1 -->
-<!-- Gráfico de barras com a distribuição da variável alvo 'click' (contagem e percentagem de 0s e 1s) -->
-<!-- reports/figures/fig1_distribuicao_click.png -->
+
+Ver figura Distribuição da variável alvo 'click' 
 
 ---
 
 ### 1.2. Correlações Relevantes
 
-A matriz de correlação de Pearson foi calculada de forma incremental sobre os 40 milhões de registos para identificar as variáveis com maior relação com a variável alvo.
+A matriz de correlação de Pearson foi calculada de forma incremental sobre os 40 milhões de registos para identificar as variáveis com maior relação linear com a variável alvo. O coeficiente de Pearson mede a força e a direção da associação linear entre duas variáveis, assumindo valores entre −1 e 1, sendo 0 indicativo de ausência de relação linear (Cohen, Cohen, West & Aiken, 2003). Foi escolhido em detrimento de outras métricas de associação (como o coeficiente de Spearman) por ser computacionalmente eficiente em datasets de grande dimensão.
 
-<!-- INSERIR FIGURA 2 -->
-<!-- Heatmap da matriz de correlação de Pearson entre todas as variáveis numéricas e a variável alvo 'click' -->
-<!-- reports/figures/fig2_heatmap_correlacao.png -->
+
+Ver figura Matriz de Correlação de Pearson
+
 
 * **`C14` vs. `click`:** A variável anónima `C14` apresenta a correlação mais elevada com `click`, sugerindo que representa uma característica do anúncio ou do utilizador com forte impacto na decisão de clique. O *scatter plot* de CTR por C14 confirma que determinados valores de C14 têm CTR significativamente acima da média global de 17%.
 
@@ -189,6 +188,8 @@ Japkowicz, N., & Stephen, S. (2002). The class imbalance problem: A systematic s
 Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., & Duchesnay, É. (2011). Scikit-learn: Machine learning in Python. *Journal of Machine Learning Research, 12*, 2825–2830.
 
 Tukey, J. W. (1977). *Exploratory Data Analysis*. Addison-Wesley.
+
+Cohen, J., Cohen, P., West, S. G., & Aiken, L. S. (2003). Applied Multiple Regression/Correlation Analysis for the Behavioral Sciences (3rd ed.). Lawrence Erlbaum.
 
 ---
 
