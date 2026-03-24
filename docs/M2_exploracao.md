@@ -211,6 +211,15 @@ A fase de Análise Exploratória de Dados (EDA) e Engenharia de Atributos permit
 
 6. **Dataset pronto para modelação:** Todos os valores em falta foram tratados, as variáveis categóricas foram codificadas, o escalonamento foi aplicado e 3 novas variáveis com correlação verificada com o objetivo foram adicionadas ao *pipeline*. O dataset processado foi exportado para `data/processed/` e está pronto para o Milestone 3.
 
+### Veredito Final: Prontidão Estratégica para Modelação
+
+Em suma, a conclusão desta fase marca a transição de um dataset bruto e volumoso para um ecossistema de dados otimizado e de alta fidelidade. O rigor aplicado na limpeza da coluna `C20` e na deteção de nulos mascarados garantiu a eliminação de ruído estatístico que comprometeria a convergência de qualquer algoritmo. Mais do que uma simples limpeza, a introdução das variáveis sintéticas (`hora_do_dia`, `banner_area` e `visibilidade_anuncio`) permitiu injetar inteligência de domínio no modelo, transformando registos estáticos em indicadores contextuais com correlação verificada.
+
+A arquitetura final do dataset, agora normalizada via StandardScaler e codificada para respeitar os limites de memória e dimensionalidade, resolve o conflito entre a complexidade dos 40 milhões de registos e a necessidade de generalização. Com a remoção estratégica de IDs de alta cardinalidade e o foco em métricas robustas ao desbalanceamento, como Log-Loss e AUC-ROC, o projeto abandona a visão simplista da acurácia para adotar uma postura de precisão cirúrgica em ambiente de licitação real.
+
+Conclusão: O pipeline de pré-processamento está concluído e validado. O dataset depositado em data/processed/ não é apenas uma versão limpa do original, mas uma base de conhecimento enriquecida, estatisticamente equilibrada e tecnicamente blindada contra o overfitting, reunindo todas as condições necessárias para o sucesso da modelação preditiva na Milestone 3.
+
+####Data de última atualização: 24/03/2026
 ---
 
 ## Referências Bibliográficas
