@@ -142,9 +142,6 @@ Foram removidas as colunas `id`, `device_id` e `device_ip` por serem identificad
 
 Foram criadas **3 novas variáveis** que introduzem informação adicional não capturada diretamente pelo dataset original. A correlação de cada nova variável com `click` foi verificada incrementalmente sobre os 40 milhões de registos antes de ser incluída no *pipeline* final.
 
-<!-- INSERIR FIGURA 7 -->
-<!-- Barplot da correlação de Pearson de cada variável (incluindo as 3 novas) com 'click', ordenado descendentemente -->
-<!-- reports/figures/fig7_correlacao_novas_variaveis.png -->
 
 * **`hora_do_dia`(Sazonalidade Temporal)** — A extração a variável `hour` horária a partir do timestamp original (`hour % 100`) permitiu a modelação do ciclo circadiano dos utilizadores. Esta variável é matematicamente essencial para isolar padrões de comportamento que variam drasticamente entre períodos de lazer, horário laboral e períodos noturnos. Dado que o custo de licitação e a propensão ao clique (CTR) flutuam consoante o horário nobre, este atributo oferece ao modelo um referencial temporal cíclico indispensável para a precisão das previsões.
   
@@ -154,9 +151,6 @@ Foram criadas **3 novas variáveis** que introduzem informação adicional não 
 
  Com estas transformações, o dataset deixa de ser uma mera coleção de registos isolados e passa a incorporar uma camada de inteligência contextual, fundamental para a robustez preditiva na fase de modelação.
 
-<!-- INSERIR FIGURA 8 -->
-<!-- Histogramas das 3 novas variáveis criadas: hora_do_dia, banner_area e visibilidade_anuncio -->
-<!-- reports/figures/fig8_histogramas_novas_variaveis.png -->
 
 ---
 
