@@ -201,7 +201,7 @@ A fase de Análise Exploratória de Dados (EDA) e Engenharia de Atributos permit
 
 1. **Validação da Qualidade e Integridade:** A estratégia de processamento em chunks e o uso de bibliotecas como Dask permitiram superar as limitações de memória, garantindo que a análise refletisse a realidade total dos 40 milhões de registos. A identificação e correção de "nulos mascarados" na coluna `C20` (46.8% de valores -1) foi um passo crítico para eliminar o ruído que, de outra forma, enviesaria a aprendizagem do modelo.
 
-2. **Padrão temporal contra-intuitivo:** As horas de madrugada (0h–3h) apresentam CTR acima da média global, contrariando o pressuposto inicial de que o período diurno seria o mais eficaz. Este *insight* é relevante para a otimização temporal de campanhas publicitárias.
+2. **Poder Preditivo das Variáveis Sintéticas:** A análise bivariada e de correlação confirmou que as novas variáveis criadas — `hora_do_dia`, `banner_area` e `visibilidade_anuncio` — capturam sinais latentes de comportamento de clique que as variáveis originais, de forma isolada, não conseguiam expressar. Estas transformações converteram dados estáticos em indicadores dinâmicos de contexto e impacto visual.
 
 3. **Variáveis anónimas com alto poder preditivo:** As variáveis `C14`, `C15` e `C16` são as mais correlacionadas com a variável alvo, sugerindo que representam características intrínsecas do anúncio com forte poder discriminante.
 
