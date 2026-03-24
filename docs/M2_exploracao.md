@@ -41,10 +41,10 @@ Ver figura Matriz de Correlação de Pearson
 <!-- Gráfico de linha do CTR médio por hora do dia (0–23h), com destaque nas horas 0h–3h -->
 <!-- reports/figures/fig4_ctr_por_hora.png -->
 
-* **`banner_pos` vs. `click`:** A posição do banner na página influencia o CTR, mas a relação não é linear — o topo da página nem sempre corresponde ao maior CTR, dependendo do tipo de dispositivo utilizado.
+* **Posição do Banner (banner_pos)** : A análise bivariada demonstra que as posições 0 e 1 detêm a vasta maioria das impressões, mas o CTR (Click-Through Rate) varia significativamente entre elas, validando a importância desta variável para o modelo.
 
 * **`device_type` vs. `click`:** Dispositivos móveis apresentam padrões de clique distintos dos PCs, com diferenças relevantes no CTR médio por tipo de dispositivo.
-
+* **Variáveis de Dispositivo**: device_type e device_conn_type mostram correlação direta com o comportamento de clique. Notou-se que certos tipos de ligação (ex: tipo 0) concentram a maioria dos dados.
 ---
 
 ## 2. Qualidade dos Dados e Limpeza
