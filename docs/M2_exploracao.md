@@ -17,7 +17,7 @@ A variável alvo `click` é binária (0 = não clicou, 1 = clicou) e apresenta u
 > **Factos importantes:** A variável alvo `click` está fortemente desequilibrada, com aproximadamente **83% de não-cliques (0)** e **17% de cliques (1)**. A distribuição não é normal. O desequilíbrio exige que a performance do modelo não seja medida por Accuracy, mas sim por Log-Loss (métrica oficial do desafio Avazu) e AUC-ROC, para garantir que o modelo penaliza corretamente as falsas previsões de cliques — um modelo que previsse sempre "0" teria 83% de *accuracy* sem qualquer utilidade preditiva real, fenómeno denominado *accuracy paradox* (Japkowicz & Stephen, 2002).
 
 
-Ver figura Distribuição da variável alvo 'click' 
+Ver figura: Distribuição da variável alvo 'click' 
 
 ---
 
@@ -26,14 +26,12 @@ Ver figura Distribuição da variável alvo 'click'
 A matriz de correlação de Pearson foi calculada de forma incremental sobre os 40 milhões de registos para identificar as variáveis com maior relação linear com a variável alvo. O coeficiente de Pearson mede a força e a direção da associação linear entre duas variáveis, assumindo valores entre −1 e 1, sendo 0 indicativo de ausência de relação linear (Cohen, Cohen, West & Aiken, 2003). Foi escolhido em detrimento de outras métricas de associação (como o coeficiente de Spearman) por ser computacionalmente eficiente em datasets de grande dimensão.
 
 
-Ver figura Matriz de Correlação de Pearson
+Ver figura: Matriz de Correlação de Pearson
 
 
 * **`C14` vs. `click`:** A variável anónima `C14` apresenta a correlação mais elevada com `click`, sugerindo que representa uma característica do anúncio ou do utilizador com forte impacto na decisão de clique. O *scatter plot* de CTR por C14 confirma que determinados valores de C14 têm CTR significativamente acima da média global de 17%.
 
-<!-- INSERIR FIGURA 3 -->
-<!-- Barplot do CTR médio por valor de C14 (top 20 valores mais frequentes) -->
-<!-- reports/figures/fig3_ctr_por_c14.png -->
+Ver figura: Relação entre a variável C14 e o CTR
 
 * **`hora_do_dia` vs. `click`:** A análise bivariada do CTR por hora do dia revela variações significativas ao longo das 24 horas, com as primeiras horas da madrugada (0h–3h) a apresentarem CTR mais elevado, contrariando a intuição inicial de que o período diurno seria mais eficaz.
 
