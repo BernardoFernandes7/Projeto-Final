@@ -85,8 +85,10 @@ A variável `C20` revelou-se a mais crítica, com aproximadamente 46,8% de valor
 ### 2.2. Outliers e Inconsistências
 
 #### Outliers numéricos
+ 
+Na deteção de *outliers* utilizámos o método do **Intervalo Interquartil (IQR)**  para quantificar a presença de outliers nas variáveis numéricas de dimensões e categorias anonimizadas. O cálculo baseou-se na amplitude entre o primeiro quartil ($Q1$) e o terceiro quartil ($Q3$), definindo como outliers todos os valores fora do intervalo $[Q1 - 1.5 \times IQR, Q3 + 1.5 \times IQR]$.
 
-A deteção de *outliers* foi realizada através do método **IQR (Intervalo Interquartil)**, um critério robusto e não paramétrico proposto por Tukey (1977). Segundo este critério, valores inferiores a Q1 − 1,5 × IQR ou superiores a Q3 + 1,5 × IQR são classificados como atípicos. Foram identificados *outliers* nas colunas `C1`, `banner_pos` e `C14`.
+- Resultados Criticos: Identificámos que variáveis como C15 (Largura) apresentam 10.65% de outliers e C16 (Altura) apresentam 13.04%.
 
 <!-- INSERIR FIGURA 6 -->
 <!-- Boxplots das variáveis C1, C14, banner_pos e C15/C16 para visualizar os outliers identificados pelo IQR -->
@@ -98,6 +100,10 @@ Dado que o dataset Avazu é um dataset de comportamento real de utilizadores, os
 
 As colunas categóricas (`site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category`, `device_model`) foram confirmadas e convertidas explicitamente para tipo `string` antes do *encoding*, garantindo consistência no processamento e prevenindo erros silenciosos quando inteiros são interpretados como categorias numéricas por bibliotecas como o scikit-learn (Pedregosa et al., 2011).
 
+#### Decisão Estratégica( Normalização via `StandardScaler`) : Em vez da técnica de Capping ou Trimming (que alteraria a distribuição original), optámos pela aplicação do StandardScaler.
+
+- Mitigação do Impacto no Gradiente: Algoritmos baseados em descida de gradiente ou redes neuronais são sensíveis à magnitude dos dados. Ao transformar as variáveis para terem média $\mu=0$ e desvio padrão $\sigma=1$, garantimos que os outliers (valores com elevado $Z-score$) não dominem a função de custo durante o treino.
+-   Convergência do Algoritmo: Esta abordagem "suaviza" a influência dos valores extremos, permitindo que o otimizador encontre o mínimo global de forma mais estável, mantendo a informação de que aquele anúncio possui uma dimensão fora do comum, sem que isso cause instabilidade numérica no modelo.
 ---
 
 ## 3. Engenharia de Atributos (Feature Engineering)
