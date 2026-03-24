@@ -205,7 +205,9 @@ A fase de Análise Exploratória de Dados (EDA) e Engenharia de Atributos permit
 
 3. **Variáveis anónimas com alto poder preditivo:** As variáveis `C14`, `C15` e `C16` são as mais correlacionadas com a variável alvo, sugerindo que representam características intrínsecas do anúncio com forte poder discriminante.
 
-4. **Dataset pronto para modelação:** Todos os valores em falta foram tratados, as variáveis categóricas foram codificadas, o escalonamento foi aplicado e 3 novas variáveis com correlação verificada com o objetivo foram adicionadas ao *pipeline*. O dataset processado foi exportado para `data/processed/` e está pronto para o Milestone 3.
+4. **Estratégia de Avaliação Definida pelo Desbalanceamento**: A confirmação de um desequilíbrio de classe de 17/83 (clique/não-clique) estabelece que a métrica de Accuracy será insuficiente. O projeto está agora orientado para otimizar o **Log-Loss** e o **AUC-ROC**, garantindo uma penalização rigorosa para falsos positivos em ambiente de licitação em tempo real.
+
+5. **Dataset pronto para modelação:** Todos os valores em falta foram tratados, as variáveis categóricas foram codificadas, o escalonamento foi aplicado e 3 novas variáveis com correlação verificada com o objetivo foram adicionadas ao *pipeline*. O dataset processado foi exportado para `data/processed/` e está pronto para o Milestone 3.
 
 ---
 
