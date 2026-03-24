@@ -207,7 +207,9 @@ A fase de Análise Exploratória de Dados (EDA) e Engenharia de Atributos permit
 
 4. **Estratégia de Avaliação Definida pelo Desbalanceamento**: A confirmação de um desequilíbrio de classe de 17/83 (clique/não-clique) estabelece que a métrica de Accuracy será insuficiente. O projeto está agora orientado para otimizar o **Log-Loss** e o **AUC-ROC**, garantindo uma penalização rigorosa para falsos positivos em ambiente de licitação em tempo real.
 
-5. **Dataset pronto para modelação:** Todos os valores em falta foram tratados, as variáveis categóricas foram codificadas, o escalonamento foi aplicado e 3 novas variáveis com correlação verificada com o objetivo foram adicionadas ao *pipeline*. O dataset processado foi exportado para `data/processed/` e está pronto para o Milestone 3.
+5. **Otimização do Espaço de Características:** TAtravés do Label Encoding e do escalonamento robusto via StandardScaler, o espaço de características foi normalizado e estabilizado. A remoção de IDs de alta cardinalidade sem poder de generalização (`device_id`, `device_ip`) protege o modelo contra o overfitting, focando a aprendizagem em padrões de consumo reais e não na memorização de utilizadores específicos.
+
+6. **Dataset pronto para modelação:** Todos os valores em falta foram tratados, as variáveis categóricas foram codificadas, o escalonamento foi aplicado e 3 novas variáveis com correlação verificada com o objetivo foram adicionadas ao *pipeline*. O dataset processado foi exportado para `data/processed/` e está pronto para o Milestone 3.
 
 ---
 
