@@ -1,68 +1,63 @@
-# Previsão de Clicks em Anuncios On-line
+# Otimização de Campanhas Publicitárias Digitais: Previsão de Taxas de Clique (*Click-Through Rate*)
+
 ## Identificação da Equipa
-**Grupo nº:** 6
-* **Membros:** 2
+* **Grupo nº:** 6
+* **Membros:**
  * Bernardo Fernandes - 2023132747
  * Hugo Grou - 2023137127
 
 ## Organização do Repositório
 A estrutura deste projeto segue as boas práticas de Ciência de Dados e Engenharia de Software:
 * **`data/`**: Armazenamento de dados (dados brutos em `raw/` e processados em `processed/`).
-* **`docs/`**: Documentação técnica detalhada dividida por Milestones (M1, M2 e M3).
-* **`notebooks/`**: Jupyter Notebooks para experimentação, limpeza e modelação.
+* **`docs/`**: Documentação técnica detalhada dividida por *Milestones* (M1, M2 e M3).
+* **`notebooks/`**: *Jupyter Notebooks* para experimentação, limpeza e modelação. 
 * **`src/`**: Código-fonte modular (scripts `.py`) para funções reutilizáveis.
 * **`reports/`**: Relatórios finais, apresentações e exportação de figuras (`figures/`).
-* **`requirements.txt`**: Ficheiro de configuração com as bibliotecas necessárias.
+* **`requirements.txt`**: Ficheiro de configuração com as bibliotecas necessárias e respetiva descrição.
+
 ## 1. Iniciação (Milestone 1)
+
 ### Contexto e Problema de Negócio
-O objetivo principal é desenvolver um modelo de classificação (XGBoost/Random Forest) capaz de prever a probabilidade de clique em anúncios online (CTR) no dataset Avazu com 40 milhões de registos, analisando de que forma as variáveis contextuais (dispositivo, ambiente de navegação e tempo) influenciam essa decisão, garantindo um AUC-ROC superior a 0.75 e um Log Loss inferior a 0.40, de forma a permitir às empresas otimizar o seu investimento publicitário até à entrega do Milestone 3
+No ecossistema da publicidade *online*, a eficiência de uma campanha depende da precisão com que um anúncio é direcionado ao utilizador. O desafio proposto pelo parceiro Avazu consiste em mitigar o desperdício orçamental em impressões publicitárias que não geram interação. O problema de negócio foca-se em prever o comportamento do utilizador (clique ou não clique) perante variáveis contextuais como o tipo de dispositivo, o horário e o ambiente de navegação. Ao antecipar esta probabilidade, as organizações podem otimizar a alocação de recursos em tempo real, maximizando o retorno sobre o investimento publicitário (*Return on Ad Spend*).
 
+### Objetivos do Projeto (SMART)
+O objetivo central deste trabalho é desenvolver e validar, até ao final do semestre letivo, um modelo de classificação binária capaz de prever cliques em anúncios com uma métrica de desempenho *AUC-ROC* superior a 0.75. Através da análise do *dataset* da Avazu, pretende-se criar uma ferramenta preditiva que suporte a decisão de compra de inventário publicitário em tempo real.
 
-### Objetivos do Projeto
-
-* **Objetivo 1:** Desenvolver um modelo preditivo de classificação binária capaz de estimar a probabilidade de clique em anúncios online (CTR) no dataset Avazu com 40 milhões de registos, atingindo um AUC-ROC superior a 0.75, até à entrega do Milestone 3.
-* **Objetivo 2:** Identificar as 5 variáveis de maior impacto na decisão de clique, utilizando métricas de importância de features dos modelos de árvore (Random Forest/XGBoost), até à entrega do Milestone 3.
-* **Objetivo 3:** Comparar o desempenho de pelo menos 3 algoritmos de aprendizagem automática (Regressão Logística, Random Forest e Gradient Boosting), selecionando o modelo com melhor desempenho preditivo, até à entrega do Milestone 3.
-* **Objetivo 4:** Avaliar todos os modelos treinados através de métricas adequadas a problemas de classificação binária desbalanceada, nomeadamente AUC-ROC, Log Loss inferior a 0.40, Precision, Recall e F1-score, até à entrega do Milestone 3.
+### Perguntas de Investigação
+1. Quais são as janelas horárias que apresentam uma maior propensão para a conversão de cliques por parte dos utilizadores?
+2. De que forma o tipo de dispositivo (*device type*) e as suas características técnicas influenciam a eficácia da entrega do anúncio?
+3. Que categorias de aplicações ou domínios de internet geram tráfego com maior taxa de interação real face ao volume de impressões?
 
 ### Fonte de Dados
-* **Dataset:**  https://www.kaggle.com/datasets/madhu41289/avazu-ctr-prediction-exp
-* **Dimensão:** O dataset Avazu tem aproximadamente **40 milhões de linhas e 24 colunas**.
+* **Dataset:** [Avazu Click-Through Rate Prediction](https://www.kaggle.com/c/avazu-ctr-prediction) (Disponível no *Kaggle*).
+* **Dimensão:** O conjunto de dados original contém 40.428.967 registos e 24 colunas. Para viabilidade técnica no ambiente *Kaggle*, os testes iniciais são realizados sobre uma amostra aleatória estratificada.
 
 ## 2. Exploração (Milestone 2)
 ### Limpeza e Preparação
-* Confirmada ausência de valores em falta em todas as 24 colunas do dataset;
-* Detetados e imputados valores `-1` mascarados na coluna `C20` (valores em falta não óbvios), substituídos pela moda global;
-* Removidas colunas não preditivas: `id`, `device_id`, `device_ip`;
-* Aplicada Codificação por Rótulo (converte variáveis categóricas em números inteiros) nas 7 colunas categóricas de alta cardinalidade (`site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category`, `device_model`);
-* Aplicado o StandardScaler nas colunas numéricas (`C1`, `C14`–`C21`);
-* Criadas 3 novas variáveis: `hora_do_dia` (extraída de `hour`), `banner_area` (C15 × C16) e `visibilidade_anuncio` (banner_pos / device_type + 1);
-* Detalhes completos em docs/M2_exploracao.md; 
+* [Fase em desenvolvimento: Incluirá tratamento de *outliers*, conversão de tipos de dados e gestão de valores mascarados. Detalhes em `docs/M2_exploracao.md`]
+
 ### Principais Conclusões (EDA)
-
-Ver a figura CTR por hora do dia
-
-* **Sazonalidade Temporal:** O CTR varia significativamente ao longo do dia, com períodos de maior propensão de clique identificados nas primeiras horas da madrugada (0h–3h), o que contraria a intuição inicial.
-* **Desequilíbrio de Classes:** A variável alvo `click` está fortemente desequilibrada, com aproximadamente 83% de não-cliques (0) e 17% de cliques (1), justificando o uso de métricas como AUC-ROC e F1-score em vez de simples Accuracy.
-* **Variáveis mais correlacionadas com `click`:** As variáveis anónimas `C14`, `C15` e `C16` apresentam as correlações mais relevantes com a variável alvo, sugerindo que representam características do anúncio com forte impacto no CTR.
+* **Ponto-chave:** Durante a análise exploratória inicial (*EDA*), identificou-se um forte desequilíbrio de classes (apenas ~17% de cliques), o que exigirá o uso de métricas de avaliação como *AUC-ROC* e *F1-Score* em detrimento da *Accuracy*.
 
 ## 3. Modelação (Milestone 3)
 ### Abordagem Técnica
-* **Modelos:** [Ex: Random Forest e XGBoost]
-* **Métrica Principal:** [Ex: F1-Score ou RMSE]
+* **Modelos:** [A definir: Candidatos principais *XGBoost* e *Random Forest*]
+* **Métrica Principal:** *AUC-ROC* e *Log Loss*
+
 ## 4. Finalização (Milestone 4)
 ### Resposta ao Problema
-[Resumo da solução e como ela gera valor para o negócio.]
-### Recomendações de Inovação
-1. [Sugestão prática baseada nos resultados]
-## Como Reproduzir este Projeto
-1. Clone o repositório: git clone (https://github.com/BernardoFernandes7/Projeto-Final.git)
-2. Instale as dependências: pip install -r requirements.txt
-3. Aceda ao Kaggle e faça upload do notebook
-4. Adicione o dataset Avazu CTR Prediction via Add Data no Kaggle
-5. Execute os notebooks seguindo a ordem numérica
+[A preencher na conclusão do projeto com base nos resultados obtidos.]
 
+### Recomendações de Inovação
+1. [Sugestão prática baseada nos resultados finais da modelação]
+
+## Como Reproduzir este Projeto
+1. Clone o repositório: `git clone https://github.com/BernardoFernandes7/Projeto-Final.git`
+2. Instale as dependências: `pip install -r requirements.txt`
+3. Execute os *notebooks* na pasta `notebooks/` seguindo a ordem numérica, garantindo a ligação ao *dataset* oficial no *Kaggle*.
+
+---
 **Instituição:** Coimbra Business School | ISCAC  
 **Curso:** Licenciatura em Ciência de Dados para a Gestão  
 **Unidade Curricular:** Projeto em Ciência de Dados  
-**Professor Responsável:** Dora Melo (dmelo@iscac.pt)   
+**Professor Responsável:** Dora Melo (dmelo@iscac.pt)
