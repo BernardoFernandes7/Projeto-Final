@@ -18,19 +18,40 @@ A estrutura deste projeto segue as boas práticas de Ciência de Dados e Engenha
 ## 1. Iniciação (Milestone 1)
 
 ### Contexto e Problema de Negócio
-No ecossistema da publicidade *online*, a eficiência de uma campanha depende da precisão com que um anúncio é direcionado ao utilizador. O desafio proposto pelo parceiro Avazu consiste em mitigar o desperdício orçamental em impressões publicitárias que não geram interação. O problema de negócio foca-se em prever o comportamento do utilizador (clique ou não clique) perante variáveis contextuais como o tipo de dispositivo, o horário e o ambiente de navegação. Ao antecipar esta probabilidade, as organizações podem otimizar a alocação de recursos em tempo real, maximizando o retorno sobre o investimento publicitário (*Return on Ad Spend*).
+No ecossistema da publicidade *online*, a eficiência de uma campanha depende da precisão com que um anúncio é direcionado ao utilizador. O desafio proposto pelo *dataset* Avazu consiste em mitigar o desperdício orçamental em impressões publicitárias que não geram interação. O problema de negócio foca-se em prever o comportamento do utilizador (clique ou não clique) perante variáveis contextuais como o tipo de dispositivo, o horário e o ambiente de navegação. Ao antecipar esta probabilidade, as organizações podem otimizar a alocação de recursos em tempo real, maximizando o retorno sobre o investimento publicitário (*Return on Ad Spend*).
 
 ### Objetivos do Projeto (SMART)
-O objetivo central deste trabalho é desenvolver e validar, até ao final do semestre letivo, um modelo de classificação binária capaz de prever cliques em anúncios com uma métrica de desempenho *AUC-ROC* superior a 0.75. Através da análise do *dataset* da Avazu, pretende-se criar uma ferramenta preditiva que suporte a decisão de compra de inventário publicitário em tempo real.
+O objetivo principal é desenvolver um modelo de classificação (XGBoost/Random Forest) capaz de prever a probabilidade de clique em anúncios online (CTR) no dataset Avazu com 40 milhões de registos, analisando de que forma as variáveis contextuais (dispositivo, ambiente de navegação e tempo) influenciam essa decisão, garantindo um AUC-ROC superior a 0.75 e um Log Loss inferior a 0.40, de forma a permitir às empresas otimizar o seu investimento publicitário até ao fim do semestre letivo.
 
 ### Perguntas de Investigação
 1. Quais são as janelas horárias que apresentam uma maior propensão para a conversão de cliques por parte dos utilizadores?
 2. De que forma o tipo de dispositivo (*device type*) e as suas características técnicas influenciam a eficácia da entrega do anúncio?
 3. Que categorias de aplicações ou domínios de internet geram tráfego com maior taxa de interação real face ao volume de impressões?
 
-### Fonte de Dados
+### Fonte de Dados e Dicionário
 * **Dataset:** [Avazu Click-Through Rate Prediction](https://www.kaggle.com/c/avazu-ctr-prediction) (Disponível no *Kaggle*).
 * **Dimensão:** O conjunto de dados original contém 40.428.967 registos e 24 colunas. Para viabilidade técnica no ambiente *Kaggle*, os testes iniciais são realizados sobre uma amostra aleatória estratificada.
+* **Variável Objetivo:** `click` (Indica se o anúncio foi clicado: 0 para não, 1 para sim).
+
+| Coluna | Tipo de Dado | Descrição Breve |
+| :--- | :--- | :--- |
+| **id** | Decimal | Identificador único do anúncio |
+| **click** | Inteiro | Variável alvo (0: não clicou, 1: clicou) |
+| **hour** | Inteiro | Formato AAAMMDDHH (Data e hora) |
+| **C1** | Inteiro | Variável anónima (Atributo do anúncio) |
+| **banner_pos** | Inteiro | Posição do *banner* no ecrã |
+| **site_id** | Texto | Identificador do sítio *web* |
+| **site_domain** | Texto | Domínio do sítio *web* |
+| **site_category** | Texto | Categoria do sítio *web* |
+| **app_id** | Texto | Identificador da aplicação |
+| **app_domain** | Texto | Domínio da aplicação |
+| **app_category** | Texto | Categoria da aplicação |
+| **device_id** | Texto | Identificador do dispositivo |
+| **device_ip** | Texto | Endereço IP do dispositivo |
+| **device_model** | Texto | Modelo do dispositivo |
+| **device_type** | Inteiro | Tipo de dispositivo |
+| **device_conn_type** | Inteiro | Tipo de ligação à rede |
+| **C14 - C21** | Inteiro | Variáveis anónimas contextuais |
 
 ## 2. Exploração (Milestone 2)
 ### Limpeza e Preparação
