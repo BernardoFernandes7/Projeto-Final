@@ -155,7 +155,8 @@ O resultado mais relevante é que `banner_area`, a variável que criámos neste 
 
 As top-5 variáveis concentram 70% da importância total do modelo, o que indica que um modelo mais simples com estas 5 variáveis poderia ter um desempenho competitivo com muito menos custo computacional — uma pista para trabalho futuro.
 
-> Ver figuras: `reports/figures/feature_importance_xgboost.png` e `reports/figures/curvas_roc_comparacao.png`
+![Importancia de Variaveis](../reports/figures/feature_importance_xgboost.png) 
+![Curva ROC](../reports/figures/curvas_roc_comparacao.png) ``
 
 ---
 
