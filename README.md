@@ -59,7 +59,8 @@ Este projeto utiliza o dataset Avazu CTR Prediction, que contém registos reais 
 * **Resultado Final:** O **XGBoost Otimizado** alcançou um **AUC-ROC de 0,7528** no conjunto de teste, superando o objetivo SMART de AUC-ROC > 0,75, com uma melhoria total de **+0,0398** face ao Baseline
 * **Validação Cruzada (5-Fold):** Média de **0,7517 ± 0,0007**, confirmando estabilidade excecional do modelo
 
-> *Ver o gráfico das Curvas ROC comparativas — `reports/figures/curvas_roc_comparacao.png`*
+> *Ver o gráfico das Curvas ROC comparativas
+![Curva ROC de comparacao](reports/figures/curvas_roc_comparacao.png)  
 
 ## 4. Finalização (Milestone 4)
 
