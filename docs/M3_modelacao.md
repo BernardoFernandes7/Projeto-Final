@@ -4,7 +4,6 @@
 
 *Data de última atualização: Abril 2026*
 
----
 
 ## 1. Estratégia de Modelação
 
@@ -22,7 +21,7 @@ O **F1-Score** foi definido como métrica secundária porque equilibra Precisão
 
 A *Accuracy* foi excluída porque um modelo que previsse sempre "não clique" teria 83% de acerto sem qualquer utilidade preditiva — o chamado *accuracy paradox* (Japkowicz & Stephen, 2002).
 
----
+
 
 ## 2. Experiências Realizadas
 
@@ -67,7 +66,7 @@ Ambos os modelos superam claramente o *baseline* (AUC-ROC +0.08 para o *Random F
 
 As curvas de aprendizagem dos três modelos mostram boa generalização — as curvas de treino e validação convergem sem *gap* significativo, o que indica ausência de *overfitting* severo. O Δ AUC entre treino e teste é inferior a 0.005 em todos os modelos com parâmetros base. O *Random Forest* tem um comportamento ligeiramente mais estável do que o XGBoost à medida que o número de exemplos aumenta, mas o XGBoost parte de um nível mais alto.
 
----
+
 
 ## 3. Otimização (*Tuning*)
 
@@ -97,7 +96,7 @@ Optámos por *RandomizedSearchCV* em vez de *GridSearchCV* porque o espaço de h
 
 A otimização melhorou o AUC-ROC em 0.009 pontos no conjunto de teste. O objetivo SMART (AUC-ROC > 0.75) foi atingido.
 
----
+
 
 ## 4. Avaliação do Modelo Final
 
@@ -158,7 +157,7 @@ As top-5 variáveis concentram 70% da importância total do modelo, o que indica
 ![Importancia de Variaveis](../reports/figures/feature_importance_xgboost.png) 
 ![Curva ROC](../reports/figures/curvas_roc_comparacao.png) ``
 
----
+
 
 ## 5. Conclusão da Fase de Modelação
 
@@ -174,7 +173,7 @@ A Regressão Logística (*baseline*) confirmou o seu papel de referência: ficou
 
 Em termos práticos, um modelo com AUC-ROC de 0.75 consegue ordenar as impressões publicitárias de forma significativamente melhor do que a aleatoriedade (AUC = 0.5), o que tem valor direto para a otimização de lances em *Real-Time Bidding*. Anunciantes que usem este modelo podem concentrar o orçamento nas impressões com maior probabilidade de clique, reduzindo o custo por aquisição.
 
----
+
 
 ## Referências
 
