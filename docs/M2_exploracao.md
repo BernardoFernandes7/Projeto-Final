@@ -130,7 +130,7 @@ A variável `hora_do_dia` foi extraída temporariamente via `df['hour'] % 100`. 
 - **`device_conn_type = 2` (Wi-Fi):** CTR superior à média global.
 - Ligações móveis (3G/4G) apresentaram CTR mais próximo da média ou ligeiramente abaixo.
 
----
+
 
 ### 1.6. Quantificação de Outliers pelo Método IQR
 
@@ -142,7 +142,7 @@ Optámos por **não remover** nenhum destes valores porque representam comportam
 
 ![Boxplots — Deteção de Outliers](../reports/figures/boxplots_outliers.png)
 
----
+
 
 ## 2. Qualidade dos Dados e Limpeza
 
