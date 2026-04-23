@@ -1,12 +1,9 @@
 # Milestone 3: Modelação e Avaliação
 
 
-
 ## 1. Estratégia de Modelação
 
-**Divisão do dataset:** Utilizámos uma divisão de 80% para treino (4.000.000 registos) e 20% para teste (1.000.000 registos), com `stratify=y` e `random_state=42`.
-A estratificação garante que a proporção de cliques (≈17%) se mantém igual em ambos os conjuntos, o que é essencial dado o desequilíbrio de classes. 
-O conjunto de teste foi isolado desde o início e nunca foi visto durante o treino ou a otimização. O `StandardScaler` foi ajustado exclusivamente no conjunto de treino (`fit_transform`) e depois aplicado ao teste (`transform`). O *Frequency Encoding* também foi calculado apenas no treino.
+**Divisão do dataset:** Utilizámos uma divisão de 80% para treino (4.000.000 registos) e 20% para teste (1.000.000 registos), com `stratify=y` e `random_state=42`. A estratificação garante que a proporção de cliques (≈17%) se mantém igual em ambos os conjuntos, o que é essencial dado o desequilíbrio de classes. O conjunto de teste foi isolado desde o início e nunca foi visto durante o treino ou a otimização. O `StandardScaler` foi ajustado exclusivamente no conjunto de treino (`fit_transform`) e depois aplicado ao teste (`transform`). O *Frequency Encoding* também foi calculado apenas no treino.
 
 ```
 Treino : 4.000.000 registos (80%)
@@ -19,12 +16,15 @@ Proporções consistentes — divisão estratificada correcta.
 Isolamento garantido: X_test nunca será visto durante o treino nem o tuning.
 ```
 
-**Métrica de Sucesso:** A métrica principal escolhida foi o **AUC-ROC** por três razões: é a métrica oficial da competição Avazu (He et al., 2014), o que 
-permite comparar os resultados com a literatura; é robusta ao desequilíbrio de classes (83% não-cliques / 17% cliques), ao contrário da *Accuracy*, que seria 
-enganosa; e em contexto de *Real-Time Bidding*, o modelo é usado para **ordenar** impressões por probabilidade de clique — e o AUC-ROC mede exatamente essa 
-capacidade de ordenação. O **F1-Score** foi definido como métrica secundária porque equilibra Precisão e *Recall*, relevante num contexto onde tanto os Falsos 
-Positivos (impressões desperdiçadas) como os Falsos Negativos (receita perdida) têm custo real para o anunciante. A *Accuracy* foi excluída porque um modelo 
-que previsse sempre "não clique" teria 83% de acerto sem qualquer utilidade preditiva — o chamado *accuracy paradox*.
+**Métrica de Sucesso:** A métrica principal escolhida foi o **AUC-ROC** por três razões: é a
+métrica oficial da competição Avazu (He et al., 2014), o que permite comparar os resultados
+com a literatura; é robusta ao desequilíbrio de classes (83% não-cliques / 17% cliques), ao 
+contrário da *Accuracy*, que seria enganosa; e em contexto de *Real-Time Bidding*, o modelo 
+é usado para **ordenar** impressões por probabilidade de clique — e o AUC-ROC mede exatamente 
+essa capacidade de ordenação. O **F1-Score** foi definido como métrica secundária porque equilibra 
+Precisão e *Recall*, relevante num contexto onde tanto os Falsos Positivos (impressões desperdiçadas) 
+como os Falsos Negativos (receita perdida) têm custo real para o anunciante. A *Accuracy* foi excluída
+porque um modelo que previsse sempre "não clique" teria 83% de acerto sem qualquer utilidade preditiva — o chamado *accuracy paradox*.
 
 
 
@@ -43,8 +43,10 @@ que previsse sempre "não clique" teria 83% de acerto sem qualquer utilidade pre
 | Precisão | — | 0.2325 |
 | *Recall* | — | 0.6073 |
 
-O diagnóstico automático reportou **generalização adequada** (Δ AUC = 0.0001), confirmando ausência de *overfitting*. O *baseline* estabelece 
-o patamar mínimo: qualquer modelo candidato tem de superar AUC-ROC = 0.6412 para justificar a sua complexidade adicional.
+O diagnóstico automático reportou **generalização adequada** (Δ AUC = 0.0001), confirmando ausência de *overfitting*. 
+O *baseline* estabelece o patamar mínimo: qualquer modelo candidato tem de superar AUC-ROC = 0.6412 para justificar a sua complexidade adicional.
+
+![Curva de aprendizagem — Baseline](../reports/figures/learning_curve_.png)
 
 ### 2.2. Modelos Candidatos
 
@@ -54,13 +56,17 @@ o patamar mínimo: qualquer modelo candidato tem de superar AUC-ROC = 0.6412 par
 | *Random Forest* | `n_estimators=100`, `max_depth=10`, `class_weight='balanced'` | 0.7231 | 0.7218 | Boa generalização |
 | **XGBoost** | `n_estimators=200`, `max_depth=6`, `learning_rate=0.1` | **0.7436** | **0.7419** | **Melhor AUC-ROC — selecionado para tuning** |
 
+![Curva de aprendizagem — Random Forest](../reports/figures/learning_curve_random_forest.png)
+![Curva de aprendizagem — XGBoost](../reports/figures/learning_curve_XGBoost.png)
+
 Ambos os modelos superam claramente o *baseline* (+0.08 para o *Random Forest* e +0.10 para o XGBoost). O XGBoost foi selecionado para a fase de otimização por apresentar o melhor desempenho no conjunto de teste. As curvas de aprendizagem de ambos os modelos mostram boa generalização, sem *gap* significativo entre treino e validação.
 
 
 
 ## 3. Otimização (*Tuning*)
 
-**Técnica Utilizada:** Utilizámos *RandomizedSearchCV* com 20 iterações e `StratifiedKFold` com K=5 *folds*, aplicado exclusivamente ao conjunto de treino. Optámos por *RandomizedSearchCV* em vez de *GridSearchCV* porque o espaço de hiperparâmetros é vasto (distribuições contínuas para `learning_rate` e `subsample`) e uma pesquisa exaustiva seria computacionalmente proibitiva com 4 milhões de registos.
+**Técnica Utilizada:** Utilizámos *RandomizedSearchCV* com 20 iterações e `StratifiedKFold` com K=5 *folds*, aplicado exclusivamente ao conjunto de treino. 
+Optámos por *RandomizedSearchCV* em vez de *GridSearchCV* porque o espaço de hiperparâmetros é vasto (distribuições contínuas para `learning_rate` e `subsample`) e uma pesquisa exaustiva seria computacionalmente proibitiva com 4 milhões de registos.
 
 **Melhores hiperparâmetros encontrados:**
 
@@ -84,6 +90,10 @@ Ambos os modelos superam claramente o *baseline* (+0.08 para o *Random Forest* e
 
 ## 4. Avaliação do Modelo Final
 
+O desvio padrão de 0.0006 é muito baixo — o modelo é estável e os resultados são repetíveis independentemente de como os dados são divididos. O IC a 95% é [0.7493, 0.7516], confirmando que o objetivo SMART está atingido com confiança estatística.
+
+![Cross-Validation — XGBoost Otimizado](../reports/figures/cross_validation_xgboost.png)
+
 ### 4.1. Matriz de Confusão / Erros
 
 | | Previsto: Não-clique | Previsto: Clique |
@@ -93,6 +103,8 @@ Ambos os modelos superam claramente o *baseline* (+0.08 para o *Random Forest* e
 
 > **Análise:** O modelo ainda apresenta 253.084 Falsos Positivos — impressões pagas sem retorno, custo desperdiçado para o anunciante. Os Falsos Negativos (56.547), embora menos numerosos, são o erro mais prejudicial: cada um representa uma impressão com probabilidade real de clique que o modelo ignorou — receita perdida. Os FN concentram-se em impressões da hora 17:00 e em contextos com `device_conn_type` elevado. Ajustar o *threshold* de decisão abaixo de 0.5 poderia melhorar o *Recall* à custa de mais FP, o que pode ser preferível dependendo da estratégia do anunciante.
 
+![Matriz de Confusão — Modelo Final](../reports/figures/matriz_confusao_final.png)
+
 ### 4.2. Importância dos Atributos (*Feature Importance*)
 
 1. `banner_area` — importância = 0.326 (**variável criada neste projeto** — área do *banner*, C15 × C16)
@@ -101,7 +113,11 @@ Ambos os modelos superam claramente o *baseline* (+0.08 para o *Random Forest* e
 4. `C21` — importância = 0.057 (variável anónima do anúncio)
 5. `site_id` — importância = 0.054 (identificador do *site* após *Frequency Encoding*)
 
-As top-5 variáveis concentram **70% da importância total** do modelo, sugerindo que um modelo mais simples com estas 5 variáveis poderia ter desempenho competitivo com muito menos custo computacional — uma pista para trabalho futuro.
+As top-5 variáveis concentram **70% da importância total** do modelo, sugerindo que um modelo mais simples com estas 5 variáveis poderia ter desempenho 
+competitivo com muito menos custo computacional — uma pista para trabalho futuro.
+
+![Importância de Variáveis — XGBoost Otimizado](../reports/figures/feature_importance_xgboost.png)
+![Curvas ROC — Comparação de Modelos](../reports/figures/curvas_roc_comparacao.png)
 
 
 
