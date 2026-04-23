@@ -14,7 +14,7 @@ A variável alvo `click` é binária e está fortemente desequilibrada. Na amost
 
 Este desequilíbrio tem uma consequência direta: um modelo que previsse sempre "não clique" teria 83% de *accuracy* sem qualquer utilidade preditiva — fenómeno conhecido como *accuracy paradox* (Japkowicz & Stephen, 2002). Por isso, definimos o AUC-ROC como métrica principal e o F1-Score como métrica secundária, por serem robustas ao desequilíbrio de classes. A *Accuracy* foi excluída da avaliação.
 
-![Gráfico de Densidade de Transações por Hora](reports/figures/eda_distribuicao_click.png) 
+![Gráfico de Densidade de Transações por Hora](../reports/figures/eda_distribuicao_click.png)
 
 ### 1.2. Correlações Relevantes e Três Conclusões Visuais
 
