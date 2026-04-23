@@ -14,7 +14,7 @@ A variável alvo `click` é binária e está fortemente desequilibrada. Na amost
 
 Este desequilíbrio tem uma consequência direta: um modelo que previsse sempre "não clique" teria 83% de *accuracy* sem qualquer utilidade preditiva — fenómeno conhecido como *accuracy paradox* (Japkowicz & Stephen, 2002). Por isso, definimos o AUC-ROC como métrica principal e o F1-Score como métrica secundária, por serem robustas ao desequilíbrio de classes. A *Accuracy* foi excluída da avaliação.
 
-> Ver figura: `reports/figures/eda_distribuicao_click.png`
+> Ver figura:![Gráfico de Densidade de Transações por Hora](reports/figures/eda_distribuicao_click.png) 
 
 ### 1.2. Correlações Relevantes e Três Conclusões Visuais
 
@@ -24,7 +24,7 @@ Gerámos uma matriz de correlação de Pearson entre as variáveis numéricas e 
 
 **Conclusão 2 — A variável C16 tem a correlação mais forte com `click` (r = +0,1303).** As variáveis anónimas C14, C15 e C16 são as mais correlacionadas com a variável alvo — valores positivos para C16 e negativos para C14 e C17. Isto sugere que representam características do anúncio com impacto direto na decisão de clique. Encontrámos também um par com multicolinearidade elevada: C14 e C17 têm correlação de Pearson r = 0,9769, acima do limiar de 0,95 que definimos para remoção.
 
-**Conclusão 3 — A posição do *banner* (`banner_pos`) e o tipo de dispositivo influenciam o CTR.** A posição 0 concentra a maioria das impressões mas não tem o CTR mais alto. Dispositivos diferentes mostram padrões de clique distintos, o que motivou a criação de `banner_area` como medida de impacto visual do anúncio. Ver figuras: `reports/figures/ctr_banner_pos.png`, `reports/figures/ctr_device_type.png`
+**Conclusão 3 — A posição do *banner* (`banner_pos`) e o tipo de dispositivo influenciam o CTR.** A posição 0 concentra a maioria das impressões mas não tem o CTR mais alto. Dispositivos diferentes mostram padrões de clique distintos, o que motivou a criação de `banner_area` como medida de impacto visual do anúncio. Ver figuras:![Gráfico de Densidade de Transações por Hora](reports/figures/ctr_banner_pos.png),![Gráfico de Densidade de Transações por Hora](reports/figures/ctr_device_type.png) 
 
 > Ver figura: `reports/figures/matriz_correlacao_pearson.png`
 
