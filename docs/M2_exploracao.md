@@ -3,33 +3,6 @@
 > **Nota:** Este documento pressupõe que o *dataset* já foi identificado e descrito no ficheiro `docs/M1_iniciacao.md`. O dicionário de variáveis original encontra-se nessa secção.
 
 *Data de última atualização: Março 2026*
-ç
-ç
-ç
-ç
-ç
-ç
-ç
-ç
-
-çç
-
-ç
-ç
-ç
-ç
-ç
-ç
-ç
-ç
-ç
-ç
-ç
-ç
-ç
-ç
-ç
-ç
 
 
 ## 1. Análise Exploratória de Dados (EDA)
