@@ -43,7 +43,7 @@ Aplicámos `class_weight='balanced'` para compensar o desequilíbrio de classes 
 
 O *baseline* estabelece o patamar mínimo: qualquer modelo candidato tem de superar AUC-ROC = 0.6412 para justificar a sua complexidade adicional.
 
-> Ver figura: `reports/figures/learning_curve_regressao_logistica_baseline.png`
+![Curva de aprendizagem](../reports/figures/learning_curve_regressao_logistica_baseline.png)
 
 ### 2.2. Modelos Candidatos
 
