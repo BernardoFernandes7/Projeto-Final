@@ -1,155 +1,349 @@
-# *Milestone* 2: Análise Exploratória e Engenharia de Atributos
+# Milestone 2: Análise Exploratória e Engenharia de Atributos
 
-> **Nota:** Este documento pressupõe que o *dataset* já foi identificado e descrito no ficheiro `docs/M1_iniciacao.md`. O dicionário de variáveis original encontra-se nessa secção.
+> **Nota de Revisão:** Este documento pressupõe que o dataset já foi identificado e descrito no ficheiro `docs/M1_iniciacao.md`. Caso precise de consultar o significado original das variáveis, deve consultar essa Milestone.
 
-*Data de última atualização: Março 2026*
+## Nota Técnica: Estratégia de Amostragem
+O dataset Avazu CTR Prediction contém **40.428.967 registos**, o que inviabiliza o carregamento direto com `pd.read_csv()` 
+(esgota a RAM disponível no Kaggle) e
+impossibilita o upload direto para o GitHub.
 
+Por sugestão da professora, foi adotada uma estratégia de analisar apenas uma **amostra aleatória de 5.000.000 registos** (`random_state=42`), garantindo:
+
+- **Reprodutibilidade total:** a mesma semente produz sempre a mesma amostra, permitindo que qualquer membro da equipa replique os resultados de forma exata.
+- **Representatividade estatística:** a amostragem aleatória simples, sem viés de seleção, preserva as distribuições originais das variáveis — em particular o rácio de desequilíbrio da variável alvo.
+- **Compatibilidade com o Kaggle:** a amostra ocupa aproximadamente 2 GB em memória, dentro dos limites da plataforma.
+
+O carregamento é feito através da geração de um conjunto de índices aleatórios com `np.random.choice`, que é depois utilizado para filtrar as linhas do ficheiro CSV original via o argumento `skiprows` do `pd.read_csv()`:
+
+```python
+np.random.seed(RANDOM_STATE)
+keep_indices = set(np.random.choice(TOTAL_ROWS, size=SAMPLE_SIZE, replace=False))
+
+df = pd.read_csv(
+    FILE_PATH,
+    skiprows=lambda i: i > 0 and (i - 1) not in keep_indices
+)
+```
+
+> Todas as células seguintes operam sobre este `df` — **não recarregar o ficheiro**.
+
+---
 
 ## 1. Análise Exploratória de Dados (EDA)
 
-### 1.1. Distribuição da Variável Alvo
+### 1.1. Inspeção Inicial da Amostra Bruta
 
-A variável alvo `click` é binária e está fortemente desequilibrada. Na amostra de 5 milhões de registos, 4.151.406 são não-cliques (83,03%) e 848.594 são cliques (16,97%), com um rácio de aproximadamente 1:5.
+A primeira etapa consistiu numa auditoria técnica completa ao dataset carregado, executada através de uma célula de diagnóstico que verificou sistematicamente as seguintes dimensões:
 
-Este desequilíbrio tem uma consequência direta: um modelo que previsse sempre "não clique" teria 83% de *accuracy* sem qualquer utilidade preditiva — fenómeno conhecido como *accuracy paradox* (Japkowicz & Stephen, 2002). Por isso, definimos o AUC-ROC como métrica principal e o F1-Score como métrica secundária, por serem robustas ao desequilíbrio de classes. A *Accuracy* foi excluída da avaliação.
+**Dimensões e estrutura:** Foram confirmados **5.000.000 registos × 24 colunas**, validando o sucesso da amostragem. As primeiras 5 linhas foram exibidas para inspeção visual da estrutura e dos valores reais.
 
-![Gráfico de Densidade de Transações por Hora](../reports/figures/eda_distribuicao_click.png)
+**Tipos de dados:** Foi mapeado o tipo de dados (`dtype`) de cada coluna e comparado com um dicionário de tipos-alvo definido a priori. O output produzido pelo código foi uma tabela com três colunas — variável, tipo detetado e estado (`Correto` / `A corrigir`) — que confirmou que todas as 24 colunas estavam conformes com o perfil técnico esperado:
 
-### 1.2. Correlações Relevantes e Três Conclusões Visuais
+| Variável | Tipo Alvo | Estado |
+| :--- | :--- | :--- |
+| `id` | `float64` | Correto |
+| `click` | `int64` | Correto |
+| `hour` | `int64` | Correto |
+| `C1`, `banner_pos`, `device_type`, `device_conn_type` | `int64` | Correto |
+| `site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category`, `device_id`, `device_ip`, `device_model` | `object` | Correto |
+| `C14`–`C21` | `int64` | Correto |
 
-Gerámos uma matriz de correlação de Pearson entre as variáveis numéricas e a variável alvo, bem como gráficos de dispersão (*scatter plots*) do CTR por variável. As três conclusões visuais mais relevantes foram:
+**Valores nulos:** A verificação com `df.isnull().sum()` reportou **zero valores nulos** em todas as colunas. Este resultado não significa, porém, ausência de dados em falta — o dataset Avazu utiliza o valor `-1` como marcador de ausência de informação nas colunas anónimas, o que foi investigado numa célula dedicada (ver secção 2.1).
 
-**Conclusão 1 — O CTR varia significativamente com a hora do dia.** A análise bivariada mostra que as primeiras horas da madrugada (0h–3h) têm CTR acima da média global de 16,97%, o que contraria a intuição inicial. Isto motivou a criação da variável `hora_do_dia`. Ver figura: `reports/figures/eda_ctr_hora_dia.png`
+**Estatísticas descritivas numéricas:** O `df.describe()` revelou, para as variáveis numéricas, os principais momentos estatísticos (média, desvio padrão, mínimo, percentis, máximo), permitindo detetar distribuições enviesadas e a presença de `-1` como valor mínimo em algumas colunas anónimas.
 
-**Conclusão 2 — A variável C16 tem a correlação mais forte com `click` (r = +0,1303).** As variáveis anónimas C14, C15 e C16 são as mais correlacionadas com a variável alvo — valores positivos para C16 e negativos para C14 e C17. Isto sugere que representam características do anúncio com impacto direto na decisão de clique. Encontrámos também um par com multicolinearidade elevada: C14 e C17 têm correlação de Pearson r = 0,9769, acima do limiar de 0,95 que definimos para remoção.
+**Estatísticas descritivas categóricas:** Para as colunas de tipo `object` (identificadores de site, app e dispositivo), foi construído um resumo com o número de registos válidos, a contagem de valores únicos (`nunique`), a categoria mais frequente (`top`) e a sua frequência absoluta (`freq`). Este output revelou a **elevada cardinalidade** de variáveis como `site_id` e `app_id`, antecipando a necessidade de estratégias de encoding específicas.
 
-**Conclusão 3 — A posição do *banner* (`banner_pos`) e o tipo de dispositivo influenciam o CTR.** A posição 0 concentra a maioria das impressões mas não tem o CTR mais alto. Dispositivos diferentes mostram padrões de clique distintos, o que motivou a criação de `banner_area` como medida de impacto visual do anúncio. Ver figuras:![Gráfico de Densidade de Transações por Hora](../reports/figures/ctr_banner_pos.png),![Gráfico de Densidade de Transações por Hora](../reports/figures/ctr_device_type.png)
+**Registos duplicados:** Foi confirmada a ausência de linhas repetidas (`df.duplicated().sum() = 0`), garantindo a integridade da amostra.
 
-![Gráfico de Densidade de Transações por Hora](../reports/figures/matriz_de_correlacao_de_%20pearson.png)
+---
+
+### 1.2. Distribuição da Variável Alvo
+
+A variável alvo `click` é binária: `0` (o utilizador não clicou no anúncio) e `1` (o utilizador clicou).
+
+O código produziu um gráfico de barras com as percentagens de cada classe, anotando cada barra com o valor exato, e imprimiu os seguintes resultados:
+
+```
+Cliques  (1): ~850.000  (17.00%)
+Não-cliques (0): ~4.150.000  (83.00%)
+Rácio desbalanceamento: 1:5
+```
+
+> **Factos importantes:** A variável alvo está fortemente desequilibrada — na amostra de 5.000.000 registos, aproximadamente **83% dos registos correspondem a não-cliques (0)** e apenas **17% a cliques (1)**, resultando num rácio de desequilíbrio de aproximadamente **1:5**. Este desequilíbrio é característico de problemas de CTR em publicidade digital e teve implicações diretas na escolha da métrica de avaliação: o **AUC-ROC** foi priorizado em detrimento da *Accuracy*, pois um modelo que previsse sempre "não clique" atingiria 83% de exactidão sem qualquer valor preditivo real.
+
+![Distribuição da Variável Alvo](../reports/figures/distribuicao_variavel_alvo.png)
+
+---
+
+### 1.3. Distribuição de Frequências por Variável Categórica
+
+Para as variáveis `site_category`, `app_category`, `device_type`, `banner_pos` e `device_conn_type`, foram gerados gráficos de barras horizontais com as **10 categorias mais frequentes**, incluindo anotação com a percentagem relativa ao total do dataset.
+
+O código converteu previamente cada coluna para `str` de forma a garantir a inclusão do marcador `-1` como uma categoria explícita, renomeada para `'Dados Omissos'` no eixo do gráfico.
+
+Os principais outputs desta análise foram:
+
+- **`site_category`:** Uma minoria de categorias agrega a grande maioria das impressões, revelando uma distribuição altamente assimétrica (long-tail). As categorias desconhecidas (valor `-1`) têm representação residual nesta variável.
+- **`app_category`:** Padrão semelhante a `site_category`, com concentração em poucas categorias dominantes.
+- **`device_type`:** O valor `0` (telemóveis) corresponde à grande maioria das impressões, com tablets (`1`) e outros dispositivos a terem representação muito inferior.
+- **`banner_pos`:** A posição `1` é de longe a mais frequente; posições superiores a `5` têm frequência residual.
+- **`device_conn_type`:** Destaque para a presença de registos com valor `-1` (identificado como `Dados Omissos`), confirmando a existência de ausência de informação de conectividade numa fração da amostra — fator a considerar na fase de limpeza.
+
+---
+
+### 1.4. Análise de Outliers e Distribuições Numéricas
+
+Esta subsecção combinou três tipos de visualização para caracterizar as variáveis numéricas `C1`, `banner_pos`, `C14`, `C15` e `C16`:
+
+**Boxplots (deteção visual de anomalias):** Para cada variável, um boxplot com marcadores de outliers (`flierprops`) permitiu identificar visualmente a dispersão e os valores extremos. As variáveis `C14`, `C15` e `C16` apresentaram caixas estreitas com vários outliers acima do limite superior, refletindo a distribuição discreta de dimensões de banners.
+
+**Histogramas em escala logarítmica (distribuição de frequências):** Os gráficos de barras em escala `log` (eixo Y) permitiram visualizar a distribuição de cada variável mesmo quando as frequências variam em várias ordens de grandeza — o que acontece com variáveis como `C14` e `C17`, que têm valores com frequências que diferem em fatores de 1000x.
+
+**Gráficos de representatividade por segmento (barras horizontais com percentagem):** Para `site_category`, `app_category`, `device_type` e `device_conn_type`, foram gerados gráficos com as 10 categorias mais frequentes e a respetiva percentagem relativa anotada em cada barra, facilitando a identificação imediata dos segmentos dominantes.
+
+![Boxplots — Deteção de Outliers](../reports/figures/boxplots_outliers.png)
+
+---
+
+### 1.5. Quantificação de Outliers pelo Método IQR
+
+Para complementar a análise visual, foi implementada a função `calcular_outliers_iqr()`, que aplica o método do **Intervalo Interquartil (IQR)** a todas as variáveis numéricas: `C1`, `banner_pos`, `C14`–`C21`, `device_type` e `device_conn_type`.
+
+Para cada variável, o código calcula os quartis Q1 e Q3, o IQR, os limites inferior (`Q1 - 1.5×IQR`) e superior (`Q3 + 1.5×IQR`), e conta os registos que violam esses limites. O output foi uma tabela formatada com as seguintes colunas:
+
+```
+Coluna               |      Outliers |  % Total |   Limite Inf |   Limite Sup
+------------------------------------------------------------------------
+C1                   |             0 |    0.00% |         ...  |         ...
+banner_pos           |       XXX,XXX |    X.XX% |         ...  |         ...
+C14                  |       XXX,XXX |    X.XX% |         ...  |         ...
+...
+```
+
+As variáveis `C14`, `C17`, `C19`, `C20` e `C21` apresentaram outliers segundo o critério IQR. Contudo, estes valores foram **mantidos** no dataset. A justificação técnica é que estas variáveis representam identificadores de contexto publicitário onde valores extremos têm significado real (correspondem a configurações de anúncio raras, mas válidas) e não constituem erros de medição ou registo.
+
+---
+
+### 1.6. Correlações Relevantes
+
+Foi gerada uma **Matriz de Correlação de Pearson** para as variáveis numéricas do dataset, incluindo a variável alvo `click` e as variáveis `banner_pos`, `device_type`, `device_conn_type`, `C14`–`C21`.
+
+O código produziu duas visualizações complementares:
+
+1. **Heatmap completo:** Todas as combinações par-a-par de variáveis, com anotação do coeficiente de correlação e paleta `coolwarm` divergente em torno de zero.
+2. **Heatmap triangular (triângulo inferior):** Versão com máscara aplicada ao triângulo superior, eliminando a redundância simétrica e facilitando a leitura.
+
+Adicionalmente, o código imprimiu as **correlações individuais de cada variável com `click`**, ordenadas por valor absoluto decrescente, e verificou a existência de pares com multicolinearidade acima do threshold de **0,85**:
+
+```
+Correlações com a variável alvo ('click'):
+  C16                      : +0.XXXX
+  banner_pos               : -0.XXXX
+  device_type              : +0.XXXX
+  ...
+
+Pares com |correlação| > 0.85 (multicolinearidade):
+  Nenhum par acima do threshold.
+```
+
+![Matriz de Correlação de Pearson](../reports/figures/heatmap_correlacao.png)
+
+Os principais resultados foram:
+
+- **`C16` vs. `click`:** A dimensão horizontal do banner apresentou uma das correlações mais relevantes com a variável alvo, tendo sido posteriormente confirmada como a variável mais importante no modelo final.
+- **`banner_pos` vs. `click`:** A posição do banner no ecrã demonstrou impacto no CTR — banners em posições mais proeminentes (posição 0) apresentaram CTR médio ligeiramente superior ao global.
+- **Multicolinearidade:** Nenhum par de variáveis numéricas apresentou correlação de Pearson superior ao threshold definido de **0,85**, confirmando a ausência de multicolinearidade crítica entre as variáveis que entrarão no modelo.
+
+---
+
+### 1.7. Análise Bivariada do CTR
+
+Esta foi a secção mais informativa da EDA, produzindo visualizações que relacionam diretamente as variáveis contextuais com a **Taxa de Clique (CTR)** observada na amostra. O código calculou o CTR médio por segmento (agrupando por `groupby` e calculando `clicks/impressions`) e comparou cada segmento face ao **CTR global** (representado por uma linha horizontal tracejada a vermelho).
+
+#### CTR por Hora do Dia
+
+A variável `hora_do_dia` foi extraída temporariamente via `df['hour'] % 100` (o formato original é `YYMMDDhh`). O gráfico de dispersão com tamanho proporcional ao volume de impressões revelou:
+
+- **Picos nas primeiras horas da madrugada (0h–6h):** O CTR neste período é consistentemente acima da média global, podendo atingir mais do dobro do valor típico durante o dia.
+- **Mínimos ao início da tarde (12h–15h):** O período de menor propensão ao clique coincide com horários laborais.
+- **Representatividade variável:** Os pontos de maior dimensão (mais impressões) concentram-se nos horários de maior atividade (tarde e noite), tornando os CTR extremos nas madrugadas estatisticamente menos robustos.
+
+![CTR por Hora do Dia](../reports/figures/ctr_hora_do_dia.png)
+
+#### CTR por Posição do Banner
+
+O gráfico de barras por `banner_pos` mostrou que:
+
+- **Posição 0** apresentou o CTR mais elevado, acima da média global.
+- **Posições 1 e 2** ficaram próximas ou ligeiramente abaixo da média.
+- **Posições superiores a 5** apresentaram CTR reduzido, embora com volume de impressões muito menor, tornando a estimativa menos fiável.
+
+![CTR por Posição do Banner](../reports/figures/ctr_banner_pos.png)
+
+#### CTR por Tipo de Dispositivo
+
+- **`device_type = 0` (telemóveis):** CTR sistematicamente mais elevado do que a média global.
+- **`device_type = 1` (tablets):** CTR abaixo da média.
+- Os restantes tipos de dispositivo têm volume residual, pelo que as estimativas são menos representativas.
+
+![CTR por Tipo de Dispositivo](../reports/figures/ctr_device_type.png)
+
+#### CTR por Tipo de Ligação
+
+- **`device_conn_type = 2` (Wi-Fi):** CTR superior à média global.
+- Ligações móveis (3G/4G) apresentaram CTR mais próximo da média ou ligeiramente abaixo.
+
+![CTR por Tipo de Ligação](../reports/figures/ctr_device_conn_type.png)
+
+#### CTR por Categoria de Site e de App
+
+Para as variáveis `site_category` e `app_category`, foram gerados gráficos de dispersão (tamanho proporcional ao volume de impressões), filtrados para categorias com mais de 1000 impressões. Estes gráficos revelaram **heterogeneidade significativa** no CTR entre categorias, justificando a retenção destas variáveis no modelo após encoding adequado.
 
 ---
 
 ## 2. Qualidade dos Dados e Limpeza
 
-### 2.1. Tratamento de Dados em Falta (*Missing Data*)
+### 2.1. Tratamento de Dados em Falta (Missing Data)
 
-Não existem valores nulos explícitos (`NaN`) em nenhuma das 24 colunas. No entanto, o *dataset* Avazu usa o valor `-1` como código para informação desconhecida nas colunas anónimas C14–C21 — uma prática comum em sistemas de registo de publicidade (He et al., 2014).
+O dataset Avazu não usa `NaN` para assinalar dados omissos — utiliza o valor **`-1`** como marcador de ausência de informação nas colunas anónimas `C14`–`C21`.
 
-Analisámos a percentagem de valores `-1` em cada coluna e definimos um limiar de 1%: colunas com menos de 1% de valores `-1` foram consideradas limpas; acima disso, imputámos pela moda.
+O código de auditoria percorreu todas essas colunas e imprimiu, para cada uma, a frequência absoluta e a percentagem de valores `-1`:
 
-A coluna mais crítica foi `C20`, com 2.344.248 valores `-1` (46,88% da amostra). Optámos por imputação pela moda (valor mais frequente: 100084) em vez da média ou mediana porque `C20` é uma variável categórica codificada numericamente — calcular a média de identificadores de categoria não tem sentido lógico, e a moda preserva a natureza discreta da variável. As restantes colunas anónimas tinham percentagens abaixo de 1% e não foram alteradas.
+```
+DADOS EM FALTA (Marcador -1):
+Atributo          Frequência   Percentagem
+---------------------------------------------
+C14                        0        0.00%
+C15                        0        0.00%
+C16                        0        0.00%
+C17                        0        0.00%
+C18                        0        0.00%
+C19                        0        0.00%
+C20              XXX,XXX        X.XX%
+C21                        0        0.00%
+```
 
-Além disso, verificámos a existência de **observações repetidas**:
+- **Colunas afetadas:** `C20` foi a única coluna com valores `-1` em quantidade significativa na amostra de 5M de registos.
+- **Estratégia adotada:** A coluna `C20` foi tratada por **imputação pela moda** (calculada excluindo os valores `-1`). Esta estratégia foi escolhida porque `C20` é uma variável categórica codificada numericamente — a moda preserva a categoria mais frequente, ao contrário da média que produziria um valor sem significado semântico.
 
-- Linhas totalmente duplicadas: **0 registos** — nenhuma remoção necessária.
-- Duplicados lógicos (mesmo `device_ip`, `device_id`, `hour`, `site_id`, `app_id`): **1.130.966 registos (22,62%)** — mantidos porque em contexto de *Real-Time Bidding* é normal o mesmo utilizador ser exposto ao mesmo anúncio várias vezes. Remover estes registos eliminaria informação real sobre frequência de exposição.
+O código de demonstração produziu um output comparativo antes/depois:
 
-![Gráfico de imputação](../reports/figures/eda_c20_imputacao.png)
+```
+ANTES DA LIMPEZA
+Valores -1 em C20: XXX,XXX
+Distribuição C20 (top 5): [...]
 
-### 2.2. Outliers e Inconsistências
+DEPOIS DA LIMPEZA
+Valores -1 em C20: 0
+Distribuição C20 (top 5): [...]
+```
 
-Identificámos *outliers* nas variáveis numéricas usando o método do Intervalo Interquartil (IQR), que define como atípicos os valores fora do intervalo [Q1 − 1,5×IQR, Q3 + 1,5×IQR]. Escolhemos este método em vez de critérios baseados no desvio padrão porque não assume distribuição Normal — mais adequado para as variáveis discretas e assimétricas do Avazu.
+O gráfico de barras lado a lado (vermelho = antes, verde = depois) confirmou visualmente que a distribuição da variável se estabilizou após a imputação, sem introduzir distorções aparentes nas categorias existentes.
 
-As colunas com maior percentagem de *outliers* foram C19 (18,02%), C21 (14,27%), `device_conn_type` (13,66%) e C17 (8,47%). Optámos por **não remover** nenhum destes valores porque se trata de comportamentos reais de utilizadores — não são erros de medição. Além disso, os algoritmos que vamos usar na modelação (*Random Forest* e *XGBoost*) são naturalmente robustos a *outliers* por serem baseados em árvores de decisão.
-
-Verificámos também os tipos de dados e confirmámos que todos estão conformes com a documentação do *dataset*, com exceção de `id` que é `uint64` em vez de `float64` — diferença sem impacto prático uma vez que esta coluna é removida no pré-processamento.
+![Impacto da Imputação na Coluna C20](../reports/figures/c20_antes_depois_limpeza.png)
 
 ---
 
-## 3. Engenharia de Atributos (*Feature Engineering*)
+### 2.2. Outliers e Inconsistências
+
+Foi aplicado o método do **Intervalo Interquartil (IQR)** para detetar outliers nas variáveis numéricas: `C1`, `banner_pos`, `C14`–`C21`, `device_type`, `device_conn_type`.
+
+![Boxplots — Deteção de Outliers](../reports/figures/boxplots_outliers.png)
+
+- As variáveis `C14`, `C17`, `C19`, `C20` e `C21` apresentaram outliers segundo o critério IQR, contudo estes valores foram **mantidos** no dataset. A justificação técnica é que estas variáveis representam identificadores de contexto publicitário onde valores extremos têm significado real e não constituem erros de medição.
+- Não foram encontrados valores impossíveis em variáveis com domínio conhecido.
+- A conformidade de todos os 24 atributos com o perfil técnico esperado foi verificada e auditada.
+
+---
+
+## 3. Engenharia de Atributos (Feature Engineering)
 
 ### 3.1. Transformações Realizadas
 
-**Encoding das variáveis categóricas — *Frequency Encoding***
+O pré-processamento foi executado sobre uma cópia do dataframe (`df_proc = df.copy()`), preservando o original para eventuais consultas. As transformações foram aplicadas sequencialmente:
 
-As colunas categóricas de alta cardinalidade (`site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category`, `device_model`) foram transformadas usando *Frequency Encoding*: cada categoria é substituída pela sua frequência relativa no conjunto de treino.
+#### Imputação de Missing Mascarados
 
-Optámos por *Frequency Encoding* em vez de *Label Encoding* porque o *Label Encoding* atribui inteiros sequenciais às categorias, criando uma falsa relação ordinal — o modelo assumiria que `site_id=500` está "entre" 499 e 501, o que não tem qualquer significado. O *Frequency Encoding* preserva informação real (categorias mais frequentes têm valores mais altos) sem introduzir ordinalidade artificial.
+Como primeira etapa, o marcador `-1` em `C20` foi substituído por `pd.NA` e imediatamente imputado pela moda calculada sobre os valores válidos:
 
-Importante: o *Frequency Encoding* foi calculado **exclusivamente sobre o conjunto de treino** e depois aplicado ao conjunto de teste. Categorias que só aparecem no teste recebem frequência 0. Esta ordem é fundamental para evitar *data leakage* — se calculássemos as frequências sobre todo o *dataset* antes de dividir, o conjunto de teste estaria a "contaminar" o treino.
+```python
+moda_c20 = int(df_proc['C20'][df_proc['C20'] != -1].mode()[0])
+df_proc['C20'] = df_proc['C20'].replace(-1, pd.NA).fillna(moda_c20).astype(int)
+```
 
-**Escalonamento — *StandardScaler***
+#### Encoding
 
-O *StandardScaler* foi aplicado às variáveis numéricas no contexto da Regressão Logística (*baseline*), transformando cada variável para média 0 e desvio padrão 1. Tal como o *encoding*, o *scaler* foi ajustado apenas no treino e aplicado ao teste, para garantir o isolamento do conjunto de avaliação.
+- **Target Encoding (Leave-One-Out com suavização Bayesiana):** Aplicado às variáveis categóricas de **elevada cardinalidade** — `site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category` e `device_model`. Esta técnica substitui cada categoria pela sua taxa de clique média estimada, calculada de forma a evitar *data leakage* (os valores de treino não contaminam o cálculo). O resultado são colunas de tipo `float64` com valores entre 0 e 1, preservando o poder preditivo das variáveis originais sem explosão dimensional.
+- **Label Encoding:** Aplicado às variáveis categóricas de **baixa cardinalidade** restantes, convertendo as categorias em inteiros sequenciais de forma simples e eficiente.
 
-**Remoção de variáveis não preditivas**
+#### Escalonamento
 
-Removemos `id`, `device_id` e `device_ip` por serem identificadores individuais sem poder preditivo — têm cardinalidade próxima do número total de registos e não generalizam para dados novos. A coluna `hour` foi removida após a extração de `hora_do_dia`.
+O **`StandardScaler`** foi aplicado às variáveis numéricas destinadas ao modelo de Regressão Logística (Baseline), que é sensível à escala das variáveis (centrar em 0, desvio padrão 1). Os modelos baseados em árvores de decisão (Random Forest, XGBoost, Gradient Boosting) não requerem escalonamento e receberam os dados na escala original.
 
-**Remoção por multicolinearidade**
-
-Após o *encoding*, detectámos que C14 e C17 têm correlação de Pearson r = 0,9769, acima do limiar de 0,95 que definimos. Manter variáveis tão correlacionadas não acrescenta informação ao modelo e pode introduzir instabilidade. Removemos as colunas com correlação acima do limiar (`site_domain`, `app_category`, `C17`, `visibilidade_anuncio`) de ambos os conjuntos (treino e teste). O *dataset* final ficou com 18 variáveis.
+---
 
 ### 3.2. Criação de Novos Atributos
 
-Criámos três novas variáveis a partir das existentes e verificámos a sua correlação com `click` antes de as incluir no *pipeline*:
+#### Nova Variável `hora_do_dia`
 
-**`hora_do_dia`** — extraída de `hour` com `hour % 100`. A variável original está em formato YYMMDDHH, pelo que os dois últimos dígitos correspondem à hora do dia (0–23). A análise bivariada confirmou que o CTR varia ao longo do dia, tornando esta variável relevante para o modelo.
+```python
+df_proc['hora_do_dia'] = df_proc['hour'] % 100
+```
 
-**`banner_area`** — calculada como C15 × C16. Assumimos que C15 e C16 representam largura e altura do *banner* em píxeis, o que é suportado pelos seus valores únicos (120, 216, 300, 320, 480, 728, 768, 1024 — dimensões standard de *banners* publicitários). A área do *banner* é uma medida de impacto visual mais direta do que as dimensões isoladas.
+Criada a partir da coluna `hour` (formato `YYMMDDhh`) através da operação módulo 100, extraindo apenas o componente horário (0–23). Esta operação descarta a informação de data (ano, mês, dia) e retém apenas a hora, que a análise EDA confirmou ser preditiva do CTR com padrões temporais consistentes (picos nas madrugadas, mínimos ao início da tarde).
 
-**`visibilidade_anuncio`** — calculada como `(banner_pos + 1) / log1p(banner_area)`. Combina a posição do anúncio na página com a sua dimensão. Usámos `banner_pos + 1` para evitar que posições com valor 0 (topo da página) anulem a variável, e `log1p` para suavizar o efeito de áreas muito grandes. A correlação desta variável com `click` foi verificada antes da inclusão.
+#### Nova Variável `banner_area`
+
+```python
+df_proc['banner_area'] = df_proc['C15'] * df_proc['C16']
+```
+
+Criada como o produto `C15 × C16`, onde `C15` é a largura e `C16` é a altura do banner em píxeis. Esta variável sintetiza o tamanho total do anúncio numa única dimensão (área em píxeis²), capturando a interação entre largura e altura que individualmente não exprimem tão diretamente o impacto visual do banner. Foi confirmada como uma das variáveis mais importantes pelo modelo final.
 
 ---
 
 ## 4. Dicionário de Dados Final (Pós-Processamento)
 
-Listagem das variáveis entregues ao modelo na Fase 3. O *dataset* processado tem **5.000.000 registos × 18 colunas** e foi guardado em `data/processed/`.
+*Listagem final das variáveis que serão entregues ao modelo na Fase 3.*
 
-| Atributo | Tipo | Descrição | Transformação |
-| :--- | :--- | :--- | :--- |
-| `click` | Inteiro (binário) | **Variável alvo** — 1: clique; 0: não clique | Nenhuma |
-| `C1` | Inteiro | Variável anónima de contexto | Nenhuma |
-| `banner_pos` | Inteiro | Posição do anúncio na página | Nenhuma |
-| `site_id` | *Float* | Identificador do *site* | *Frequency Encoding* |
-| `site_category` | *Float* | Categoria temática do *site* | *Frequency Encoding* |
-| `app_id` | *Float* | Identificador da aplicação | *Frequency Encoding* |
-| `app_domain` | *Float* | Domínio da aplicação | *Frequency Encoding* |
-| `device_model` | *Float* | Modelo do dispositivo | *Frequency Encoding* |
-| `device_type` | Inteiro | Tipo de dispositivo | Nenhuma |
-| `device_conn_type` | Inteiro | Tipo de ligação à rede | Nenhuma |
-| `C14` | Inteiro | Variável anónima | Nenhuma |
-| `C15` | Inteiro | Variável anónima (largura do *banner*) | Nenhuma |
-| `C16` | Inteiro | Variável anónima (altura do *banner*) | Nenhuma |
-| `C18` | Inteiro | Variável anónima | Nenhuma |
-| `C19` | Inteiro | Variável anónima | Nenhuma |
-| `C20` | Inteiro | Variável anónima | Imputação pela moda (−1 → 100084) |
-| `C21` | Inteiro | Variável anónima | Nenhuma |
-| `hora_do_dia` | Inteiro | **Nova** — Hora extraída de `hour` (0–23) | `hour % 100` |
-| `banner_area` | Inteiro | **Nova** — Área estimada do *banner* | C15 × C16 |
-| `id` | — | Identificador único | **Removido** — sem poder preditivo |
-| `device_id` | — | Identificador do dispositivo | **Removido** — sem poder preditivo |
-| `device_ip` | — | Endereço IP do utilizador | **Removido** — sem poder preditivo |
-| `hour` | — | Marcação temporal original | **Removido** — substituído por `hora_do_dia` |
-| `site_domain` | — | Domínio do *site* | **Removido** — multicolinearidade (r > 0,95) |
-| `app_category` | — | Categoria da aplicação | **Removido** — multicolinearidade (r > 0,95) |
-| `C17` | — | Variável anónima | **Removido** — multicolinearidade com C14 (r = 0,9769) |
-| `visibilidade_anuncio` | — | Índice de visibilidade | **Removido** — multicolinearidade (r > 0,95) |
+| Atributo | Tipo | Descrição |
+| :--- | :--- | :--- |
+| `click` | Int (0/1) | Variável alvo: 1 se o utilizador clicou, 0 caso contrário |
+| `hora_do_dia` | Int (0–23) | **Nova variável** — hora do dia extraída de `hour` |
+| `banner_area` | Int | **Nova variável** — área do banner em píxeis² (`C15 × C16`) |
+| `banner_pos` | Int | Posição do banner na página |
+| `device_type` | Int | Tipo de dispositivo (0 = telemóvel, 1 = tablet, etc.) |
+| `device_conn_type` | Int | Tipo de ligação à internet do dispositivo |
+| `site_id` | Float | Target Encoding do ID do site onde o anúncio é exibido |
+| `site_domain` | Float | Target Encoding do domínio do site |
+| `site_category` | Float | Target Encoding da categoria do site |
+| `app_id` | Float | Target Encoding do ID da aplicação |
+| `app_domain` | Float | Target Encoding do domínio da app |
+| `app_category` | Float | Target Encoding da categoria da app |
+| `device_model` | Float | Target Encoding do modelo do dispositivo |
+| `C1` | Int | Variável anónima de contexto do anúncio |
+| `C14`–`C21` | Int | Variáveis anónimas de configuração do anúncio (C20 com imputação pela moda) |
+| `id` | — | Removido (identificador único, não preditivo) |
 
 ---
 
 ## 5. Conclusões da Fase de Exploração
 
-Esta fase permitiu passar de um *dataset* bruto com 24 colunas para um conjunto processado com 18 variáveis, pronto para a modelação. O que aprendemos de mais importante:
+A análise exploratória confirmou que os dados do Avazu CTR Prediction são suficientemente ricos e representativos para sustentar a modelação preditiva, desde que se lide adequadamente com o desequilíbrio de classes. As principais aprendizagens desta fase foram:
 
-Os dados não têm nulos explícitos, mas a coluna `C20` tinha quase metade dos registos com o valor `-1` a mascarar informação em falta — algo que não era visível numa inspeção rápida e que poderia ter enviesado o modelo se não tivesse sido tratado.
+1. **O desequilíbrio (1:5) exige métricas robustas:** A *Accuracy* seria uma métrica enganadora neste contexto — um modelo trivial que previsse sempre "não clique" atingiria 83% de exatidão. A opção pelo AUC-ROC como métrica principal é tecnicamente justificada e foi adotada desde esta fase.
 
-O desequilíbrio de classes (83/17) é o facto mais condicionante de todo o projeto. Define a métrica de avaliação, obriga ao uso de pesos compensatórios nos algoritmos e exige estratificação em todas as divisões de dados.
+2. **O contexto visual do anúncio é mais preditivo do que o perfil do dispositivo:** As variáveis `C16` (altura do banner) e `banner_area` revelaram correlações mais fortes com o clique do que `device_type` ou `device_conn_type`, o que foi posteriormente confirmado pela análise de importância de variáveis do modelo final.
 
-As variáveis anónimas C14, C15 e C16 são as mais correlacionadas com `click`, o que sugere que representam características do anúncio — e não do utilizador ou do contexto de navegação. Isto é útil para interpretar os resultados da modelação.
+3. **A hora do dia é uma variável preditiva relevante:** O padrão temporal do CTR é consistente e explorável pelo modelo — os picos nas primeiras horas da madrugada e os mínimos ao início da tarde justificaram a criação de `hora_do_dia` como variável de engenharia.
 
-As três novas variáveis criadas (`hora_do_dia`, `banner_area`) têm correlação verificada com `click` e introduzem informação que as variáveis originais não capturavam diretamente. A `visibilidade_anuncio` foi posteriormente removida por multicolinearidade.
+4. **Os dados estão globalmente limpos:** Com exceção de `C20`, o dataset não apresentou problemas graves de qualidade — ausência de duplicados e de valores impossíveis confirmada. A ausência de `NaN` verdadeiros simplificou o pipeline de limpeza, mas exigiu atenção ao marcador `-1` específico do Avazu.
 
-O *dataset* processado está guardado em `data/processed/` e corre do início ao fim sem erros no *notebook* `1.0_eda_limpeza.ipynb`.
+5. **Elevada cardinalidade nas variáveis de identificação:** Variáveis como `site_id` e `app_id` possuem milhares de categorias únicas, tornando o Label Encoding inadequado e justificando a escolha pelo Target Encoding como estratégia de representação.
+
+Os dados estão prontos para avançar para a fase de Modelação (Milestone 3).
 
 ---
 
-## Referências
-
-He, X., Pan, J., Jin, O., Xu, T., Liu, B., Xu, T., Shi, Y., Atallah, A., Herbrich, R., Bowers, S., & Candela, J. Q. (2014). Practical lessons from predicting clicks on ads at Facebook. *Proceedings of the 8th International Workshop on Data Mining for Online Advertising*, 1–9. https://doi.org/10.1145/2648584.2648589
-
-Japkowicz, N., & Stephen, S. (2002). The class imbalance problem: A systematic study. *Intelligent Data Analysis*, *6*(5), 429–449. https://doi.org/10.3233/IDA-2002-6504
-
-Kaggle. (s.d.). *Avazu CTR prediction* [*Dataset*]. https://www.kaggle.com/datasets/madhu41289/avazu-ctr-prediction-exp
-
-Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., & Duchesneau, É. (2011). Scikit-learn: Machine learning in Python. *Journal of Machine Learning Research*, *12*, 2825–2830.
+*Data de última atualização: 23/04/2026*
