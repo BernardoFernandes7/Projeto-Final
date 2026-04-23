@@ -28,27 +28,15 @@ O modelo consegue identificar perfis de utilizador ou contextos de exibição co
   * **Hugo:** Responsável pela Modelação, otimização de hiperparâmetros e avaliação de modelos.
 * **Ferramentas de Colaboração:** GitHub Projects, reuniões semanais via Discord.
 
-## 5.  Análise de Viabilidade dos Dados 
-### Fonte e Proveniência
+### 4. Análise de Viabilidade dos Dados
 
-* **Origem:** Dataset público disponibilizado pela Avazu no Kaggle —
-[Avazu CTR Prediction](https://www.kaggle.com/competitions/avazu-ctr-prediction)
-* **Período de Extração:** Dados recolhidos entre outubro e novembro de 2014
-(10 dias de logs de impressões de anúncios mobile).
-* **Disponibilidade:** Dataset disponível diretamente no Kaggle. Por limitações de
-memória RAM (40,4 milhões de registos), foi adotada uma **amostra aleatória de
-5.000.000 registos** com semente fixa (`random_state=42`), por sugestão da
-professora, garantindo reprodutibilidade e representatividade estatística.
-* **Qualidade Inicial:** O dataset não apresenta valores nulos convencionais. Os dados
-em falta estão mascarados como `-1` nas colunas anónimas (C14–C21), em particular
-na coluna `C20`, que concentra a maioria das omissões. Esta situação será tratada
-na Milestone 2 através de imputação pela moda.
-* **Ética:** O dataset é totalmente anonimizado — os identificadores de utilizador
-(`device_id`, `device_ip`) são hashes sem correspondência a dados pessoais
-identificáveis. Não existem implicações de RGPD dado tratar-se de dados públicos
-de competição.
+* **Disponibilidade:** Os dados provêm do dataset público da competição Avazu CTR Prediction no Kaggle. Devido à sua dimensão original (40,4 milhões de registos), os dados foram descarregados e processados através de uma amostra aleatória representativa de 5.000.000 de registos, garantindo a viabilidade técnica no ambiente de trabalho (Kaggle/GitHub) e a reprodutibilidade dos resultados.
 
-### Dicionário de Variáveis (Metadados)
+* **Qualidade Inicial:** O dataset apresenta uma qualidade elevada, sem valores nulos convencionais. Contudo, identificou-se que os dados em falta estão mascarados com o valor `-1` em colunas anónimas (C14–C21), com maior incidência na variável `C20`. Estas omissões, juntamente com a necessidade de transformar a coluna `hour` para extrair componentes temporais, serão o foco de tratamento na Milestone 2.
+
+* **Ética:** Os dados cumprem as normas de privacidade, uma vez que o dataset é totalmente anonimizado. Identificadores sensíveis como `device_id` e `device_ip` foram substituídos por *hashes*, impossibilitando a identificação de utilizadores reais. Sendo um dataset público para fins académicos e de competição, não apresenta conflitos com o RGPD.
+
+### Dicionário de Variáveis 
 
 | Variável | Tipo de Dado | Descrição | Importância Esperada |
 | :--- | :--- | :--- | :--- |
@@ -70,19 +58,14 @@ de competição.
 | `device_conn_type` | Numérico | Tipo de ligação à internet (ex: WiFi, 4G) | Alta |
 | `C14`–`C21` | Categórico Anónimo | Variáveis anonimizadas pela Avazu (contexto do anúncio) | Alta (C14, C16, C17) |
 
-## 6. Planeamento da Abordagem
+## 5. Cronograma Interno
+| Fase | Data Limite | Entregável Esperado |
+| :--- | :--- | :--- |
+| M1: Iniciação | 24/02/2026 | Repositório estruturado e Plano de Projeto. |
+| M2: Exploração | 24/03/2026 | Notebook de EDA e Dados Processados. |
+| M3: Modelação | 23/04/2026 | Comparação de algoritmos e métricas. |
+| M4: Finalização| [Data] | Pitch e Relatório Final. | 
 
-O projeto segue a metodologia **CRISP-DM**, estruturada nas quatro Milestones da unidade
-curricular:
-
-```mermaid
-graph TD
-    A[Recolha e Amostragem dos Dados<br/>5M registos, random_state=42] --> B[Limpeza e Tratamento<br/>Imputação de -1, remoção de duplicados]
-    B --> C[Análise Exploratória<br/>EDA, correlações, análise de CTR]
-    C --> D[Engenharia de Atributos<br/>hora_do_dia, banner_area, encoding]
-    D --> E[Modelação e Avaliação<br/>Baseline → Candidatos → Tuning]
-    E --> F[Conclusões e Recomendações<br/>Feature Importance e insights de negócio]
-```
-
+---
 
 *Data de última atualização: 23/04/2026*
