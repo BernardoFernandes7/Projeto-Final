@@ -12,19 +12,7 @@ O maior desafio identificado reside no forte desequilíbrio das classes: apenas 
 
 1. **Objetivo 1:** Desenvolver um modelo de classificação binária capaz de prever se um utilizador irá clicar num anúncio, atingindo um **AUC-ROC mínimo de 0.75** no conjunto de teste, utilizando o *dataset* Avazu CTR Prediction até ao final do Milestone 3.
 
-* **Específico (Specific):** O foco centra-se na previsão da variável binária `click` no contexto bem delimitado de publicidade *mobile* em ambiente de *Real-Time Bidding* (RTB).
-* **Mensurável (Measurable):** O critério de sucesso é quantificável através do AUC-ROC > 0.75. Esta métrica é a oficial da competição e revela-se robusta ao forte desequilíbrio de classes (apenas ~17% de cliques), ao contrário da acuidade simples.
-* **Atingível (Achievable):** A utilização de algoritmos de *gradient boosting*, como o XGBoost, é reconhecida na literatura como a abordagem ideal para lidar com a elevada dimensionalidade e volume destes dados.
-* **Relevante (Relevant):** Um modelo com esta capacidade preditiva permite ordenar impressões por probabilidade de conversão, reduzindo o custo por aquisição e aumentando a eficiência das campanhas publicitárias.
-* **Temporal (Time-bound):** O objetivo está delimitado pela data de entrega final da Milestone 3, a 23 de abril de 2026.
-
 2. **Objetivo 2:** Identificar as **5 variáveis mais determinantes** para a previsão do clique (através de *Feature Importance*) e diagnosticar os perfis de erro do modelo, fornecendo recomendações acionáveis sobre os contextos de anúncios com maior probabilidade de conversão, até à conclusão da fase de modelação.
-
-* **Específico (Specific):** Identificação clara das características técnicas e contextuais (ex: posição do anúncio, tipo de dispositivo) que mais impactam a decisão de clique.
-* **Mensurável (Measurable):** Entrega de uma análise visual de importância de variáveis e uma comparação estatística entre os perfis de Falsos Negativos (oportunidades perdidas) e Verdadeiros Positivos.
-* **Atingível (Achievable):** O modelo otimizado permite a extração nativa de métricas de importância baseadas em ganho de informação (*Information Gain*).
-* **Relevante (Relevant):** Permite transformar uma "caixa-negra" algorítmica numa ferramenta de suporte à decisão, ajudando a compreender o comportamento do utilizador final.
-* **Temporal (Time-bound):** Conclusão integrada na fase de avaliação e diagnóstico da Milestone 3.
 
 ## 3. Perguntas de Investigação
 Que variáveis contextuais — características do dispositivo, hora do dia, posição do anúncio ou categoria do site — têm maior peso na decisão de clique, e como esse peso se traduz em valor para a otimização de lances em RTB?
@@ -58,8 +46,6 @@ na Milestone 2 através de imputação pela moda.
 (`device_id`, `device_ip`) são hashes sem correspondência a dados pessoais
 identificáveis. Não existem implicações de RGPD dado tratar-se de dados públicos
 de competição.
-
----
 
 ### Dicionário de Variáveis (Metadados)
 
