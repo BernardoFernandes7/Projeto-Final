@@ -26,7 +26,7 @@ Gerámos uma matriz de correlação de Pearson entre as variáveis numéricas e 
 
 **Conclusão 3 — A posição do *banner* (`banner_pos`) e o tipo de dispositivo influenciam o CTR.** A posição 0 concentra a maioria das impressões mas não tem o CTR mais alto. Dispositivos diferentes mostram padrões de clique distintos, o que motivou a criação de `banner_area` como medida de impacto visual do anúncio. Ver figuras:![Gráfico de Densidade de Transações por Hora](../reports/figures/ctr_banner_pos.png),![Gráfico de Densidade de Transações por Hora](../reports/figures/ctr_device_type.png) 
 
-> Ver figura: ![Gráfico de Densidade de Transações por Hora](../reports/figures/matriz_correlacao_pearson.png)
+![Gráfico de Densidade de Transações por Hora](../reports/figures/matriz_correlacao_pearson.png)
 
 ---
 
@@ -45,7 +45,7 @@ Além disso, verificámos a existência de **observações repetidas**:
 - Linhas totalmente duplicadas: **0 registos** — nenhuma remoção necessária.
 - Duplicados lógicos (mesmo `device_ip`, `device_id`, `hour`, `site_id`, `app_id`): **1.130.966 registos (22,62%)** — mantidos porque em contexto de *Real-Time Bidding* é normal o mesmo utilizador ser exposto ao mesmo anúncio várias vezes. Remover estes registos eliminaria informação real sobre frequência de exposição.
 
-> Ver figura: `reports/figures/missing_c20_antes_depois.png`
+![Gráfico de imputação](../reports/figures/eda_c20_imputacao.png)
 
 ### 2.2. Outliers e Inconsistências
 
