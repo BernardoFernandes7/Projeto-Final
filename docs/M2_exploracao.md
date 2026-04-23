@@ -14,13 +14,13 @@ A variável alvo `click` é binária e está fortemente desequilibrada. Na amost
 
 Este desequilíbrio tem uma consequência direta: um modelo que previsse sempre "não clique" teria 83% de *accuracy* sem qualquer utilidade preditiva — fenómeno conhecido como *accuracy paradox* (Japkowicz & Stephen, 2002). Por isso, definimos o AUC-ROC como métrica principal e o F1-Score como métrica secundária, por serem robustas ao desequilíbrio de classes. A *Accuracy* foi excluída da avaliação.
 
-> Ver figura: `reports/figures/distribuicao_variavel_alvo.png`
+> Ver figura: `reports/figures/eda_distribuicao_click.png`
 
 ### 1.2. Correlações Relevantes e Três Conclusões Visuais
 
 Gerámos uma matriz de correlação de Pearson entre as variáveis numéricas e a variável alvo, bem como gráficos de dispersão (*scatter plots*) do CTR por variável. As três conclusões visuais mais relevantes foram:
 
-**Conclusão 1 — O CTR varia significativamente com a hora do dia.** A análise bivariada mostra que as primeiras horas da madrugada (0h–3h) têm CTR acima da média global de 16,97%, o que contraria a intuição inicial. Isto motivou a criação da variável `hora_do_dia`. Ver figura: `reports/figures/ctr_hora_do_dia.png`
+**Conclusão 1 — O CTR varia significativamente com a hora do dia.** A análise bivariada mostra que as primeiras horas da madrugada (0h–3h) têm CTR acima da média global de 16,97%, o que contraria a intuição inicial. Isto motivou a criação da variável `hora_do_dia`. Ver figura: `reports/figures/eda_ctr_hora_dia.png`
 
 **Conclusão 2 — A variável C16 tem a correlação mais forte com `click` (r = +0,1303).** As variáveis anónimas C14, C15 e C16 são as mais correlacionadas com a variável alvo — valores positivos para C16 e negativos para C14 e C17. Isto sugere que representam características do anúncio com impacto direto na decisão de clique. Encontrámos também um par com multicolinearidade elevada: C14 e C17 têm correlação de Pearson r = 0,9769, acima do limiar de 0,95 que definimos para remoção.
 
