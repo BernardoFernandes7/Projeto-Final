@@ -28,7 +28,7 @@ O modelo consegue identificar perfis de utilizador ou contextos de exibição co
   * **Hugo:** Responsável pela Modelação, otimização de hiperparâmetros e avaliação de modelos.
 * **Ferramentas de Colaboração:** GitHub Projects, reuniões semanais via Discord.
 
-## 5. Entendimento dos Dados (Data Understanding)
+## 5.  Análise de Viabilidade dos Dados 
 ### Fonte e Proveniência
 
 * **Origem:** Dataset público disponibilizado pela Avazu no Kaggle —
