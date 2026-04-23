@@ -5,11 +5,12 @@
 ## Nota Técnica: Estratégia de Amostragem
 O dataset Avazu CTR Prediction contém **40.428.967 registos**, o que inviabiliza o carregamento direto com `pd.read_csv()` 
 (esgota a RAM disponível no Kaggle) e
-impossibilita o upload direto para o GitHub.
+impossibilita o upload direto 
+para o GitHub.
 
 Por sugestão da professora, foi adotada uma estratégia de analisar apenas uma **amostra aleatória de 5.000.000 registos** (`random_state=42`), garantindo:
 
-- **Reprodutibilidade total:** a mesma semente produz sempre a mesma amostra, permitindo que qualquer membro da equipa replique os resultados de forma exata.
+- **Reprodutibilidade total:** a mesma semente produz sempre a mesma amostra, permitindoque qualquer membro da equipa replique os resultados de forma exata.
 - **Representatividade estatística:** a amostragem aleatória simples, sem viés de seleção, preserva as distribuições originais das variáveis — em particular o rácio de desequilíbrio da variável alvo.
 - **Compatibilidade com o Kaggle:** a amostra ocupa aproximadamente 2 GB em memória, dentro dos limites da plataforma.
 
