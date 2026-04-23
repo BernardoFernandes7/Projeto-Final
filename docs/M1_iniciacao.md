@@ -8,18 +8,9 @@ Este projeto aborda precisamente esse desafio utilizando o dataset Avazu CTR Pre
 
 O maior desafio identificado reside no forte desequilíbrio das classes: apenas cerca de 17% dos dados correspondem a cliques reais. Este cenário torna a previsão complexa, uma vez que modelos simplistas poderiam apresentar uma precisão elevada sem possuírem qualquer utilidade prática. Por isso, o tratamento deste desbalanceamento e a seleção rigorosa de métricas como o AUC-ROC foram decisões fundamentais para garantir a eficácia e o valor de negócio da solução desenvolvida.
 
----
-
 ## 2. Objetivos SMART
 
-2. **Objetivo 2:** Identificar as 5 variáveis mais determinantes para a previsão do clique
-(através de *Feature Importance*), de forma a fornecer recomendações acionáveis sobre
-o contexto e formato de anúncios com maior probabilidade de conversão, até à
-conclusão da fase de modelação.
-
-## 2. Objetivos SMART
-
-2. **Objetivo 2:** Desenvolver um modelo de classificação binária capaz de prever se um utilizador irá clicar num anúncio, atingindo um **AUC-ROC mínimo de 0.75** no conjunto de teste, utilizando o *dataset* Avazu CTR Prediction até ao final do Milestone 3.
+1. **Objetivo 1:** Desenvolver um modelo de classificação binária capaz de prever se um utilizador irá clicar num anúncio, atingindo um **AUC-ROC mínimo de 0.75** no conjunto de teste, utilizando o *dataset* Avazu CTR Prediction até ao final do Milestone 3.
 
 * **Específico (Specific):** O foco centra-se na previsão da variável binária `click` no contexto bem delimitado de publicidade *mobile* em ambiente de *Real-Time Bidding* (RTB).
 * **Mensurável (Measurable):** O critério de sucesso é quantificável através do AUC-ROC > 0.75. Esta métrica é a oficial da competição e revela-se robusta ao forte desequilíbrio de classes (apenas ~17% de cliques), ao contrário da acuidade simples.
@@ -35,24 +26,20 @@ conclusão da fase de modelação.
 * **Relevante (Relevant):** Permite transformar uma "caixa-negra" algorítmica numa ferramenta de suporte à decisão, ajudando a compreender o comportamento do utilizador final.
 * **Temporal (Time-bound):** Conclusão integrada na fase de avaliação e diagnóstico da Milestone 3.
 
----
+## 3. Perguntas de Investigação
+Que variáveis contextuais — características do dispositivo, hora do dia, posição do anúncio ou categoria do site — têm maior peso na decisão de clique, e como esse peso se traduz em valor para a otimização de lances em RTB?
 
-## 3. Metodologia de Gestão (PBL)
+De que forma o forte desequilíbrio entre cliques (~17%) e não-cliques (~83%) afeta a capacidade preditiva dos modelos testados, e qual a estratégia mais eficaz para o mitigar sem introduzir data leakage?
+
+O modelo consegue identificar perfis de utilizador ou contextos de exibição com probabilidade de clique sistematicamente acima ou abaixo da média global — e que implicação prática teria esse conhecimento para um anunciante?
+
+## 4. Metodologia de Gestão (PBL)
 
 * **Divisão de Tarefas:**
-  * **Bernardo:** Responsável pela Engenharia de Dados (carregamento, limpeza,
-  feature engineering) e pela Modelação (treino, tuning e avaliação de modelos).
-  * **Hugo:** Responsável pela Análise Exploratória (EDA, visualizações, correlações)
-  e pela Documentação (ficheiros `.md`, README e relatórios).
+  * **Bernardo:** Responsável pela Engenharia de dados, pré-processamento e feature engineering.
+  * **Hugo:** Responsável pela Modelação, otimização de hiperparâmetros e avaliação de modelos.
 
-* **Ferramentas de Colaboração:** GitHub Projects para gestão de tarefas (quadro
-Kanban por Milestone); Kaggle Code para desenvolvimento e execução dos notebooks;
-GitHub para versionamento e portefólio.
-
----
-
-## 4. Entendimento dos Dados (Data Understanding)
-
+## 5. Entendimento dos Dados (Data Understanding)
 ### Fonte e Proveniência
 
 * **Origem:** Dataset público disponibilizado pela Avazu no Kaggle —
@@ -96,9 +83,7 @@ de competição.
 | `device_conn_type` | Numérico | Tipo de ligação à internet (ex: WiFi, 4G) | Alta |
 | `C14`–`C21` | Categórico Anónimo | Variáveis anonimizadas pela Avazu (contexto do anúncio) | Alta (C14, C16, C17) |
 
----
-
-## 5. Planeamento da Abordagem
+## 6. Planeamento da Abordagem
 
 O projeto segue a metodologia **CRISP-DM**, estruturada nas quatro Milestones da unidade
 curricular:
@@ -112,6 +97,5 @@ graph TD
     E --> F[Conclusões e Recomendações<br/>Feature Importance e insights de negócio]
 ```
 
----
 
 *Data de última atualização: 23/04/2026*
