@@ -26,7 +26,7 @@ Gerámos uma matriz de correlação de Pearson entre as variáveis numéricas e 
 
 **Conclusão 3 — A posição do *banner* (`banner_pos`) e o tipo de dispositivo influenciam o CTR.** A posição 0 concentra a maioria das impressões mas não tem o CTR mais alto. Dispositivos diferentes mostram padrões de clique distintos, o que motivou a criação de `banner_area` como medida de impacto visual do anúncio. Ver figuras:![Gráfico de Densidade de Transações por Hora](reports/figures/ctr_banner_pos.png),![Gráfico de Densidade de Transações por Hora](reports/figures/ctr_device_type.png) 
 
-> Ver figura: `reports/figures/matriz_correlacao_pearson.png`
+> Ver figura: ![Gráfico de Densidade de Transações por Hora](reports/figures/matriz_correlacao_pearson.png)
 
 ---
 
