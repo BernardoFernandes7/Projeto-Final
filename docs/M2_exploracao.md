@@ -24,9 +24,9 @@ Gerámos uma matriz de correlação de Pearson entre as variáveis numéricas e 
 
 **Conclusão 2 — A variável C16 tem a correlação mais forte com `click` (r = +0,1303).** As variáveis anónimas C14, C15 e C16 são as mais correlacionadas com a variável alvo — valores positivos para C16 e negativos para C14 e C17. Isto sugere que representam características do anúncio com impacto direto na decisão de clique. Encontrámos também um par com multicolinearidade elevada: C14 e C17 têm correlação de Pearson r = 0,9769, acima do limiar de 0,95 que definimos para remoção.
 
-**Conclusão 3 — A posição do *banner* (`banner_pos`) e o tipo de dispositivo influenciam o CTR.** A posição 0 concentra a maioria das impressões mas não tem o CTR mais alto. Dispositivos diferentes mostram padrões de clique distintos, o que motivou a criação de `banner_area` como medida de impacto visual do anúncio. Ver figuras:![Gráfico de Densidade de Transações por Hora](reports/figures/ctr_banner_pos.png),![Gráfico de Densidade de Transações por Hora](reports/figures/ctr_device_type.png) 
+**Conclusão 3 — A posição do *banner* (`banner_pos`) e o tipo de dispositivo influenciam o CTR.** A posição 0 concentra a maioria das impressões mas não tem o CTR mais alto. Dispositivos diferentes mostram padrões de clique distintos, o que motivou a criação de `banner_area` como medida de impacto visual do anúncio. Ver figuras:![Gráfico de Densidade de Transações por Hora](../reports/figures/ctr_banner_pos.png),![Gráfico de Densidade de Transações por Hora](../reports/figures/ctr_device_type.png) 
 
-> Ver figura: ![Gráfico de Densidade de Transações por Hora](reports/figures/matriz_correlacao_pearson.png)
+> Ver figura: ![Gráfico de Densidade de Transações por Hora](../reports/figures/matriz_correlacao_pearson.png)
 
 ---
 
