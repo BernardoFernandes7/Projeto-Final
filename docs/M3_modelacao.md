@@ -46,7 +46,8 @@ A *Accuracy* foi excluída porque um modelo que previsse sempre "não clique" te
 
 Seguimos uma abordagem por patamares de complexidade crescente: (1) *baseline* linear simples, (2) modelos de *ensemble* com parâmetros base, (3) otimização de hiperparâmetros do melhor candidato. Esta estrutura garante que cada aumento de complexidade é justificado por um ganho mensurável em AUC-ROC.
 
----
+
+
 
 ## 2. Experiências Realizadas
 
