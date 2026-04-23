@@ -54,74 +54,68 @@ O principal desafio deste problema é o forte desequilíbrio da variável alvo: 
 
 ## 3. Perguntas de Investigação
 
-Estas questões guiarão a análise de dados para entender os padrões de comportamento dos utilizadores e a eficácia dos anúncios:
+1. Que variáveis contextuais — características do dispositivo, hora do dia, posição do anúncio ou categoria do *site* — têm maior peso na decisão de clique, e como esse peso se traduz em valor para a otimização de lances em *RTB*?
 
-Sazonalidade Temporal: Existe algum período específico do dia ou da semana em que a probabilidade de clique (click) aumenta significativamente? (Análise baseada na variável hour).
+2. De que forma o forte desequilíbrio entre cliques (~17%) e não-cliques (~83%) afeta a capacidade preditiva dos modelos testados, e qual a estratégia mais eficaz para o mitigar sem introduzir *data leakage*?
 
-Influência do Posicionamento: Até que ponto a posição do anúncio na página (banner_pos) é um fator determinante para o CTR? Estará o topo da página sempre correlacionado com mais cliques?
+3. O modelo consegue identificar perfis de utilizador ou contextos de exibição com probabilidade de clique sistematicamente acima ou abaixo da média global — e que implicação prática teria esse conhecimento para um anunciante?
 
-Ambiente de Navegação (App vs. Site): Existe uma diferença estatisticamente relevante na taxa de clique entre utilizadores que navegam via aplicações (app_id) comparativamente a sites (site_id)?
+---
 
-Perfil de Dispositivo e Conectividade: De que forma o tipo de dispositivo (device_type) e a qualidade da ligação à internet (device_conn_type) influenciam a propensão do utilizador para interagir com o anúncio?
+## 4. Metodologia de Gestão
 
-Segmentação de Conteúdo: Quais são as categorias de sites (site_category) ou aplicações (app_category) que apresentam o melhor desempenho em termos de conversão, e quais devem ser evitadas para otimizar o investimento?
+### Divisão de Tarefas
 
-## 4. Metodologia de Gestão (PBL)
-Divisão de Tarefas
+| Membro | Responsabilidade principal |
+| :--- | :--- |
+| Bernardo Fernandes | Engenharia de dados, pré-processamento e *feature engineering* |
+| Hugo Grou | Modelação, otimização de hiperparâmetros e avaliação de modelos |
 
-Hugo: Responsável pela preparação e tratamento dos dados (EDA, limpeza, encoding, engenharia de atributos).
+As tarefas de documentação, revisão do código e atualização do GitHub são partilhadas por ambos os elementos.
 
-Bernardo: Responsável pela modelação estatística e avaliação dos algoritmos.
+### Ferramentas de Colaboração
 
-Colaboração conjunta nas decisões metodológicas e validação dos resultados.
+- **GitHub Projects** — quadro Kanban com *issues* e tarefas por *milestone*
+- **Kaggle Notebooks** — ambiente de desenvolvimento e execução do código
+- **GitHub** — versionamento, documentação e entrega de cada *milestone*
 
-Ferramentas
+---
 
-GitHub (controlo de versões)
+## 5. Análise de Viabilidade dos Dados e Descobertas Iniciais
 
-WhatsApp (comunicação)
+**Disponibilidade:** o *dataset* está publicamente disponível no Kaggle e foi adicionado diretamente ao ambiente de execução dos *notebooks*. Não requer acesso especial nem transferência manual de ficheiros.
 
-Bibliotecas previstas
+**Qualidade inicial — valores reais da inspeção:** a primeira exploração dos dados revelou os seguintes factos que definem o ponto de partida para o *Milestone* 2:
 
-pandas, numpy – manipulação de dados
+Não existem valores nulos explícitos em nenhuma das 24 colunas. No entanto, a coluna `C20` tem 2.344.248 registos com o valor `-1` (46,88% da amostra), que correspondem a dados em falta codificados de forma não *standard* — uma prática comum em *datasets* de publicidade. As restantes colunas anónimas (C14–C21) apresentam percentagens residuais de `-1`, abaixo de 1%.
 
-matplotlib, seaborn – visualização
+Em relação a observações repetidas, não existem duplicados totais (linhas completamente iguais), mas existem 1.130.966 duplicados lógicos (22,6% da amostra), entendidos como o mesmo utilizador a ver o mesmo anúncio no mesmo momento. Esta situação é esperada em contexto de *RTB* e os registos foram mantidos.
 
-scikit-learn – modelação e métricas
+A variável alvo `click` está fortemente desequilibrada: 83,03% dos registos são não-cliques (0) e apenas 16,97% são cliques (1). Este desequilíbrio é determinante para a escolha das métricas de avaliação — a *Accuracy* simples seria enganosa, pelo que o AUC-ROC foi adotado como métrica principal.
 
-Possível integração futura de xgboost ou lightgbm, dada a natureza do problema
+As variáveis categóricas de identificação (`site_id`, `app_id`, `device_model`, entre outras) têm alta cardinalidade (milhares de valores únicos), o que impede o uso direto de *One-Hot Encoding* e orienta a fase de preparação para técnicas como *Frequency Encoding*.
 
-## 5. Análise de Viabilidade dos Dados
-Disponibilidade
+O volume total do *dataset* (~40 milhões de registos) inviabiliza o carregamento direto em memória no Kaggle, pelo que o *Milestone* 2 arrancou com uma amostra aleatória de 5 milhões de registos (`random_state=42`), por sugestão da docente.
 
-Os dados estão totalmente disponíveis e prontos para processamento, localizados no diretório /kaggle/input/. A estrutura de ficheiros inclui os conjuntos de treino (train.csv) e teste (test.csv), além do modelo de submissão. O acesso via Python foi validado com sucesso através da biblioteca Pandas, utilizando o método de leitura por blocos (chunksize) para garantir a estabilidade do sistema perante o volume de dados.
+**Ética e privacidade:** os dados estão anonimizados — identificadores como `device_id` e `device_ip` foram sujeitos a *hashing* antes da publicação. Não contêm dados pessoais identificáveis, pelo que não levantam questões de conformidade com o RGPD no contexto deste projeto académico.
 
-Qualidade Inicial
+---
 
-A integridade técnica dos dados é excelente, apresentando zero valores nulos em todas as 24 colunas analisadas ao longo dos 40.428.967 registos. No entanto, foram identificados pontos que exigem tratamento na Milestone 2: a variável hour está formatada como um número inteiro, necessitando de conversão para datetime para extração de tendências temporais. Além disso, a elevada cardinalidade de variáveis categóricas, como o device_ip (6.729.486 valores únicos) e o device_id (2.686.408 valores únicos), exigirá a aplicação de técnicas de Feature Hashing para viabilizar a modelação sem exceder a memória disponível.
+## 6. Cronograma Interno
 
-Ética
+| *Milestone* | Data Limite | Entregável |
+| :--- | :--- | :--- |
+| M1 — Iniciação | 24 fev. 2026 | Repositório estruturado, README e M1_iniciacao.md |
+| M2 — Exploração | 24 mar. 2026 | *Notebook* de EDA, dados processados e M2_exploracao.md |
+| M3 — Modelação | 23 abr. 2026 | *Notebook* de modelação, resultados e M3_modelacao.md |
+| M4 — Finalização | A definir | Apresentação final e relatório |
 
-O dataset cumpre as normas do RGPD e os princípios de privacidade por design. Todas as variáveis de identificação, como o ID do dispositivo, o IP e os IDs de aplicações ou sites, foram devidamente anonimizadas através de representações hexadecimais. Esta técnica de ofuscação impede a reidentificação de utilizadores individuais ou a exposição de comportamentos de navegação privados, permitindo que a análise se foque exclusivamente em padrões estatísticos agregados e anónimos.
+---
 
-## 6. Descrição Técnica da Inspeção Inicial
+## Referências
 
-Processamento de Big Data- Devido ao tamanho do dataset, será utilizada a leitura em blocos (chunking) e a conversão de tipos de dados para reduzir o consumo de memória RAM.
+He, X., Pan, J., Jin, O., Xu, T., Liu, B., Xu, T., Shi, Y., Atallah, A., Herbrich, R., Bowers, S., & Candela, J. Q. (2014). Practical lessons from predicting clicks on ads at Facebook. *Proceedings of the 8th International Workshop on Data Mining for Online Advertising*, 1–9. https://doi.org/10.1145/2648584.2648589
 
-Feature Engineering- Conversão da coluna hour para o formato datetime para extrair padrões temporais (hora do dia, dia da semana). Aplicação de Feature Hashing (ou Hashing Trick) para lidar com as categorias de alta cardinalidade sem explodir a dimensão da matriz.
+Kaggle. (s.d.). *Avazu CTR prediction* [*Dataset*]. https://www.kaggle.com/datasets/madhu41289/avazu-ctr-prediction-exp
 
-Algoritmos Candidatos- Serão testados modelos de Regressão Logística (como baseline), seguidos de algoritmos de Gradient Boosting (como LightGBM ou XGBoost), conhecidos pela sua eficiência com dados tabulares volumosos.
-
-Ambiente- Execução em ambiente Cloud (Kaggle/Colab) aproveitando a capacidade de CPU/GPU disponível.
-
-## 7. Cronograma Interno
-Fase	Data Limite	Entregável
-| **Fase**            | **Data Limite** | **Entregável Esperado**                                    |
-| ------------------- | --------------- | ---------------------------------------------------------- |
-| **M1: Iniciação**   | 24/02/2026      | Repositório estruturado e Plano de Projeto                 |
-| **M2: Exploração**  | [Data]          | Notebook de Análise Exploratória (EDA) e dados processados |
-| **M3: Modelação**   | [Data]          | Comparação de algoritmos e avaliação de métricas           |
-| **M4: Finalização** | [Data]          | Relatório Final e apresentação (Pitch)                     |
-
-
-Data da última atualização: 24/02/2026
+Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., Blondel, M., Prettenhofer, P., Weiss, R., Dubourg, V., Vanderplas, J., Passos, A., Cournapeau, D., Brucher, M., Perrot, M., & Duchesneau, É. (2011). Scikit-learn: Machine learning in Python. *Journal of Machine Learning Research*, *12*, 2825–2830.
