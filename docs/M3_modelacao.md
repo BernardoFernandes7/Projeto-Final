@@ -1,4 +1,5 @@
-# *Milestone* 3: Modelação e Avaliação
+# *Milestone* 3: Modelação e
+Avaliação
 
 > Este documento pressupõe que a preparação dos dados está descrita em `docs/M2_exploracao.md`. Os resultados aqui apresentados são consistentes com o *notebook* `notebooks/3_0_interpretacao.ipynb`, que corre do início ao fim sem erros.
 
