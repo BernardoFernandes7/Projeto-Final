@@ -28,7 +28,7 @@ O conjunto de teste foi isolado desde o início e nunca foi visto durante o trei
 
 > Todas as avaliações seguintes utilizam este isolamento — **não reajustar o *scaler* nem recalcular o *encoding* no teste**.
 
----
+
 
 ## 1. Estratégia de Modelação
 
