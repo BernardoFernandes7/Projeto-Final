@@ -26,6 +26,7 @@ O modelo consegue identificar perfis de utilizador ou contextos de exibição co
 * **Divisão de Tarefas:**
   * **Bernardo:** Responsável pela Engenharia de dados, pré-processamento e feature engineering.
   * **Hugo:** Responsável pela Modelação, otimização de hiperparâmetros e avaliação de modelos.
+* **Ferramentas de Colaboração:** GitHub Projects, reuniões semanais via Discord.
 
 ## 5. Entendimento dos Dados (Data Understanding)
 ### Fonte e Proveniência
