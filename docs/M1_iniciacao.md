@@ -1,38 +1,56 @@
-# Milestone 1: Iniciação e Definição do Projeto
+# *Milestone* 1: Iniciação e Definição do Projeto
+
+> *Data de última atualização: Abril 2026*
+
+---
+
 ## 1. Descrição Detalhada do Problema
 
-Contexto do Setor: O projeto insere-se no setor de Publicidade Digital (AdTech). No ecossistema de publicidade online, as empresas utilizam sistemas de Real-Time Bidding (RTB) para decidir, em milissegundos, se devem apresentar um anúncio a um utilizador e quanto devem pagar por essa impressão.
+A publicidade digital é hoje uma das principais formas de monetização da internet. Grande parte dos anúncios que vemos em aplicações e sites são decididos em tempo real — quando uma página carrega, existe um leilão instantâneo (*Real-Time Bidding*) que determina qual anúncio é exibido e a que utilizador. Neste contexto, os anunciantes precisam de decidir quanto estão dispostos a pagar por cada impressão, e essa decisão deveria ser baseada numa estimativa da probabilidade de o utilizador clicar no anúncio.
 
-Relevância: Prever a Taxa de Clique (Click-Through Rate - CTR) é o "santo graal" deste setor. Se uma empresa conseguir prever com precisão se um utilizador vai clicar num anúncio, ela pode:
+É exatamente este o problema que o nosso projeto aborda. Trabalhamos com o *dataset* Avazu CTR Prediction, disponível no Kaggle, que contém registos reais de impressões publicitárias recolhidas ao longo de 10 dias em dispositivos móveis. Com cerca de 40 milhões de registos e 24 variáveis contextuais, o *dataset* documenta o comportamento de utilizadores perante anúncios em aplicações e *sites* móveis, incluindo informação sobre o tipo de dispositivo, o ambiente de navegação, a posição do anúncio na página e a hora de exibição.
 
-Otimizar o Orçamento: Gastar apenas em impressões com alta probabilidade de conversão.
+Do ponto de vista da ciência de dados, trata-se de um problema de **classificação binária supervisionada**. A variável objetivo é `click`, que assume o valor 1 quando o utilizador clicou no anúncio e 0 quando não clicou. O modelo deve aprender, a partir das variáveis contextuais, a distinguir impressões com elevada probabilidade de clique das restantes, permitindo que os anunciantes otimizem os seus lances e reduzam o desperdício de orçamento em impressões irrelevantes.
 
-Melhorar a Experiência do Utilizador: Mostrar anúncios que sejam realmente relevantes, reduzindo o "ruído" digital.
+O principal desafio deste problema é o forte desequilíbrio da variável alvo: aproximadamente 83% dos registos correspondem a não-cliques e apenas 17% a cliques. Isto significa que um modelo que simplesmente previsse sempre "não clique" teria uma precisão aparente de 83%, sem qualquer utilidade real. Por isso, a escolha das métricas de avaliação e o tratamento deste desequilíbrio são decisões centrais no nosso trabalho.
 
-Aumentar a Receita: Para os publishers, um CTR mais alto traduz-se em maior rentabilidade do inventário publicitário.
+### Dicionário de Dados
 
-## 2. Objetivos SMART
-Objetivo 1
+| Variável | Tipo | Descrição |
+| :--- | :--- | :--- |
+| `id` | Numérico | Identificador único da impressão |
+| `click` | Binário | **Variável alvo** — 1: clique; 0: não clique |
+| `hour` | Numérico | Marcação temporal (formato YYMMDDHH) |
+| `C1` | Numérico | Variável anónima de contexto |
+| `banner_pos` | Numérico | Posição do anúncio na página |
+| `site_id` | Alfanumérico | Identificador do *site* |
+| `site_domain` | Alfanumérico | Domínio do *site* |
+| `site_category` | Alfanumérico | Categoria temática do *site* |
+| `app_id` | Alfanumérico | Identificador da aplicação |
+| `app_domain` | Alfanumérico | Domínio da aplicação |
+| `app_category` | Alfanumérico | Categoria temática da aplicação |
+| `device_id` | Alfanumérico | Identificador do dispositivo |
+| `device_ip` | Alfanumérico | Endereço IP do utilizador |
+| `device_model` | Alfanumérico | Modelo do dispositivo móvel |
+| `device_type` | Numérico | Tipo de dispositivo (ex.: *smartphone*, *tablet*) |
+| `device_conn_type` | Numérico | Tipo de ligação (ex.: 3G, *Wi-Fi*) |
+| `C14` a `C21` | Numérico | Variáveis anónimas relativas ao anúncio |
 
-Desenvolver e avaliar um modelo preditivo capaz de estimar a probabilidade de clique em anúncios online, utilizando o dataset Avazu CTR Prediction.
+---
 
-Objetivo 2
+## 2. Objetivo SMART
 
-Identificar as 5 variáveis de maior impacto (ex: site_category, device_type, hour) na decisão de clique, permitindo criar um perfil de segmentação de audiência mais eficaz.
+**Objetivo:** Desenvolver um modelo de classificação binária capaz de prever a probabilidade de um utilizador clicar num anúncio *mobile*, usando o *dataset* Avazu (amostra de 5 milhões de registos), atingindo um AUC-ROC superior a 0,75 no conjunto de teste isolado, até à data de entrega do *Milestone* 3 (23 de abril de 2026).
 
-Objetivo 3
+**Fundamentação SMART:**
 
-Comparar diferentes algoritmos de aprendizagem automática (ex.: Regressão Logística, Random Forest, Gradient Boosting), identificando o modelo com melhor desempenho preditivo.
+- **Específico (*Specific*):** o objetivo centra-se na previsão da variável binária `click`, num contexto bem delimitado — publicidade *mobile* em ambiente de *Real-Time Bidding*.
+- **Mensurável (*Measurable*):** o critério de sucesso é quantificável: AUC-ROC > 0,75 no conjunto de teste. Esta métrica é a oficial da competição Avazu e é robusta ao desequilíbrio de classes, ao contrário da *Accuracy* simples.
+- **Atingível (*Achievable*):** o *dataset* é público, os dados estão disponíveis no Kaggle, e algoritmos como *Random Forest* e *XGBoost* são reconhecidos na literatura como adequados para este tipo de problema (He et al., 2014).
+- **Relevante (*Relevant*):** um modelo capaz de ordenar impressões por probabilidade de clique tem valor direto para anunciantes e plataformas de *RTB*, reduzindo custo por aquisição e aumentando a eficiência das campanhas.
+- **Temporal (*Time-bound*):** delimitado pela data de entrega do *Milestone* 3, a 23 de abril de 2026.
 
-Objetivo 4
-
-Avaliar os modelos através de métricas adequadas a problemas de classificação binária desbalanceada, como:
-
-AUC-ROC
-
-Log-Loss
-
-Precision, Recall e F1-score
+---
 
 ## 3. Perguntas de Investigação
 
