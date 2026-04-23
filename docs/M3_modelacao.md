@@ -43,7 +43,7 @@ Aplicámos `class_weight='balanced'` para compensar o desequilíbrio de classes 
 
 O *baseline* estabelece o patamar mínimo: qualquer modelo candidato tem de superar AUC-ROC = 0.6412 para justificar a sua complexidade adicional.
 
-![Curva de aprendizagem](../reports/figures/learning_curve.png)
+![Curva de aprendizagem](../reports/figures/learning_curve_.png)
 
 ### 2.2. Modelos Candidatos
 
@@ -60,7 +60,8 @@ Testámos dois algoritmos de *ensemble learning* de maior complexidade:
 
 Ambos os modelos superam claramente o *baseline* (AUC-ROC +0.08 para o *Random Forest* e +0.10 para o XGBoost). O XGBoost teve o melhor desempenho no conjunto de teste e foi selecionado para a fase de otimização.
 
-> Ver figura: `reports/figures/learning_curve_random_forest.png` e `reports/figures/learning_curve_xgboost.png`
+![Curva de aprendizagem ramdom forest](../reports/figures/learning_curve_random_forest.png) 
+![Curva de aprendizagem XGBoost](../reports/figures/learning_curve_XGBoost.png) 
 
 ### Diagnóstico de generalização
 
@@ -116,7 +117,7 @@ Aplicámos *5-Fold Cross-Validation* ao modelo otimizado dentro do conjunto de t
 
 O desvio padrão de 0.0006 é muito baixo — o modelo é estável e os resultados são repetíveis independentemente de como os dados são divididos. O IC a 95% é [0.7493, 0.7516], o que confirma que o objetivo SMART está atingido com confiança.
 
-> Ver figura: `reports/figures/cross_validation_xgboost.png`
+![Cross validation XGBoost](../reports/figures/cross_validation_xgboost.png) 
 
 ### 4.2. Matriz de Confusão e Análise de Erros
 
@@ -136,7 +137,7 @@ A análise de padrões de erro mostrou que os Falsos Negativos se concentram mai
 
 Uma possível melhoria futura seria ajustar o *threshold* de decisão abaixo de 0.5 para favorecer o *Recall* em detrimento da Precisão, o que faz sentido num contexto onde perder cliques reais é mais caro do que fazer lances desnecessários.
 
-> Ver figura: `reports/figures/matriz_confusao_final.png`
+![Matriz Confusão](../reports/figures/matriz_confusao_final.png) 
 
 ### 4.3. Importância dos Atributos (*Feature Importance*)
 
