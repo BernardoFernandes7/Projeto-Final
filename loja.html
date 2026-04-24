@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lumen – Loja</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{
+      --pink-bg:#f2c4ce;--pink-light:#f7dde3;--magenta:#c0325a;
+      --dark:#2a1a1a;--text:#3a2020;--muted:#8a6060;
+      --white:#ffffff;--bg:#fdf8f8;--border:#e8d0d4;
+      --font-display:'Cormorant Garamond',serif;--font-body:'Jost',sans-serif;
+    }
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-weight:300;overflow-x:hidden;}
+
+    /* ── NAV ── */
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--pink-bg);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:60px;box-shadow:0 2px 10px rgba(180,80,100,.15);}
+    .nav-logo{font-family:var(--font-display);font-size:1.7rem;font-weight:600;color:var(--magenta);text-decoration:none;letter-spacing:.08em;flex-shrink:0;}
+    .nav-links{display:flex;align-items:center;gap:28px;list-style:none;flex:1;justify-content:center;}
+    .nav-links a{font-size:.82rem;font-weight:400;color:var(--magenta);text-decoration:none;letter-spacing:.04em;transition:opacity .2s;}
+    .nav-links a:hover{opacity:.65;}
+    .nav-links a.active{opacity:.65;border-bottom:1.5px solid var(--magenta);padding-bottom:1px;}
+    .nav-btn{font-family:var(--font-body);font-size:.78rem;font-weight:400;padding:8px 22px;border:1.5px solid var(--magenta);border-radius:6px;background:transparent;color:var(--magenta);text-decoration:none;cursor:pointer;transition:background .2s,color .2s;white-space:nowrap;}
+    .nav-btn:hover{background:var(--magenta);color:var(--white);}
+
+    /* ── SHOP HEADER ── */
+    .shop-hero{background:var(--pink-light);padding:100px 72px 36px;border-bottom:1px solid var(--border);}
+    .breadcrumb{font-size:.75rem;color:var(--muted);margin-bottom:10px;}
+    .breadcrumb a{color:var(--magenta);text-decoration:none;}
+    .breadcrumb a:hover{text-decoration:underline;}
+    .shop-title{font-family:var(--font-display);font-size:clamp(2rem,3.5vw,3rem);font-weight:300;color:var(--dark);}
+    .shop-meta{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-top:20px;}
+    .shop-count{font-size:.82rem;color:var(--muted);}
+    .shop-count span{font-weight:500;color:var(--magenta);}
+    .sort-select{font-family:var(--font-body);font-size:.8rem;color:var(--text);border:1px solid var(--border);background:var(--white);padding:8px 32px 8px 14px;border-radius:4px;outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c0325a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+
+    /* ── LAYOUT ── */
+    .shop-layout{display:grid;grid-template-columns:240px 1fr;min-height:calc(100vh - 220px);}
+
+    /* ── SIDEBAR ── */
+    .sidebar{padding:32px 28px;border-right:1px solid var(--border);background:var(--white);position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;}
+    .sidebar-section{margin-bottom:28px;}
+    .filter-title-btn{display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:0;background:none;border:none;width:100%;font-family:var(--font-body);text-align:left;}
+    .filter-label{font-size:.64rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--magenta);}
+    .arrow{font-size:.7rem;color:var(--muted);transition:transform .25s;display:inline-block;}
+    .filter-body{margin-top:14px;}
+    .filter-body.collapsed{display:none;}
+    .sidebar-cats{list-style:none;display:flex;flex-direction:column;gap:4px;}
+    .sidebar-cats a{font-size:.82rem;color:var(--muted);cursor:pointer;padding:5px 10px;border-radius:3px;transition:background .2s,color .2s;display:block;text-decoration:none;}
+    .sidebar-cats a:hover,.sidebar-cats a.active{background:rgba(192,50,90,.08);color:var(--magenta);}
+    .price-slider{width:100%;accent-color:var(--magenta);margin-top:6px;}
+    .price-range-labels{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-top:6px;}
+    .filter-checks{display:flex;flex-direction:column;gap:9px;}
+    .filter-checks label{display:flex;align-items:center;gap:9px;font-size:.82rem;color:var(--muted);cursor:pointer;}
+    .filter-checks input[type=checkbox]{accent-color:var(--magenta);width:14px;height:14px;flex-shrink:0;}
+    .filter-checks label:hover{color:var(--magenta);}
+    .filter-divider{border:none;border-top:1px solid var(--border);margin-bottom:24px;}
+
+    /* ── PRODUCTS GRID ── */
+    .products-area{padding:32px 44px 72px;}
+    .products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+    .product-card{background:var(--white);border:1px solid var(--border);border-radius:4px;overflow:hidden;transition:box-shadow .3s,transform .3s;cursor:pointer;}
+    .product-card:hover{box-shadow:0 10px 36px rgba(192,50,90,.13);transform:translateY(-4px);}
+    .product-img{aspect-ratio:1/1;overflow:hidden;background:var(--pink-light);position:relative;}
+    .product-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s;display:block;}
+    .product-card:hover .product-img img{transform:scale(1.06);}
+    .product-img-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:var(--pink-light);}
+    .product-badge{position:absolute;top:10px;left:10px;font-size:.58rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;background:var(--magenta);color:var(--white);padding:3px 8px;border-radius:2px;}
+    .product-info{padding:16px 18px 20px;}
+    .product-cat{font-size:.6rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--magenta);margin-bottom:6px;}
+    .product-name{font-family:var(--font-display);font-size:1.05rem;font-weight:400;color:var(--dark);line-height:1.3;margin-bottom:10px;}
+    .product-price{font-size:.95rem;font-weight:500;color:var(--magenta);}
+    .product-action{display:flex;align-items:center;gap:10px;margin-top:14px;}
+    .btn-cart{flex:1;padding:9px 14px;background:var(--magenta);border:none;color:var(--white);font-family:var(--font-body);font-size:.7rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;cursor:pointer;border-radius:3px;transition:background .2s;}
+    .btn-cart:hover{background:#a02048;}
+    .btn-wish{width:34px;height:34px;border:1px solid var(--border);background:none;border-radius:3px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:border-color .2s,color .2s;font-size:.9rem;}
+    .btn-wish:hover{border-color:var(--magenta);color:var(--magenta);}
+
+    /* ── EMPTY STATE ── */
+    .empty-state{grid-column:1/-1;text-align:center;padding:72px 24px;color:var(--muted);}
+    .empty-state p{font-family:var(--font-display);font-size:1.6rem;font-weight:300;color:var(--dark);margin-bottom:10px;}
+    .empty-state span{font-size:.84rem;}
+
+    /* ── LOADING ── */
+    .loading-grid{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
+    .skeleton{background:linear-gradient(90deg,var(--pink-light) 25%,var(--pink-bg) 50%,var(--pink-light) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:4px;}
+    .skeleton-card{border:1px solid var(--border);border-radius:4px;overflow:hidden;}
+    .skeleton-img{aspect-ratio:1/1;}
+    .skeleton-body{padding:16px 18px 20px;display:flex;flex-direction:column;gap:8px;}
+    .skeleton-line{height:10px;border-radius:3px;}
+    .skeleton-line.short{width:40%;}
+    .skeleton-line.med{width:70%;}
+    .skeleton-line.price{width:25%;height:14px;margin-top:6px;}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+    /* ── GOOGLE SHEETS BANNER ── */
+    .sheets-notice{background:rgba(192,50,90,.06);border:1px solid rgba(192,50,90,.18);border-radius:4px;padding:14px 18px;margin-bottom:28px;display:flex;align-items:flex-start;gap:12px;font-size:.78rem;line-height:1.6;color:var(--muted);}
+    .sheets-notice strong{color:var(--magenta);}
+    .sheets-notice .icon{font-size:1.1rem;flex-shrink:0;margin-top:1px;}
+    .sheets-notice a{color:var(--magenta);}
+
+    /* ── NEWSLETTER ── */
+    .nl-section{background:var(--pink-bg);padding:72px;text-align:center;}
+    .section-label{font-size:.66rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--magenta);margin-bottom:12px;}
+    .section-title{font-family:var(--font-display);font-size:clamp(2rem,3.5vw,3.2rem);font-weight:300;color:var(--dark);line-height:1.2;margin-bottom:18px;}
+    .section-desc{font-size:.9rem;line-height:1.85;color:var(--muted);max-width:540px;}
+    .nl-form{display:flex;max-width:440px;margin:28px auto 0;}
+    .nl-form input{flex:1;padding:12px 18px;border:1px solid rgba(192,50,90,.35);background:rgba(255,255,255,.7);color:var(--dark);font-family:var(--font-body);font-size:.84rem;outline:none;border-radius:4px 0 0 4px;transition:border-color .2s;}
+    .nl-form input:focus{border-color:var(--magenta);}
+    .nl-form button{padding:12px 24px;background:var(--magenta);border:none;color:var(--white);font-family:var(--font-body);font-size:.72rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;border-radius:0 4px 4px 0;transition:background .2s;}
+    .nl-form button:hover{background:#a02048;}
+    .nl-msg{margin-top:12px;font-size:.82rem;font-weight:500;display:none;}
+    .nl-msg.ok{color:#4a7c59;}
+    .nl-msg.err{color:var(--magenta);}
+
+    /* ── FOOTER ── */
+    footer{background:#2a1010;padding:52px 72px 28px;}
+    .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:44px;margin-bottom:44px;}
+    .footer-logo{font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:var(--white);letter-spacing:.08em;margin-bottom:14px;}
+    .footer-tagline{font-size:.8rem;line-height:1.7;color:rgba(255,255,255,.45);}
+    .footer-col h4{font-size:.66rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--pink-bg);margin-bottom:18px;}
+    .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+    .footer-col ul a{font-size:.8rem;color:rgba(255,255,255,.4);text-decoration:none;transition:color .2s;}
+    .footer-col ul a:hover{color:var(--pink-bg);}
+    .footer-col p{font-size:.8rem;line-height:1.8;color:rgba(255,255,255,.45);}
+    .footer-payments{display:flex;gap:10px;margin-top:18px;}
+    .footer-pay-badge{padding:4px 12px;border:1px solid rgba(242,196,206,.25);font-size:.62rem;font-weight:500;color:rgba(255,255,255,.4);border-radius:3px;}
+    .footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+    .footer-bottom p{font-size:.7rem;color:rgba(255,255,255,.3);}
+    .footer-legal{display:flex;gap:20px;}
+    .footer-legal a{font-size:.7rem;color:rgba(255,255,255,.3);text-decoration:none;transition:color .2s;}
+    .footer-legal a:hover{color:var(--pink-bg);}
+
+    /* ── CART TOAST ── */
+    .cart-toast{position:fixed;bottom:28px;right:28px;background:var(--dark);color:var(--white);padding:14px 22px;border-radius:6px;font-size:.82rem;z-index:9999;transform:translateY(80px);opacity:0;transition:transform .3s,opacity .3s;box-shadow:0 8px 28px rgba(0,0,0,.25);}
+    .cart-toast.show{transform:translateY(0);opacity:1;}
+    .cart-count{position:fixed;top:16px;right:148px;background:var(--magenta);color:var(--white);width:18px;height:18px;border-radius:50%;font-size:.6rem;font-weight:600;display:none;align-items:center;justify-content:center;z-index:300;}
+    .cart-count.visible{display:flex;}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:980px){
+      nav{padding:0 18px;}
+      .nav-links{display:none;}
+      .shop-hero{padding:90px 24px 28px;}
+      .shop-layout{grid-template-columns:1fr;}
+      .sidebar{position:static;height:auto;border-right:none;border-bottom:1px solid var(--border);padding:24px;}
+      .products-area{padding:24px 16px 60px;}
+      .products-grid{grid-template-columns:repeat(2,1fr);}
+      footer{padding:48px 24px 28px;}
+      .footer-grid{grid-template-columns:1fr;gap:32px;}
+      .nl-section{padding:56px 24px;}
+    }
+    @media(max-width:500px){
+      .products-grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a class="nav-logo" href="index.html">Lumen</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Início</a></li>
+    <li><a href="loja.html" class="active">Loja</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="servicos.html">Serviços</a></li>
+    <li><a href="sobre.html">Sobre Nós</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;position:relative;">
+    <a class="nav-btn" id="nav-login-btn" href="login.html">Iniciar Sessão</a>
+    <div id="nav-user-area" style="display:none;align-items:center;gap:10px">
+      <span id="nav-user-name" style="font-size:.82rem;color:var(--magenta);font-weight:500"></span>
+      <button onclick="logout()" style="font-size:.75rem;color:var(--muted);cursor:pointer;text-decoration:underline;border:none;background:none;font-family:inherit">Sair</button>
+    </div>
+  </div>
+</nav>
+
+<!-- Cart count badge -->
+<div class="cart-count" id="cartCount">0</div>
+
+<!-- ── SHOP HERO ── -->
+<div class="shop-hero">
+  <p class="breadcrumb"><a href="index.html">Início</a> › Todos os Produtos</p>
+  <h1 class="shop-title">Todos os produtos</h1>
+  <div class="shop-meta">
+    <p class="shop-count"><span id="visibleCount">13</span> produtos encontrados</p>
+    <select class="sort-select" onchange="sortProducts(this.value)">
+      <option value="default">Ordenar: Recomendado</option>
+      <option value="price-asc">Preço: menor para maior</option>
+      <option value="price-desc">Preço: maior para menor</option>
+      <option value="name-az">Nome A–Z</option>
+    </select>
+  </div>
+</div>
+
+<!-- ── SHOP LAYOUT ── -->
+<div class="shop-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- Categoria -->
+    <div class="sidebar-section">
+      <button class="filter-title-btn" onclick="toggleFilter(this)">
+        <span class="filter-label">Tipo de produto</span>
+        <span class="arrow">▾</span>
+      </button>
+      <div class="filter-body">
+        <ul class="sidebar-cats">
+          <li><a class="active" onclick="filterCat('todos',this)">Todos os produtos</a></li>
+          <li><a onclick="filterCat('lumen',this)">✦ A Nossa Marca</a></li>
+          <li><a onclick="filterCat('maquiagem',this)">Maquiagem</a></li>
+          <li><a onclick="filterCat('acessorios',this)">Acessórios</a></li>
+          <li><a onclick="filterCat('cuidados',this)">Cuidados</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="filter-divider"/>
+
+    <!-- Preço -->
+    <div class="sidebar-section">
+      <button class="filter-title-btn" onclick="toggleFilter(this)">
+        <span class="filter-label">Preço</span>
+        <span class="arrow">▾</span>
+      </button>
+      <div class="filter-body collapsed">
+        <input type="range" class="price-slider" min="0" max="200" value="200"
+               oninput="updatePrice(this.value)" id="priceSlider"/>
+        <div class="price-range-labels"><span>0€</span><span id="priceMax">200€</span></div>
+      </div>
+    </div>
+
+    <hr class="filter-divider"/>
+
+    <!-- Tipo de Pele -->
+    <div class="sidebar-section">
+      <button class="filter-title-btn" onclick="toggleFilter(this)">
+        <span class="filter-label">Tipo de Pele</span>
+        <span class="arrow">▾</span>
+      </button>
+      <div class="filter-body collapsed">
+        <div class="filter-checks">
+          <label><input type="checkbox" value="seca" onchange="updateTipoPele()"/> Seca</label>
+          <label><input type="checkbox" value="oleosa" onchange="updateTipoPele()"/> Oleosa</label>
+          <label><input type="checkbox" value="mista" onchange="updateTipoPele()"/> Mista</label>
+          <label><input type="checkbox" value="sensivel" onchange="updateTipoPele()"/> Sensível</label>
+        </div>
+      </div>
+    </div>
+
+    <hr class="filter-divider"/>
+
+    <!-- Acabamento -->
+    <div class="sidebar-section">
+      <button class="filter-title-btn" onclick="toggleFilter(this)">
+        <span class="filter-label">Acabamento</span>
+        <span class="arrow">▾</span>
+      </button>
+      <div class="filter-body collapsed">
+        <div class="filter-checks">
+          <label><input type="checkbox" value="matte" onchange="updateAcabamento()"/> Matte</label>
+          <label><input type="checkbox" value="brilho" onchange="updateAcabamento()"/> Brilho</label>
+          <label><input type="checkbox" value="natural" onchange="updateAcabamento()"/> Natural</label>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- PRODUCTS -->
+  <div class="products-area">
+
+    <!--
+    ╔══════════════════════════════════════════════════════════╗
+    ║  INTEGRAÇÃO GOOGLE SHEETS                                ║
+    ║  Instruções:                                             ║
+    ║  1. Crie uma Google Sheet com colunas:                   ║
+    ║     Nome, Categoria, Preco, Imagem, Acabamento,          ║
+    ║     TipoPele, Descricao                                  ║
+    ║  2. Publique a Sheet: Ficheiro → Partilhar →             ║
+    ║     Publicar na Web (formato CSV)                        ║
+    ║  3. Copie o URL gerado e cole em SHEETS_CSV_URL abaixo  ║
+    ║  4. Mude USE_SHEETS para true                            ║
+    ╚══════════════════════════════════════════════════════════╝
+    -->
+
+    <div class="sheets-notice" id="sheetsNotice" style="display:none">
+      <span class="icon">📊</span>
+      <div>
+        <strong>Google Sheets ativo!</strong> Os produtos estão a ser carregados da sua folha de cálculo.
+        Se precisar de alterar produtos, edite diretamente a <a href="#" id="sheetsLink" target="_blank">Google Sheet</a>.
+      </div>
+    </div>
+
+    <div class="products-grid" id="productsGrid">
+      <!-- Skeletons while loading -->
+      <div class="loading-grid" id="loadingSkeletons">
+        <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-line short"></div><div class="skeleton skeleton-line med"></div><div class="skeleton skeleton-line price"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-line short"></div><div class="skeleton skeleton-line med"></div><div class="skeleton skeleton-line price"></div></div></div>
+        <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-line short"></div><div class="skeleton skeleton-line med"></div><div class="skeleton skeleton-line price"></div></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── NEWSLETTER ── -->
+<div class="nl-section">
+  <p class="section-label">Newsletter</p>
+  <h2 class="section-title">Fique Sempre Inspirada</h2>
+  <p class="section-desc" style="margin:0 auto">Receba os nossos artigos e promoções exclusivas na sua caixa de entrada.</p>
+  <div class="nl-form">
+    <input type="email" id="nlEmail" placeholder="O seu e-mail"/>
+    <button onclick="subscribeNL()">Assinar</button>
+  </div>
+  <p class="nl-msg" id="nlMsg"></p>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">Lumen</div>
+      <p class="footer-tagline">Explore a beleza com propósito.<br>Projeto académico — ISCAC, Coimbra.</p>
+      <div class="footer-payments">
+        <div class="footer-pay-badge">MB WAY</div>
+        <div class="footer-pay-badge">MB</div>
+      </div>
+    </div>
+    <div class="footer-col"><h4>Navegação</h4><ul>
+      <li><a href="index.html">Início</a></li>
+      <li><a href="loja.html">Loja</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="servicos.html">Serviços</a></li>
+      <li><a href="sobre.html">Sobre Nós</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul>
+      <li><a href="#">Política de Privacidade</a></li>
+      <li><a href="#">Termos e Condições</a></li>
+      <li><a href="#">Política de Envio</a></li>
+      <li><a href="#">Política de Reembolso</a></li>
+      <li><a href="#">Acessibilidade</a></li>
+    </ul></div>
+    <div class="footer-col"><h4>Contactos</h4>
+      <p>239 856 908<br>lumen@gmail.com<br><br>Rua Ferreira Borges, n.º 20<br>3000-001, Coimbra</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 Lumen. Projeto académico — ISCAC.</p>
+    <div class="footer-legal">
+      <a href="#">Privacidade</a>
+      <a href="#">Termos</a>
+      <a href="#">Acessibilidade</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Cart toast -->
+<div class="cart-toast" id="cartToast">✓ Produto adicionado ao carrinho</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   CONFIGURAÇÃO GOOGLE SHEETS
+   ════════════════════════════════════════════════════════════
+   Para ligar a uma Google Sheet:
+   1. Na sua Sheet: Ficheiro → Partilhar → Publicar na Web
+   2. Escolha "Folha1" e formato "Valores separados por vírgulas (.csv)"
+   3. Copie o URL e cole abaixo em SHEETS_CSV_URL
+   4. Mude USE_SHEETS para true
+   ════════════════════════════════════════════════════════════ */
+const USE_SHEETS  = true;
+const SHEETS_CSV_URL = 'https://docs.google.com/spreadsheets/d/1PW70ceRkj4hTqWlDKir_1COTpuHv8m51DMfPpiNHT9Y/pub?output=csv';
+
+/* ── Produtos integrados (usados quando USE_SHEETS = false) ── */
+const PRODUTOS_LOCAL = [
+  {
+    nome: 'Discos de Limpeza Reutilizáveis',
+    categoria: 'cuidados',
+    preco: 5.00,
+    imagem: 'https://skpro.pt/82936-large_default/discos-algodao-saco-80un-403501.jpg',
+    acabamento: 'natural',
+    tipoPele: 'sensivel',
+    destaque: false
+  },
+  {
+    nome: 'Espelho LED Portátil',
+    categoria: 'acessorios',
+    preco: 20.00,
+    imagem: 'https://m.media-amazon.com/images/I/51YpiEnbawL._AC_SX679_.jpg',
+    acabamento: '',
+    tipoPele: '',
+    destaque: false
+  },
+  {
+    nome: 'Pincel Kabuki Macio',
+    categoria: 'acessorios',
+    preco: 8.00,
+    imagem: 'https://centraldoscabelos.pt/wp-content/uploads/2019/02/10653.jpg',
+    acabamento: '',
+    tipoPele: '',
+    destaque: false
+  },
+  {
+    nome: 'Bálsamo Labial Nutritivo',
+    categoria: 'cuidados',
+    preco: 25.65,
+    imagem: 'https://loja.thalgoportugal.pt/images/thumbs/0000849_balsamo-nutritivo-nutri-confort-labios-15ml-sta_1024.webp',
+    acabamento: 'natural',
+    tipoPele: 'seca',
+    destaque: false
+  },
+  {
+    nome: 'Gel de Limpeza Suave',
+    categoria: 'cuidados',
+    preco: 19.07,
+    imagem: 'https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/rov/rov50704/g/37.jpg',
+    acabamento: 'natural',
+    tipoPele: 'mista',
+    destaque: false
+  },
+  {
+    nome: 'Sérum Facial Hidratante',
+    categoria: 'cuidados',
+    preco: 13.15,
+    imagem: 'https://cdn2.primor.eu/media/catalog/product/cache/f3020b7489dcfc4d1d147cf4dad07b7f/8/4/8436585437030_b733.webp',
+    acabamento: 'natural',
+    tipoPele: 'seca',
+    destaque: false
+  },
+  {
+    nome: 'Paleta Sombras Neutras',
+    categoria: 'maquiagem',
+    preco: 32.00,
+    imagem: 'https://kyliecosmetics.com/cdn/shop/files/custom_resized_853aec5e-3d3d-4cd4-b843-ebabb3cf450c.jpg?crop=center&height=515&v=1689115547&width=721',
+    acabamento: 'matte',
+    tipoPele: 'oleosa',
+    destaque: false
+  },
+  {
+    nome: 'Blush Cremoso Versátil',
+    categoria: 'maquiagem',
+    preco: 5.80,
+    imagem: 'https://cdn.notinoimg.com/order_2k/catrice/4059729540485_02/velvet-pudding-blurring-blush___251217.jpg',
+    acabamento: 'brilho',
+    tipoPele: 'mista',
+    destaque: false
+  },
+  {
+    nome: 'Base Líquida Radiante',
+    categoria: 'maquiagem',
+    preco: 23.80,
+    imagem: 'https://cdn.notinoimg.com/order_2k/skin1004/8809576261622_01-o/madagascar-centella-tone-brightening-tone-up-sunscreen___221019.jpg',
+    acabamento: 'brilho',
+    tipoPele: 'seca',
+    destaque: false
+  },
+  {
+    nome: 'Lumen Blush Rosé Iluminador',
+    categoria: 'lumen',
+    preco: 7.90,
+    imagem: 'https://www.worten.pt/i/1cf2f700800b9239bd2d427dfe9fb4f133dd4537',
+    acabamento: 'brilho',
+    tipoPele: 'mista',
+    destaque: true
+  },
+  {
+    nome: 'Lumen Base Matte Longa Duração',
+    categoria: 'lumen',
+    preco: 28.40,
+    imagem: 'https://www.coisasdediva.com.br/wp-content/uploads/2024/04/base-matte-powder-1.jpg',
+    acabamento: 'matte',
+    tipoPele: 'oleosa',
+    destaque: true
+  },
+  {
+    nome: 'Lumen Lip Gloss Hidratante',
+    categoria: 'lumen',
+    preco: 38.62,
+    imagem: 'https://www.olora.com.br/wp-content/uploads/2025/05/IMG_8325_jpg.jpeg',
+    acabamento: 'brilho',
+    tipoPele: 'seca',
+    destaque: true
+  },
+  {
+    nome: 'Lumen Sérum Glow Noturno',
+    categoria: 'lumen',
+    preco: 20.40,
+    imagem: 'https://cloudinary.images-iherb.com/image/upload/f_auto,q_auto:eco/images/scl/scl81638/y/19.jpg',
+    acabamento: 'natural',
+    tipoPele: 'seca',
+    destaque: true
+  }
+];
+
+/* ── Estado ── */
+let allProducts = [];
+let activeCat = 'todos';
+let maxPrice = 200;
+let activeAcabamento = [];
+let activeTipoPele = [];
+let cartCount = 0;
+
+/* ── Inicialização ── */
+window.addEventListener('DOMContentLoaded', async () => {
+  updateNavAuth();
+  if (USE_SHEETS) {
+    document.getElementById('sheetsNotice').style.display = 'flex';
+    document.getElementById('sheetsLink').href = 'https://docs.google.com/spreadsheets/d/1PW70ceRkj4hTqWlDKir_1COTpuHv8m51DMfPpiNHT9Y/edit';
+    await loadFromSheets();
+  } else {
+    allProducts = [...PRODUTOS_LOCAL];
+    renderProdutos();
+  }
+});
+
+/* ── Google Sheets CSV loader ── */
+async function loadFromSheets() {
+  try {
+    const cacheBust = `&_=${Date.now()}`;
+    const res = await fetch(SHEETS_CSV_URL + cacheBust);
+    const text = await res.text();
+    const rows = parseCSV(text);
+    if (rows.length < 2) throw new Error('Vazio');
+    const headers = rows[0].map(h => h.trim().toLowerCase());
+    allProducts = rows.slice(1).filter(r => r.some(c => c.trim())).map(row => {
+      const get = (col) => (row[headers.indexOf(col)] || '').trim();
+      return {
+        nome:       get('nome') || get('name'),
+        categoria:  (get('categoria') || get('category') || '').toLowerCase(),
+        preco:      parseFloat((get('preco') || get('price') || '0').replace(',', '.')) || 0,
+        imagem:     get('imagem') || get('image') || get('img'),
+        acabamento: (get('acabamento') || '').toLowerCase(),
+        tipoPele:   (get('tipopele') || get('tipo de pele') || get('skin') || '').toLowerCase(),
+        destaque:   (get('destaque') || '').toLowerCase() === 'sim'
+      };
+    });
+    renderProdutos();
+  } catch(e) {
+    console.warn('Sheets error, usando dados locais:', e);
+    allProducts = [...PRODUTOS_LOCAL];
+    renderProdutos();
+    document.getElementById('sheetsNotice').innerHTML = '<span class="icon">⚠️</span><div><strong>Não foi possível carregar da Google Sheet.</strong> A mostrar produtos pré-definidos. Verifique o URL da Sheet e se está publicada como CSV.</div>';
+  }
+}
+
+/* ── CSV parser simples ── */
+function parseCSV(text) {
+  return text.split('\n').filter(l => l.trim()).map(line => {
+    const result = [];
+    let cur = '', inQ = false;
+    for (let i = 0; i < line.length; i++) {
+      const ch = line[i];
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === ',' && !inQ) { result.push(cur); cur = ''; }
+      else { cur += ch; }
+    }
+    result.push(cur);
+    return result;
+  });
+}
+
+/* ── Render ── */
+function renderProdutos() {
+  document.getElementById('loadingSkeletons')?.remove();
+  const grid = document.getElementById('productsGrid');
+
+  let filtered = allProducts.filter(p => {
+    if (activeCat !== 'todos' && p.categoria !== activeCat) return false;
+    if (p.preco > maxPrice) return false;
+    if (activeAcabamento.length && !activeAcabamento.includes(p.acabamento)) return false;
+    if (activeTipoPele.length && !activeTipoPele.includes(p.tipoPele)) return false;
+    return true;
+  });
+
+  document.getElementById('visibleCount').textContent = filtered.length;
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-state">
+      <p>Nenhum produto encontrado</p>
+      <span>Tente ajustar os filtros ou limpar a seleção.</span>
+    </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(p => {
+    const catLabel = p.categoria === 'lumen'
+      ? '✦ Lumen'
+      : p.categoria.charAt(0).toUpperCase() + p.categoria.slice(1);
+    const precoFmt = p.preco.toFixed(2).replace('.', ',') + '€';
+    return `
+    <div class="product-card" onclick="addToCart('${p.nome.replace(/'/g,"\\'")}')">
+      <div class="product-img">
+        ${p.destaque ? '<span class="product-badge">✦ Lumen</span>' : ''}
+        ${p.imagem
+          ? `<img src="${p.imagem}" alt="${p.nome}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=\\'product-img-placeholder\\'>💄</div>'">`
+          : `<div class="product-img-placeholder">💄</div>`}
+      </div>
+      <div class="product-info">
+        <p class="product-cat">${catLabel}</p>
+        <p class="product-name">${p.nome}</p>
+        <p class="product-price">${precoFmt}</p>
+        <div class="product-action">
+          <button class="btn-cart" onclick="event.stopPropagation();addToCart('${p.nome.replace(/'/g,"\\'")}')">Adicionar</button>
+          <button class="btn-wish" title="Guardar" onclick="event.stopPropagation()">♡</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── Filtros ── */
+function filterCat(cat, el) {
+  activeCat = cat;
+  document.querySelectorAll('.sidebar-cats a').forEach(a => a.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderProdutos();
+}
+
+function updatePrice(val) {
+  maxPrice = parseFloat(val);
+  document.getElementById('priceMax').textContent = val + '€';
+  renderProdutos();
+}
+
+function updateAcabamento() {
+  activeAcabamento = [...document.querySelectorAll('input[onchange="updateAcabamento()"]:checked')].map(cb => cb.value);
+  renderProdutos();
+}
+
+function updateTipoPele() {
+  activeTipoPele = [...document.querySelectorAll('input[onchange="updateTipoPele()"]:checked')].map(cb => cb.value);
+  renderProdutos();
+}
+
+function sortProducts(val) {
+  if (val === 'price-asc')  allProducts.sort((a,b) => a.preco - b.preco);
+  else if (val === 'price-desc') allProducts.sort((a,b) => b.preco - a.preco);
+  else if (val === 'name-az')    allProducts.sort((a,b) => a.nome.localeCompare(b.nome, 'pt'));
+  else allProducts = USE_SHEETS ? allProducts : [...PRODUTOS_LOCAL];
+  renderProdutos();
+}
+
+function toggleFilter(btn) {
+  const body = btn.nextElementSibling;
+  const arrow = btn.querySelector('.arrow');
+  const isOpen = body.classList.contains('collapsed');
+  body.classList.toggle('collapsed', !isOpen);
+  arrow.style.transform = isOpen ? 'rotate(180deg)' : '';
+}
+
+/* ── Carrinho (simulado) ── */
+function addToCart(nome) {
+  cartCount++;
+  const badge = document.getElementById('cartCount');
+  badge.textContent = cartCount;
+  badge.classList.add('visible');
+  const toast = document.getElementById('cartToast');
+  toast.classList.add('show');
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => toast.classList.remove('show'), 2400);
+}
+
+/* ── Newsletter ── */
+function subscribeNL() {
+  const email = document.getElementById('nlEmail').value.trim();
+  const msg = document.getElementById('nlMsg');
+  if (!email || !email.includes('@')) {
+    msg.textContent = 'Por favor insira um email válido.';
+    msg.className = 'nl-msg err';
+    msg.style.display = 'block';
+    return;
+  }
+  msg.textContent = '✓ Subscrito com sucesso! Obrigada.';
+  msg.className = 'nl-msg ok';
+  msg.style.display = 'block';
+  document.getElementById('nlEmail').value = '';
+}
+
+/* ── Auth ── */
+function updateNavAuth() {
+  let u = null;
+  try { u = JSON.parse(sessionStorage.getItem('lumen_user')); } catch(e){}
+  const b = document.getElementById('nav-login-btn');
+  const a = document.getElementById('nav-user-area');
+  const n = document.getElementById('nav-user-name');
+  if (b) b.style.display = u ? 'none' : '';
+  if (a) a.style.display = u ? 'flex' : 'none';
+  if (n && u) n.textContent = u.nome || u.email || '';
+}
+
+function logout() {
+  sessionStorage.removeItem('lumen_user');
+  updateNavAuth();
+}
+</script>
+</body>
+</html>
