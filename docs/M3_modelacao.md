@@ -101,7 +101,9 @@ O desvio padrão de 0.0006 é muito baixo — o modelo é estável e os resultad
 | **Real: Não-clique** | 577.197 (VN) — 57,7% | 253.084 (FP) — 25,3% |
 | **Real: Clique** | 56.547 (FN) — 5,6% | 113.172 (VP) — 11,3% |
 
-> **Análise:** O modelo ainda apresenta 253.084 Falsos Positivos — impressões pagas sem retorno, custo desperdiçado para o anunciante. Os Falsos Negativos (56.547), embora menos numerosos, são o erro mais prejudicial: cada um representa uma impressão com probabilidade real de clique que o modelo ignorou — receita perdida. Os FN concentram-se em impressões da hora 17:00 e em contextos com `device_conn_type` elevado. Ajustar o *threshold* de decisão abaixo de 0.5 poderia melhorar o *Recall* à custa de mais FP, o que pode ser preferível dependendo da estratégia do anunciante.
+> **Análise:** O modelo ainda apresenta 253.084 Falsos Positivos — impressões pagas sem retorno, custo desperdiçado para o anunciante.
+Os Falsos Negativos (56.547), embora menos numerosos, são o erro mais prejudicial: cada um representa uma impressão com probabilidade real de clique que o modelo ignorou — receita perdida.
+> Os FN concentram-se em impressões da hora 17:00 e em contextos com `device_conn_type` elevado. Ajustar o *threshold* de decisão abaixo de 0.5 poderia melhorar o *Recall* à custa de mais FP, o que pode ser preferível dependendo da estratégia do anunciante.
 
 ![Matriz de Confusão — Modelo Final](../reports/figures/matriz_confusao_final.png)
 
