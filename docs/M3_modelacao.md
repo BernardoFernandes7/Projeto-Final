@@ -40,8 +40,8 @@ porque um modelo que previsse sempre "não clique" teria 83% de acerto sem qualq
 | :--- | :---: | :---: |
 | AUC-ROC | 0.6411 | 0.6412 |
 | F1-Score | 0.3362 | 0.3363 |
-| Precisão | 0.2196| 0.2325 |
-| *Recall* | — | 0.6073 |
+| Precisão | 0.2196 | 0.2325 |
+| *Recall* | 0.5867 | 0.6073 |
 
 O diagnóstico automático reportou **generalização adequada** (Δ AUC = 0.0001), confirmando ausência de *overfitting*. 
 O *baseline* estabelece o patamar mínimo: qualquer modelo candidato tem de superar AUC-ROC = 0.6412 para justificar a sua complexidade adicional.
