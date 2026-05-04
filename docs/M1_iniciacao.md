@@ -38,25 +38,32 @@ O modelo consegue identificar perfis de utilizador ou contextos de exibição co
 
 ### Dicionário de Variáveis 
 
-| Variável | Tipo de Dado | Descrição | Importância Esperada |
+| Variável | Tipo de Variável | Subtipo | Descrição |
 | :--- | :--- | :--- | :--- |
-| `id` | Alfanumérico | Identificador único do registo (anonimizado) | Nula (apenas identificação) |
-| `click` | Binário (0/1) | **Variável Alvo** — indica se o anúncio foi clicado | Muito Alta |
-| `hour` | Numérico | Data e hora da impressão (formato YYMMDDhh) | Alta (padrões temporais) |
-| `C1` | Categórico Anónimo | Variável anonimizada pela Avazu | Média |
-| `banner_pos` | Numérico | Posição do banner na página | Alta |
-| `site_id` | Categórico | Identificador do site onde o anúncio foi exibido | Alta |
-| `site_domain` | Categórico | Domínio do site | Alta |
-| `site_category` | Categórico | Categoria temática do site | Alta |
-| `app_id` | Categórico | Identificador da aplicação mobile | Alta |
-| `app_domain` | Categórico | Domínio da aplicação | Média |
-| `app_category` | Categórico | Categoria da aplicação mobile | Alta |
-| `device_id` | Alfanumérico | Identificador do dispositivo (hash anonimizado) | Média |
-| `device_ip` | Alfanumérico | Endereço IP do dispositivo (hash anonimizado) | Baixa |
-| `device_model` | Categórico | Modelo do dispositivo | Média |
-| `device_type` | Numérico | Tipo de dispositivo (ex: smartphone, tablet) | Alta |
-| `device_conn_type` | Numérico | Tipo de ligação à internet (ex: WiFi, 4G) | Alta |
-| `C14`–`C21` | Categórico Anónimo | Variáveis anonimizadas pela Avazu (contexto do anúncio) | Alta (C14, C16, C17) |
+| `id` | Categórica | Nominal / alfanumérica | Identificador único do registo, anonimizado. Não representa uma característica preditiva direta. |
+| `click` | Binária | Numérica discreta, valores 0/1 | Variável alvo. Indica se o anúncio foi clicado (`1`) ou não clicado (`0`). |
+| `hour` | Numérica | Discreta temporal | Data e hora da impressão do anúncio, no formato `YYMMDDhh`. Pode ser transformada em variáveis temporais como hora, dia ou dia da semana. |
+| `C1` | Categórica | Nominal codificada numericamente | Variável anonimizada da base Avazu. Apesar de ser numérica, representa categorias. |
+| `banner_pos` | Categórica | Nominal codificada numericamente | Posição do banner na página. Embora esteja codificada com números, representa categorias de posição. |
+| `site_id` | Categórica | Nominal / alfanumérica | Identificador do site onde o anúncio foi exibido. |
+| `site_domain` | Categórica | Nominal / alfanumérica | Domínio do site onde ocorreu a impressão do anúncio. |
+| `site_category` | Categórica | Nominal / alfanumérica | Categoria temática do site. |
+| `app_id` | Categórica | Nominal / alfanumérica | Identificador da aplicação mobile onde o anúncio foi exibido. |
+| `app_domain` | Categórica | Nominal / alfanumérica | Domínio associado à aplicação mobile. |
+| `app_category` | Categórica | Nominal / alfanumérica | Categoria da aplicação mobile. |
+| `device_id` | Categórica | Nominal / alfanumérica | Identificador anonimizado do dispositivo. |
+| `device_ip` | Categórica | Nominal / alfanumérica | Endereço IP anonimizado do dispositivo. |
+| `device_model` | Categórica | Nominal / alfanumérica | Modelo do dispositivo utilizado pelo utilizador. |
+| `device_type` | Categórica | Nominal codificada numericamente | Tipo de dispositivo, por exemplo smartphone, tablet ou desktop. |
+| `device_conn_type` | Categórica | Nominal codificada numericamente | Tipo de ligação à internet utilizada pelo dispositivo, como WiFi ou rede móvel. |
+| `C14` | Categórica | Nominal codificada numericamente | Variável anonimizada relacionada com o contexto do anúncio. |
+| `C15` | Numérica | Discreta finita | Dimensão associada ao anúncio, geralmente relacionada com largura ou configuração visual. |
+| `C16` | Numérica | Discreta finita | Dimensão associada ao anúncio, geralmente relacionada com altura ou configuração visual. |
+| `C17` | Categórica | Nominal codificada numericamente | Variável anonimizada relacionada com o contexto do anúncio. |
+| `C18` | Categórica | Nominal codificada numericamente | Variável anonimizada relacionada com o contexto do anúncio. |
+| `C19` | Categórica | Nominal codificada numericamente | Variável anonimizada relacionada com o contexto do anúncio. |
+| `C20` | Categórica | Nominal codificada numericamente | Variável anonimizada relacionada com o contexto do anúncio. |
+| `C21` | Categórica | Nominal codificada numericamente | Variável anonimizada relacionada com o contexto do anúncio. |
 
 ## 5. Cronograma Interno
 | Fase | Data Limite | Entregável Esperado |
