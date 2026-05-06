@@ -13,7 +13,7 @@ O *dataset* Avazu CTR Prediction contém **40.428.967 registos**, o que inviabil
 Por sugestão da professora, foi adotada uma estratégia de analisar apenas uma **amostra aleatória de 5.000.000 registos** (`random_state=42`), garantindo:
 
 - **Reprodutibilidade total:** a mesma semente produz sempre a mesma amostra, permitindo que qualquer membro da equipa replique os resultados de forma exata.
-- **Representatividade estatística:** a amostragem aleatória simples, sem viés de seleção, preserva as distribuições originais das variáveis — em particular o rácio de desequilíbrio da variável alvo.
+- **Representatividade estatística:** a amostragem aleatória simples, sem viés de seleção, preserva as distribuições originais das variáveis (em particular o rácio de desequilíbrio da variável alvo.)
 - **Compatibilidade com o Kaggle:** a amostra ocupa aproximadamente 2 GB em memória, dentro dos limites da plataforma.
 
 O carregamento é feito através da geração de um conjunto de índices aleatórios com `np.random.choice`, usado para filtrar as linhas do CSV original via o argumento `skiprows` do `pd.read_csv()`:
@@ -40,15 +40,15 @@ A primeira etapa consistiu numa auditoria técnica completa ao *dataset* carrega
 
 **Dimensões e estrutura:** Foram confirmados **5.000.000 registos × 24 colunas**, validando o sucesso da amostragem. As primeiras 5 linhas foram exibidas para inspeção visual da estrutura e dos valores reais.
 
-**Tipos de dados:** Foi mapeado o `dtype` de cada coluna e comparado com um dicionário de tipos-alvo definido a priori. O output gerou uma tabela com o estado de cada variável (`Correto` / `A corrigir`), confirmando que todas as 24 colunas estavam conformes — com exceção de `id`, que é `uint64` em vez de `float64`, diferença sem impacto prático uma vez que esta coluna é removida no pré-processamento.
+**Tipos de dados:** Foi mapeado o `dtype` de cada coluna e comparado com um dicionário de tipos-alvo definido a priori. O output gerou uma tabela com o estado de cada variável (`Correto` / `A corrigir`), confirmando que todas as 24 colunas estavam conformes (com exceção de `id`, que é `uint64` em vez de `float64`, diferença sem impacto prático uma vez que esta coluna é removida no pré-processamento).
 
-**Valores nulos:** A verificação com `df.isnull().sum()` reportou **zero valores nulos** em todas as colunas. Este resultado não significa ausência de dados em falta — o *dataset* Avazu utiliza o valor `-1` como marcador de ausência de informação nas colunas anónimas, investigado na secção 2.1.
+**Valores nulos:** A verificação com `df.isnull().sum()` reportou **zero valores nulos** em todas as colunas. Este resultado não significa ausência de dados em falta (o *dataset* Avazu utiliza o valor `-1` como marcador de ausência de informação nas colunas anónimas, investigado na secção 2.1.).
 
 **Estatísticas descritivas numéricas:** O `df.describe()` revelou os principais momentos estatísticos (média, desvio padrão, mínimo, percentis, máximo) para as variáveis numéricas, permitindo detetar distribuições enviesadas e a presença de `-1` como valor mínimo em algumas colunas anónimas.
 
 **Estatísticas descritivas categóricas:** Para as colunas de tipo `object` (identificadores de site, app e dispositivo), foi construído um resumo com o número de valores únicos (`nunique`), a categoria mais frequente (`top`) e a sua frequência absoluta (`freq`). Este output revelou a **elevada cardinalidade** de variáveis como `site_id` e `app_id`, antecipando a necessidade de estratégias de *encoding* (codificação) específicas.
 
-**Registos duplicados:** Foi confirmada a ausência de linhas totalmente duplicadas (`df.duplicated().sum() = 0`). No entanto, foram detetados **1.130.966 registos (22,62%)** com combinação idêntica de `device_ip`, `device_id`, `hour`, `site_id` e `app_id` (duplicados lógicos). Estes foram **mantidos** porque, em contexto de *Real-Time Bidding*, é normal o mesmo utilizador ser exposto ao mesmo anúncio várias vezes — removê-los eliminaria informação real sobre frequência de exposição.
+**Registos duplicados:** Foi confirmada a ausência de linhas totalmente duplicadas (`df.duplicated().sum() = 0`). No entanto, foram detetados **1.130.966 registos (22,62%)** com combinação idêntica de `device_ip`, `device_id`, `hour`, `site_id` e `app_id` (duplicados lógicos). Estes foram **mantidos** porque, em contexto de *Real-Time Bidding*, é normal o mesmo utilizador ser exposto ao mesmo anúncio várias vezes (removê-los eliminaria informação real sobre frequência de exposição).
 
 
 
@@ -62,7 +62,7 @@ Não-cliques (0): 4.151.406  (83,03%)
 Rácio desbalanceamento: 1:5
 ```
 
-Este desequilíbrio tem uma consequência direta: um modelo que previsse sempre "não clique" teria 83% de *accuracy* sem qualquer utilidade preditiva — fenómeno conhecido como *accuracy paradox* (Japkowicz & Stephen, 2002). Por isso, definimos o **AUC-ROC** como métrica principal e o **F1-Score** como métrica secundária, por serem robustas ao desequilíbrio de classes. A *Accuracy* foi excluída da avaliação.
+Este desequilíbrio tem uma consequência direta: um modelo que previsse sempre "não clique" teria 83% de *accuracy* sem qualquer utilidade preditiva (fenómeno conhecido como *accuracy paradox*) (Japkowicz & Stephen, 2002). Por isso, definimos o **AUC-ROC** como métrica principal e o **F1-Score** como métrica secundária, por serem robustas ao desequilíbrio de classes. A *Accuracy* foi excluída da avaliação.
 
 ![Distribuição da Variável Alvo](../reports/figures/eda_distribuicao_click.png)
 
@@ -74,10 +74,10 @@ Para as variáveis `site_category`, `app_category`, `device_type`, `banner_pos` 
 
 O código converteu cada coluna para `str` de forma a incluir o marcador `-1` como categoria explícita, renomeada para `'Dados Omissos'`. Os principais *outputs* foram:
 
-- **`site_category` e `app_category`:** Distribuição muito assimétrica — uma minoria de categorias agrega a grande maioria das impressões (*long-tail*). Categorias desconhecidas têm representação residual.
+- **`site_category` e `app_category`:** Distribuição muito assimétrica (uma minoria de categorias agrega a grande maioria das impressões (*long-tail*)). Categorias desconhecidas têm representação residual.
 - **`device_type`:** O valor `0` (telemóveis) corresponde à grande maioria das impressões, com tablets e outros dispositivos com representação muito inferior.
 - **`banner_pos`:** A posição `1` é de longe a mais frequente; posições superiores a `5` têm frequência residual.
-- **`device_conn_type`:** Destaque para a presença de registos com valor `-1` (`Dados Omissos`), confirmando ausência de informação de conectividade numa fração da amostra — fator a considerar na fase de limpeza.
+- **`device_conn_type`:** Destaque para a presença de registos com valor `-1` (`Dados Omissos`), confirmando ausência de informação de conectividade numa fração da amostra (fator a considerar na fase de limpeza).
 
 
 
@@ -89,7 +89,7 @@ Foi gerada uma **Matriz de Correlação de Pearson** entre as variáveis numéri
 
 **Conclusão 1 — O CTR varia significativamente com a hora do dia.** A análise bivariada mostra que as primeiras horas da madrugada (0h–3h) têm CTR acima da média global de 16,97%, o que contraria a intuição inicial. Isto motivou a criação da variável `hora_do_dia`.
 
-**Conclusão 2 — A variável `C16` tem a correlação mais forte com `click` (r = +0,1303).** As variáveis anónimas `C14`, `C15` e `C16` são as mais correlacionadas com a variável alvo — valores positivos para `C16` e negativos para `C14` e `C17`. Isto sugere que representam características do anúncio com impacto direto na decisão de clique. Foi também detetado um par com multicolinearidade elevada: **`C14` e `C17` têm correlação de Pearson r = 0,9769**, acima do limiar de 0,95 definido para remoção.
+**Conclusão 2 — A variável `C16` tem a correlação mais forte com `click` (r = +0,1303).** As variáveis anónimas `C14`, `C15` e `C16` são as mais correlacionadas com a variável alvo (valores positivos para `C16` e negativos para `C14` e `C17`). Isto sugere que representam características do anúncio com impacto direto na decisão de clique. Foi também detetado um par com multicolinearidade elevada: **`C14` e `C17` têm correlação de Pearson r = 0,9769**, acima do limiar de 0,95 definido para remoção.
 
 **Conclusão 3 — A posição do *banner* e o tipo de dispositivo influenciam o CTR.** A posição 0 concentra a maioria das impressões mas não tem o CTR mais alto. Dispositivos diferentes mostram padrões de clique distintos, motivando a criação de `banner_area` como medida de impacto visual do anúncio.
 
