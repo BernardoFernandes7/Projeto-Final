@@ -46,7 +46,7 @@ A primeira etapa consistiu numa auditoria técnica completa ao *dataset* carrega
 
 **Estatísticas descritivas numéricas:** O `df.describe()` revelou os principais momentos estatísticos (média, desvio padrão, mínimo, percentis, máximo) para as variáveis numéricas, permitindo detetar distribuições enviesadas e a presença de `-1` como valor mínimo em algumas colunas anónimas.
 
-**Estatísticas descritivas categóricas:** Para as colunas de tipo `object` (identificadores de site, app e dispositivo), foi construído um resumo com o número de valores únicos (`nunique`), a categoria mais frequente (`top`) e a sua frequência absoluta (`freq`). Este output revelou a **elevada cardinalidade** de variáveis como `site_id` e `app_id`, antecipando a necessidade de estratégias de *encoding* específicas.
+**Estatísticas descritivas categóricas:** Para as colunas de tipo `object` (identificadores de site, app e dispositivo), foi construído um resumo com o número de valores únicos (`nunique`), a categoria mais frequente (`top`) e a sua frequência absoluta (`freq`). Este output revelou a **elevada cardinalidade** de variáveis como `site_id` e `app_id`, antecipando a necessidade de estratégias de *encoding* (codificação) específicas.
 
 **Registos duplicados:** Foi confirmada a ausência de linhas totalmente duplicadas (`df.duplicated().sum() = 0`). No entanto, foram detetados **1.130.966 registos (22,62%)** com combinação idêntica de `device_ip`, `device_id`, `hour`, `site_id` e `app_id` (duplicados lógicos). Estes foram **mantidos** porque, em contexto de *Real-Time Bidding*, é normal o mesmo utilizador ser exposto ao mesmo anúncio várias vezes — removê-los eliminaria informação real sobre frequência de exposição.
 
