@@ -20,11 +20,11 @@ Isolamento garantido: X_test nunca será visto durante o treino nem o tuning.
 métrica oficial da competição Avazu (He et al., 2014), o que permite comparar os resultados
 com a literatura; é robusta ao desequilíbrio de classes (83% não-cliques / 17% cliques), ao 
 contrário da *Accuracy*, que seria enganosa; e em contexto de *Real-Time Bidding*, o modelo 
-é usado para **ordenar** impressões por probabilidade de clique — e o AUC-ROC mede exatamente 
-essa capacidade de ordenação. O **F1-Score** foi definido como métrica secundária porque equilibra 
+é usado para **ordenar** impressões por probabilidade de clique (o AUC-ROC mede exatamente 
+essa capacidade de ordenação). O **F1-Score** foi definido como métrica secundária porque equilibra 
 Precisão e *Recall*, relevante num contexto onde tanto os Falsos Positivos (impressões desperdiçadas) 
 como os Falsos Negativos (receita perdida) têm custo real para o anunciante. A *Accuracy* foi excluída
-porque um modelo que previsse sempre "não clique" teria 83% de acerto sem qualquer utilidade preditiva — o chamado *accuracy paradox*.
+porque um modelo que previsse sempre "não clique" teria 83% de acerto sem qualquer utilidade preditiva (*accuracy paradox*.
 
 
 
