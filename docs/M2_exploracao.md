@@ -197,7 +197,7 @@ moda_c20 = int(df_proc['C20'][df_proc['C20'] != -1].mode()[0])
 df_proc['C20'] = df_proc['C20'].replace(-1, pd.NA).fillna(moda_c20).astype(int)
 ```
 
-#### *Encoding* das Variáveis Categóricas — *Frequency Encoding*
+#### *Encoding* das Variáveis Categóricas — *Frequency Encoding* (Codificação por frequência)
 
 As colunas categóricas de alta cardinalidade (`site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category`, `device_model`) foram transformadas usando ***Frequency Encoding***: cada categoria é substituída pela sua frequência relativa no conjunto de treino.
 
