@@ -34,6 +34,52 @@ Para resolver este problema, serão testados diferentes modelos de classificaç�
 * **Objetivo 1:** Desenvolver um modelo de classificação binária capaz de prever se um utilizador irá clicar num anúncio, atingindo um AUC-ROC mínimo de 0.75 no conjunto de teste, utilizando o dataset Avazu CTR Prediction até ao final do Milestone 3.
 * **Objetivo 2:** Identificar as 5 variáveis mais determinantes para a previsão do clique (através de Feature Importance) e diagnosticar os perfis de erro do modelo, fornecendo recomendações acionáveis sobre os contextos de anúncios com maior probabilidade de conversão, até à conclusão da fase de modelação.
 
+### Dicionário de Variáveis 
+
+| Variável | Tipo de Variável | Subtipo | Descrição |
+| :--- | :--- | :--- | :--- |
+| `id` | Categórica | Nominal / alfanumérica | Identificador único do registo, anonimizado. Não representa uma característica preditiva direta. |
+| `click` | Binária | Numérica discreta, valores 0/1 | Variável alvo. Indica se o anúncio foi clicado (`1`) ou não clicado (`0`). |
+| `hour` | Numérica | Discreta temporal | Data e hora da impressão do anúncio, no formato `YYMMDDhh`. Pode ser transformada em variáveis temporais como hora, dia ou dia da semana. |
+| `C1` | Categórica | Nominal codificada numericamente | Variável anonimizada da base Avazu. Apesar de ser numérica, representa categorias. |
+| `banner_pos` | Categórica | Nominal codificada numericamente | Posição do banner na página. Embora esteja codificada com números, representa categorias de posição. |
+| `site_id` | Categórica | Nominal / alfanumérica | Identificador do site onde o anúncio foi exibido. |
+| `site_domain` | Categórica | Nominal / alfanumérica | Domínio do site onde ocorreu a impressão do anúncio. |
+| `site_category` | Categórica | Nominal / alfanumérica | Categoria temática do site. |
+| `app_id` | Categórica | Nominal / alfanumérica | Identificador da aplicação mobile onde o anúncio foi exibido. |
+| `app_domain` | Categórica | Nominal / alfanumérica | Domínio associado à aplicação mobile. |
+| `app_category` | Categórica | Nominal / alfanumérica | Categoria da aplicação mobile. |
+| `device_id` | Categórica | Nominal / alfanumérica | Identificador anonimizado do dispositivo. |
+| `device_ip` | Categórica | Nominal / alfanumérica | Endereço IP anonimizado do dispositivo. |
+| `device_model` | Categórica | Nominal / alfanumérica | Modelo do dispositivo utilizado pelo utilizador. |
+| `device_type` | Categórica | Nominal codificada numericamente | Tipo de dispositivo, por exemplo smartphone, tablet ou desktop. |
+| `device_conn_type` | Categórica | Nominal codificada numericamente | Tipo de ligação à internet utilizada pelo dispositivo, como WiFi ou rede móvel. |
+| `C14` | Categórica | Nominal codificada numericamente | Variável anonimizada relacionada com o contexto do anúncio. |
+| `C15` | Numérica | Discreta finita | Dimensão associada ao anúncio, geralmente relacionada com largura ou configuração visual. |
+| `C16` | Numérica | Discreta finita | Dimensão associada ao anúncio, geralmente relacionada com altura ou configuração visual. |
+| `C17` | Categórica | Nominal codificada numericamente | Variável anonimizada relacionada com o contexto do anúncio. |
+| `C18` | Categórica | Nominal codificada numericamente | Variável anonimizada relacionada com o contexto do anúncio. |
+| `C19` | Categórica | Nominal codificada numericamente | Variável anonimizada relacionada com o contexto do anúncio. |
+| `C20` | Categórica | Nominal codificada numericamente | Variável anonimizada relacionada com o contexto do anúncio. |
+| `C21` | Categórica | Nominal codificada numericamente | Variável anonimizada relacionada com o contexto do anúncio. |
+
+### Observações no Conjunto de Dados
+O conjunto de dados utilizado neste projeto é composto por registos de impressões de anúncios digitais em dispositivos móveis. Cada observação representa uma impressão de anúncio exibida a um utilizador, podendo ou não resultar num clique.
+
+A variável alvo do problema é `click`, que assume dois valores possíveis:
+
+- `0`: o anúncio foi exibido, mas não recebeu clique;
+- `1`: o anúncio foi exibido e recebeu clique.
+
+Desta forma, cada linha do dataset corresponde a uma observação individual do comportamento do utilizador perante um anúncio. O objetivo do projeto é utilizar as características associadas a cada impressão, como a hora, o tipo de dispositivo, a posição do banner, o site, a aplicação e outras variáveis contextuais, para prever a probabilidade de ocorrência de clique.
+
+Uma característica importante deste conjunto de dados é o forte desbalanceamento da variável alvo. A maioria das observações pertence à classe `0`, ou seja, anúncios que não receberam clique, enquanto a classe `1`, correspondente aos cliques, representa uma proporção menor dos dados. Este aspeto é comum em problemas de publicidade digital, uma vez que a taxa de clique tende naturalmente a ser baixa.
+
+Além disso, o dataset contém várias variáveis categóricas de elevada cardinalidade, como `site_id`, `app_id`, `device_id`, `device_ip` e `device_model`. Estas variáveis possuem muitos valores distintos, o que exige cuidados adicionais no pré-processamento, nomeadamente na codificação das categorias e na gestão de categorias raras.
+
+Assim, as observações do conjunto de dados refletem eventos reais de exposição a anúncios, sendo adequadas para a construção de modelos preditivos supervisionados de classificação binária.
+
+
 ### Fonte de Dados
 * **Dataset:** [Avazu CTR Prediction — Kaggle](https://www.kaggle.com/competitions/avazu-ctr-prediction)
 * **Dimensão:** 40.428.967 registos × 24 colunas (dataset original); amostra de 5.000.000 registos utilizada no projeto, por sugestão da professora, com `random_state=42` para garantir reprodutibilidade.
