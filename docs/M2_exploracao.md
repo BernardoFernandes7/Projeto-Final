@@ -8,7 +8,8 @@
 
 ## Nota Técnica: Estratégia de Amostragem
 
-O *dataset* Avazu CTR Prediction contém **40.428.967 registos**, o que inviabiliza o carregamento direto com `pd.read_csv()` (esgota a RAM disponível no Kaggle) e impossibilita o *upload* direto para o GitHub.
+O *dataset* Avazu CTR Prediction contém **40.428.967 registos**, o que inviabiliza o carregamento direto com `pd.read_csv()` (esgota a RAM disponível no Kaggle) e 
+impossibilita o *upload* direto para o GitHub.
 
 Por sugestão da professora, foi adotada uma estratégia de analisar apenas uma **amostra aleatória de 5.000.000 registos** (`random_state=42`), garantindo:
 
