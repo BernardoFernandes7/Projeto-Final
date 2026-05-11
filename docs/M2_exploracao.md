@@ -41,7 +41,8 @@ A primeira etapa consistiu numa auditoria técnica completa ao *dataset* carrega
 
 **Dimensões e estrutura:** Foram confirmados **5.000.000 registos × 24 colunas**, validando o sucesso da amostragem. As primeiras 5 linhas foram exibidas para inspeção visual da estrutura e dos valores reais.
 
-**Tipos de dados:** Foi mapeado o `dtype` de cada coluna e comparado com um dicionário de tipos-alvo definido a priori. O output gerou uma tabela com o estado de cada variável (`Correto` / `A corrigir`), confirmando que todas as 24 colunas estavam conformes (com exceção de `id`, que é `uint64` em vez de `float64`, diferença sem impacto prático uma vez que esta coluna é removida no pré-processamento).
+**Tipos de dados:** Foi mapeado o `dtype` de cada coluna e comparado com um dicionário de tipos-alvo definido a priori. 
+O output gerou uma tabela com o estado de cada variável (`Correto` / `A corrigir`), confirmando que todas as 24 colunas estavam conformes (com exceção de `id`, que é `uint64` em vez de `float64`, diferença sem impacto prático uma vez que esta coluna é removida no pré-processamento).
 
 **Valores nulos:** A verificação com `df.isnull().sum()` reportou **zero valores nulos** em todas as colunas. Este resultado não significa ausência de dados em falta (o *dataset* Avazu utiliza o valor `-1` como marcador de ausência de informação nas colunas anónimas, investigado na secção 2.1.).
 
