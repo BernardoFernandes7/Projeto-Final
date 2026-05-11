@@ -3,7 +3,8 @@
 
 ## 1. Estratégia de Modelação
 
-**Divisão do dataset:** Utilizámos uma divisão de 80% para treino (4.000.000 registos) e 20% para teste (1.000.000 registos), com `stratify=y` e `random_state=42`. A estratificação garante que a proporção de cliques (≈17%) se mantém igual em ambos os conjuntos, o que é essencial dado o desequilíbrio de classes. O conjunto de teste foi isolado desde o início e nunca foi visto durante o treino ou a otimização. O `StandardScaler` foi ajustado exclusivamente no conjunto de treino (`fit_transform`) e depois aplicado ao teste (`transform`). O *Frequency Encoding* também foi calculado apenas no treino.
+**Divisão do dataset:** Utilizámos uma divisão de 80% para treino (4.000.000 registos) e 20% para teste (1.000.000 registos),
+com `stratify=y` e `random_state=42`. A estratificação garante que a proporção de cliques (≈17%) se mantém igual em ambos os conjuntos, o que é essencial dado o desequilíbrio de classes. O conjunto de teste foi isolado desde o início e nunca foi visto durante o treino ou a otimização. O `StandardScaler` foi ajustado exclusivamente no conjunto de treino (`fit_transform`) e depois aplicado ao teste (`transform`). O *Frequency Encoding* também foi calculado apenas no treino.
 
 ```
 Treino : 4.000.000 registos (80%)
