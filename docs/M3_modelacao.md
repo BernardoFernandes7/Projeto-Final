@@ -17,8 +17,7 @@ Proporções consistentes — divisão estratificada correcta.
 Isolamento garantido: X_test nunca será visto durante o treino nem o tuning.
 ```
 
-**Métrica de Sucesso:** A métrica principal escolhida foi o **AUC-ROC** por três razões: é a
-métrica oficial da competição Avazu (He et al., 2014), o que permite comparar os resultados
+**Métrica de Sucesso:** A métrica principal escolhida foi o **AUC-ROC** por três razões: é a métrica oficial da competição Avazu (He et al., 2014), o que permite comparar os resultados
 com a literatura; é robusta ao desequilíbrio de classes (83% não-cliques / 17% cliques), ao 
 contrário da *Accuracy*, que seria enganosa; e em contexto de *Real-Time Bidding*, o modelo 
 é usado para **ordenar** impressões por probabilidade de clique (o AUC-ROC mede exatamente 
