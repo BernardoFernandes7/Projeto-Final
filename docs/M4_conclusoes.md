@@ -4,8 +4,7 @@
 
 > **Nota:** Esta secção deve traduzir as métricas técnicas (F1-Score, RMSE, Silhouette, Lift) em resultados compreensíveis para qualquer pessoa.
 
-* **O Problema Resolvido:** No Milestone 1, definimos como objetivo principal desenvolver um modelo de classificação binária capaz de prever se um
-* utilizador irá clicar num anúncio digital, atingindo um AUC-ROC mínimo de 0,75 no conjunto de teste. O objetivo foi **alcançado**: o modelo final
+* **O Problema Resolvido:** No Milestone 1, definimos como objetivo principal desenvolver um modelo de classificação binária capaz de prever se um utilizador irá clicar num anúncio digital, atingindo um AUC-ROC mínimo de 0,75 no conjunto de teste. O objetivo foi **alcançado**: o modelo final
 *  (XGBoost Otimizado) atingiu um **AUC-ROC de 0,7528** no conjunto de teste, superando o limiar definido. O segundo objetivo foi identificar as 5 variáveis mais determinantes e fornecer recomendações acionáveis — foi igualmente cumprido dentro do prazo previsto no cronograma interno.
 
 * **Interpretação dos Resultados:** O modelo consegue ordenar impressões publicitárias por probabilidade de clique com uma capacidade discriminativa de 75,28%. Em termos práticos: se apresentarmos ao modelo um par de impressões (uma que será clicada e outra que não será), o modelo atribui uma pontuação mais alta à impressão clicada em **3 de cada 4 casos**. A melhoria face ao modelo base (Regressão Logística, AUC-ROC = 0,6412) foi de **+0,1097**, representando um ganho de 17,1% na capacidade preditiva. A variável `banner_area`, criada durante o projeto, revelou-se a mais importante do modelo com **32,6% da importância total**, validando retroativamente a decisão de *feature engineering*.
