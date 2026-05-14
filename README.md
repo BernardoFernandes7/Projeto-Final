@@ -21,8 +21,7 @@ A estrutura deste projeto segue as boas práticas de Ciência de Dados e Engenha
 ## 1. Iniciação (Milestone 1)
 ### Contexto e Problema de Negócio
 
-O setor da publicidade digital movimenta milhares de milhões de euros anualmente, 
-assentando em grande parte em leilões em tempo real (*Real-Time Bidding* (RTB)). Neste ecossistema, a taxa de clique (CTR — *Click-Through Rate*) é o principal indicador de eficácia: prever com precisão se um utilizador irá clicar num anúncio permite aos anunciantes otimizar os seus lances e às plataformas maximizar a relevância dos espaços publicitários exibidos.
+O setor da publicidade digital movimenta milhares de milhões de euros anualmente, assentando em grande parte em leilões em tempo real (*Real-Time Bidding* (RTB)). Neste ecossistema, a taxa de clique (CTR — *Click-Through Rate*) é o principal indicador de eficácia: prever com precisão se um utilizador irá clicar num anúncio permite aos anunciantes otimizar os seus lances e às plataformas maximizar a relevância dos espaços publicitários exibidos.
 
 Este projeto utiliza o dataset Avazu CTR Prediction, que contém registos reais de impressões de anúncios em dispositivos móveis recolhidos ao longo de 10 dias. O desafio central consiste em construir um modelo de classificação binária capaz de prever, com base em variáveis contextuais como a hora do dia, tipo de dispositivo, 
 posição do banner e categoria da aplicação, se a variável alvo `click` assumirá o valor 1, correspondente a clique, ou 0, correspondente a não clique. Esta capacidade preditiva tem valor direto no mercado, permitindo reduzir o desperdício de orçamento em impressões irrelevantes e aumentar a rentabilidade das campanhas digitais.
