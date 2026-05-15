@@ -88,11 +88,7 @@ Assim, as observações do conjunto de dados refletem eventos reais de exposiç�
 ## 2. Exploração (Milestone 2)
 ### Limpeza e Preparação
 
-* A variável `C20` continha valores `-1` como marcador de dados omissos — foi aplicada imputação pela **moda**, estratégia justificada pela natureza categórica da variável e pela robustez da moda face a distribuições assimétricas. Detalhes em `docs/M2_exploracao.md`.
-* Colunas sem valor preditivo (`id`, `device_id`, `device_ip`) foram removidas para reduzir ruído e dimensionalidade.
-* Os tipos de dados foram auditados e corrigidos para garantir conformidade com o perfil esperado.
-* Foram criadas duas novas variáveis por *feature engineering*: `hora_do_dia` (extraída de `hour`) e `banner_area` (produto de `C15 × C16`).
-* Variáveis categóricas de alta cardinalidade foram codificadas com **Target Encoding** (Leave-One-Out); as restantes com **Label Encoding**.
+
 
 ### Principais Conclusões (EDA)
 
