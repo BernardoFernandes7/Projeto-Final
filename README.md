@@ -103,24 +103,41 @@ Assim, as observações do conjunto de dados refletem eventos reais de exposiç�
 * **Ponto-chave 3:** As variáveis relacionadas com as dimensões do banner (`C16`, `banner_area`) apresentam correlação com a probabilidade de clique, confirmada posteriormente pelo modelo final.
 * **Ponto-chave 4:** A matriz de correlação de Pearson não revelou pares com correlação superior a 0,85, confirmando a ausência de multicolinearidade crítica.
 
-## 3. Modelação (Milestone 3
+## 3. Modelação (Milestone 3)
 ### Abordagem Técnica
 
 * **Modelos:** Regressão Logística (Baseline), Random Forest, XGBoost, XGBoost Otimizado (modelo final)
 * **Métrica Principal:** AUC-ROC — escolhida pela capacidade de avaliar modelos em datasets desequilibrados, independentemente do limiar de decisão
-* **Resultado Final:** O **XGBoost Otimizado** alcançou um **AUC-ROC de 0,7528** no conjunto de teste, superando o objetivo SMART de AUC-ROC > 0,75, com uma melhoria total de **+0,0398** face ao Baseline
-* **Validação Cruzada (5-Fold):** Média de **0,7517 ± 0,0007**, confirmando estabilidade excecional do modelo
+* **Resultado Final:** O **XGBoost Otimizado** alcançou um **AUC-ROC de 0,7509** no conjunto de teste, superando o objetivo SMART de AUC-ROC > 0,75, com uma melhoria total de **+0,1097** face ao Baseline
+* **Validação Cruzada (5-Fold):** Média de **0,7504 ± 0,0006**, confirmando estabilidade excecional do modelo
 
-> *Ver o gráfico das Curvas ROC comparativas
+> *Ver o gráfico das Curvas ROC comparativas*
 ![Curva ROC de comparacao](reports/figures/curvas_roc_comparacao.png)  
 
 ## 4. Finalização (Milestone 4)
 
+### Resumo de Resultados
+
+O modelo **prevê se um utilizador vai clicar num anúncio com 75,3% de capacidade discriminativa (AUC-ROC)** — o que significa que, em 3 de cada 4 comparações entre uma impressão que será clicada e outra que não será, o modelo atribui a pontuação mais alta à impressão certa. Face ao modelo de referência inicial (Regressão Logística, AUC-ROC = 0,6412), a melhoria acumulada foi de **+17,1% na capacidade preditiva**, atingindo o objetivo SMART definido no início do projeto.
+
+A variável mais importante descoberta pelo modelo foi `banner_area` — a área visual do anúncio em píxeis², **criada durante este projeto** — com **32,6% do poder preditivo total**. Isto traduz-se numa recomendação direta: formatos publicitários de maior dimensão geram mais cliques, independentemente do site ou da hora.
+
 ### Resposta ao Problema
-[A preencher na Milestone 4 — resumo da solução final e como ela gera valor para o negócio de publicidade digital.]
+
+O objetivo central do projeto era desenvolver um modelo capaz de prever cliques em anúncios digitais com AUC-ROC ≥ 0,75. Esse objetivo foi **alcançado**: o XGBoost Otimizado atingiu AUC-ROC = 0,7509 no conjunto de teste, confirmado por validação cruzada com IC 95%: [0,7493 – 0,7516].
+
+Com esta solução, os anunciantes em plataformas de *Real-Time Bidding* podem concentrar os seus lances nas impressões com maior probabilidade de clique, reduzindo o desperdício de orçamento em impressões irrelevantes e aumentando o retorno sobre o investimento (ROI) das campanhas digitais. As recomendações acionáveis identificadas — privilegiar banners de maior área visual, concentrar lances nas primeiras horas da madrugada (0h–6h) e focar em dispositivos móveis (`device_type = 0`) — podem ser implementadas diretamente nas estratégias de *bidding* sem necessidade de alterações técnicas adicionais.
 
 ### Recomendações de Inovação
-1. [A preencher na Milestone 4 — sugestão prática baseada nos resultados obtidos.]
+1. **Implementar SMOTE** (*Synthetic Minority Over-sampling Technique*) para lidar melhor com o desequilíbrio de classes (1:5), reduzindo os 56.547 Falsos Negativos identificados na matriz de confusão e melhorando o *Recall* do modelo.
+2. **Integrar dados sazonais e de calendário** (dia da semana, feriados, eventos desportivos) para refinar as previsões de CTR ao longo do tempo — dimensão que o dataset de apenas 10 dias não permite captar.
+3. **Desenvolver uma API REST** (FastAPI ou Flask) que exponha o modelo para *scoring* em tempo real, integrável em sistemas de *Real-Time Bidding*, e uma interface web em Streamlit para utilização por gestores de marketing sem necessidade de código.
+
+### Apresentação Final (Pitch)
+
+> 🎥 **Vídeo de Apresentação:** [*inserir link após publicação*]
+
+Para dúvidas técnicas sobre o modelo, consultar o ficheiro [`Q&A.md`](Q&A.md).
 
 ## Como Reproduzir este Projeto
 
