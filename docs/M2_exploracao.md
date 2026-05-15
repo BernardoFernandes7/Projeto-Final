@@ -188,38 +188,144 @@ Não foram encontrados valores impossíveis em variáveis com domínio conhecido
 
 ### 3.1. Transformações Realizadas
 
-O pré-processamento foi executado sobre uma cópia do *dataframe* (`df_proc = df.copy()`), preservando o original para eventuais consultas.
+O pré-processamento foi executado sobre uma cópia do *dataframe* original (`df_proc = df.copy()`), preservando o conjunto de dados bruto para eventuais consultas, validações ou comparações posteriores. Esta opção permitiu aplicar todas as transformações necessárias para a fase de modelação sem alterar diretamente a estrutura inicial do dataset.
+
+As principais transformações realizadas foram: tratamento de valores em falta mascarados, criação de novas variáveis, remoção de identificadores com baixo poder preditivo, codificação de variáveis categóricas, análise de multicolinearidade e exportação do dataset processado.
 
 #### Imputação de *Missing* Mascarados
 
-Como primeira etapa, o marcador `-1` em `C20` foi substituído pela moda calculada sobre os valores válidos:
+Embora o dataset não apresentasse valores nulos convencionais (`NaN`), foi identificado que a variável `C20` utilizava o valor `-1` como marcador de ausência de informação. Esta situação exigiu tratamento específico, uma vez que manter o valor `-1` poderia levar o modelo a interpretá-lo como uma categoria válida, introduzindo ruído na aprendizagem.
+
+Como `C20` é uma variável categórica codificada numericamente, optou-se pela imputação pela moda, isto é, pela substituição dos valores `-1` pela categoria válida mais frequente. Esta estratégia foi escolhida porque a média ou a mediana não seriam adequadas para uma variável que representa códigos de categoria.
 
 ```python
 moda_c20 = int(df_proc['C20'][df_proc['C20'] != -1].mode()[0])
 df_proc['C20'] = df_proc['C20'].replace(-1, pd.NA).fillna(moda_c20).astype(int)
 ```
 
-#### *Encoding* das Variáveis Categóricas — *Frequency Encoding* (Codificação por frequência)
+O valor utilizado para imputação foi `100084`, correspondente à categoria válida mais frequente. Esta decisão permitiu tratar os valores em falta sem eliminar uma percentagem muito elevada de registos, uma vez que `C20` apresentava 2.344.248 ocorrências com o marcador `-1`, correspondendo a 46,88% da amostra.
 
-As colunas categóricas de alta cardinalidade (`site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category`, `device_model`) foram transformadas usando ***Frequency Encoding***: cada categoria é substituída pela sua frequência relativa no conjunto de treino.
+#### Criação de Novas Variáveis
 
-Optámos por *Frequency Encoding* em vez de *Label Encoding* porque o *Label Encoding* atribui inteiros sequenciais às categorias, criando uma falsa relação ordinal — o modelo assumiria que `site_id=500` está "entre" 499 e 501, o que não tem qualquer significado. O *Frequency Encoding* preserva informação real (categorias mais frequentes têm valores mais altos) sem introduzir ordinalidade artificial.
+Após o tratamento de `C20`, foram criadas variáveis derivadas com o objetivo de extrair informação adicional a partir dos atributos originais. Esta etapa de engenharia de caracteristicas procurou transformar variáveis brutas em atributos com maior significado para a previsão do clique.
 
-> **Prevenção de *data leakage*:** o *encoding* foi calculado **exclusivamente sobre o conjunto de treino** e depois aplicado ao conjunto de teste. Categorias que só aparecem no teste recebem frequência 0. Se calculássemos as frequências sobre todo o *dataset* antes de dividir, o conjunto de teste estaria a contaminar o treino.
+Foram criadas três novas variáveis:
 
-#### Escalonamento — *StandardScaler*
+```python
+df_proc['hora_do_dia'] = df_proc['hour'] % 100
+df_proc['banner_area'] = df_proc['C15'] * df_proc['C16']
+df_proc['visibilidade_anuncio'] = df_proc['banner_pos'] / np.log1p(df_proc['banner_area'])
+```
 
-O *StandardScaler* foi aplicado às variáveis numéricas no contexto da Regressão Logística (*baseline*), transformando cada variável para média 0 e desvio padrão 1. Os modelos baseados em árvores de decisão (*Random Forest*, *XGBoost*) não requerem escalonamento. Tal como o *encoding*, o *scaler* foi ajustado apenas no treino e aplicado ao teste.
+A variável `hora_do_dia` foi extraída da coluna `hour`, que se encontrava no formato `YYMMDDhh`. Esta transformação permitiu isolar apenas a hora da impressão do anúncio, variando entre 0 e 23, facilitando a análise de padrões temporais de clique.
+
+A variável `banner_area` foi calculada através da multiplicação entre `C15` e `C16`, representando uma estimativa da área visual do anúncio. Esta variável foi criada porque a dimensão do anúncio pode influenciar a sua visibilidade e, consequentemente, a probabilidade de clique.
+
+A variável `visibilidade_anuncio` combinou a posição do banner (`banner_pos`) com a sua área visual (`banner_area`). Foi utilizado `np.log1p(banner_area)` para suavizar o impacto de áreas muito elevadas, evitando que anúncios de grandes dimensões dominassem completamente esta métrica composta.
+
+Após a criação de `hora_do_dia`, a coluna original `hour` foi removida, uma vez que a informação temporal mais relevante passou a estar representada de forma mais simples e interpretável.
+
+```python
+df_proc.drop(columns=['hour'], inplace=True)
+```
+
+As novas variáveis foram analisadas quanto à sua relação com a variável alvo `click`. A variável `banner_area` destacou-se como a mais relevante entre as variáveis criadas, apresentando uma correlação positiva com o clique. Isto reforça a importância do contexto visual do anúncio na previsão da probabilidade de interação.
 
 #### Remoção de Variáveis Não Preditivas
 
-As colunas `id`, `device_id` e `device_ip` foram removidas por serem identificadores individuais sem poder preditivo — têm cardinalidade próxima do número total de registos e não generalizam para dados novos. A coluna `hour` foi removida após a extração de `hora_do_dia`.
+Foram removidas as colunas `id`, `device_id` e `device_ip`, por representarem identificadores individuais ou quase individuais, com elevada cardinalidade e reduzida capacidade de generalização.
+
+```python
+cols_to_remove = ['id', 'device_id', 'device_ip']
+df_proc.drop(columns=[c for c in cols_to_remove if c in df_proc.columns], inplace=True)
+```
+
+A coluna `id` identifica unicamente cada registo, não tendo utilidade preditiva para novos dados. As colunas `device_id` e `device_ip`, apesar de estarem anonimizadas, também apresentam cardinalidade muito elevada e poderiam levar o modelo a memorizar padrões específicos da amostra em vez de aprender relações generalizáveis.
+
+A remoção destas variáveis contribuiu para reduzir ruído, diminuir complexidade computacional e evitar que o modelo dependesse de identificadores pouco úteis em contexto real.
+
+#### *Encoding* das Variáveis Categóricas — *Label Encoding*
+
+As variáveis categóricas de alta cardinalidade foram transformadas através de **Label Encoding**, convertendo cada categoria textual num valor numérico inteiro. Esta transformação foi necessária porque os algoritmos de *machine learning* utilizados posteriormente exigem variáveis em formato numérico.
+
+As colunas transformadas foram:
+
+```python
+cols_label = [
+    'site_id', 'site_domain', 'site_category',
+    'app_id', 'app_domain', 'app_category', 'device_model'
+]
+
+for col in cols_label:
+    if col in df_proc.columns:
+        le = LabelEncoder()
+        df_proc[col] = le.fit_transform(df_proc[col].astype(str))
+```
+
+A utilização de *Label Encoding* permitiu transformar variáveis como `site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category` e `device_model` sem criar milhares de novas colunas. Esta opção foi particularmente importante devido à elevada cardinalidade destas variáveis, que tornaria técnicas como *One-Hot Encoding* pouco eficientes em termos de memória e tempo de processamento.
+
+No entanto, esta escolha apresenta uma limitação: o *Label Encoding* atribui números inteiros sequenciais às categorias, podendo introduzir uma ordem artificial entre valores que são, na realidade, nominais. Por exemplo, um `site_id` codificado como `500` não é necessariamente superior ou mais relevante do que um `site_id` codificado como `100`.
+
+Apesar desta limitação, a opção foi considerada aceitável neste projeto porque os principais modelos testados posteriormente, como *Random Forest* e XGBoost, são baseados em árvores de decisão. Estes modelos tendem a ser menos sensíveis à escala linear dos valores do que modelos estritamente lineares, embora a limitação de interpretação deva ser reconhecida.
+
+#### Escalonamento — `StandardScaler`
+
+O `StandardScaler` foi utilizado posteriormente na fase de modelação, sobretudo no contexto da Regressão Logística, que serviu como modelo *baseline*. Esta técnica transforma as variáveis numéricas para uma escala comum, com média 0 e desvio padrão 1.
+
+A aplicação do escalonamento é relevante para modelos lineares, como a Regressão Logística, porque estes são sensíveis à escala das variáveis. Variáveis com valores numericamente maiores podem influenciar desproporcionalmente o modelo caso não sejam normalizadas.
+
+Por outro lado, modelos baseados em árvores de decisão, como *Random Forest* e XGBoost, não exigem escalonamento, uma vez que tomam decisões com base em divisões sucessivas dos valores das variáveis. Por essa razão, o dataset processado foi guardado sem aplicar normalização global a todas as variáveis, sendo o escalonamento tratado de forma específica na fase de modelação.
 
 #### Remoção por Multicolinearidade
 
-Após o *encoding*, foi confirmada a correlação r = 0,9769 entre `C14` e `C17`, acima do limiar de 0,95. Manter variáveis tão correlacionadas não acrescenta informação ao modelo e pode introduzir instabilidade numérica. Foram removidas as colunas `site_domain`, `app_category`, `C17` e `visibilidade_anuncio` de ambos os conjuntos (treino e teste). O *dataset* final ficou com **18 variáveis**.
+Após as transformações, foi realizada uma análise de multicolinearidade com base na matriz de correlação absoluta entre as variáveis numéricas processadas, excluindo a variável alvo `click`.
 
+O objetivo desta etapa foi identificar variáveis altamente correlacionadas entre si, uma vez que a presença de atributos redundantes pode aumentar a complexidade do modelo sem acrescentar informação relevante. Foi definido um limiar de correlação superior a `0,95` para sinalizar possíveis casos de multicolinearidade.
 
+```python
+cols_num_proc = [
+    c for c in df_proc.select_dtypes(include=['int64','float64']).columns
+    if c not in ['click']
+]
+
+corr_proc = df_proc[cols_num_proc].corr().abs()
+upper = corr_proc.where(np.triu(np.ones(corr_proc.shape), k=1).astype(bool))
+cols_multi = [col for col in upper.columns if any(upper[col] > 0.95)]
+```
+
+Foram identificadas as seguintes variáveis como multicolineares:
+
+```python
+['C17', 'visibilidade_anuncio']
+```
+
+Estas colunas foram removidas do dataset processado:
+
+```python
+df_proc.drop(columns=cols_multi, inplace=True)
+```
+
+A remoção de `C17` justifica-se pela sua forte relação com outras variáveis anónimas do dataset, nomeadamente `C14`, já identificada anteriormente na análise de correlação. A variável `visibilidade_anuncio`, embora criada durante a engenharia de atributos, também foi removida por apresentar redundância estatística face a outras variáveis já existentes.
+
+Esta etapa permitiu reduzir a redundância do conjunto de dados e simplificar a estrutura final entregue à fase de modelação.
+
+#### Exportação do Dataset Processado
+
+Após a aplicação das transformações anteriores, o dataset processado foi exportado para utilização na fase seguinte de modelação.
+
+```python
+df_proc.to_csv('train_processed.csv', index=False)
+```
+
+O dataset final ficou com:
+
+```text
+5.000.000 registos × 21 colunas
+```
+
+Isto corresponde à variável alvo `click` e a 20 variáveis explicativas disponíveis para os modelos de classificação.
+
+Em síntese, esta fase permitiu transformar o dataset bruto num conjunto de dados limpo, codificado e preparado para modelação, mantendo apenas variáveis com maior potencial preditivo e removendo identificadores, valores problemáticos e atributos redundantes.
 
 ### 3.2. Criação de Novos Atributos
 
