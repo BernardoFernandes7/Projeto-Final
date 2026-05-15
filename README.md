@@ -1,6 +1,6 @@
 # Previsão de Cliques em Publicidade Digital (Avazu CTR Prediction)
 
-## Identificação da Equipa
+## 
 
 * **Grupo nº:** 6
 * **Membros:**
