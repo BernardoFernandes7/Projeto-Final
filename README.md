@@ -136,7 +136,7 @@ Com esta solução, os anunciantes em plataformas de *Real-Time Bidding* podem c
 
 ### Apresentação Final (Pitch)
 
-> 🎥 **Vídeo de Apresentação:** [*inserir link após publicação*]
+> **Vídeo de Apresentação:** [*inserir link após publicação*]
 
 Para dúvidas técnicas sobre o modelo, consultar o ficheiro [`Q&A.md`](Q&A.md).
 
