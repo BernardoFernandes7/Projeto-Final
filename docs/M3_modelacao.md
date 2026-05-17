@@ -23,13 +23,6 @@ Proporções consistentes — divisão estratificada correcta.
 Isolamento garantido: X_test nunca será visto durante o treino nem o tuning.
 ```
 
-**Métrica de Sucesso:** A métrica principal escolhida foi o **AUC-ROC**, por três razões principais: é adequada para problemas de classificação binária, é robusta ao desequilíbrio de classes e mede a capacidade do modelo para ordenar impressões por probabilidade de clique.
-
-Esta escolha é particularmente importante no contexto de publicidade digital e *Real-Time Bidding*, onde o objetivo não é apenas classificar uma impressão como clique ou não-clique, mas sim atribuir uma pontuação de probabilidade que permita priorizar oportunidades com maior potencial de interação.
-
-O **F1-Score** foi definido como métrica secundária porque equilibra Precisão e *Recall*, sendo relevante num cenário em que tanto os Falsos Positivos como os Falsos Negativos têm impacto prático. Os Falsos Positivos representam impressões classificadas como promissoras mas que não geram clique, enquanto os Falsos Negativos representam oportunidades reais de clique que o modelo não conseguiu identificar.
-
-A *Accuracy* foi excluída como métrica principal porque seria enganadora neste problema. Como cerca de 83% dos registos correspondem a não-cliques, um modelo que previsse sempre “não clique” teria uma taxa de acerto elevada, mas sem utilidade prática para o objetivo do projeto.
 
 ---
 
