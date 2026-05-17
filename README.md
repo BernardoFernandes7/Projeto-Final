@@ -36,7 +36,10 @@ real; e é de classificação binária porque a variável alvo possui apenas dua
 nem não supervisionado, pois não se pretende apenas descobrir grupos, padrões ou associações nos dados. O objetivo principal é treinar modelos capazes de aprender a partir 
 de exemplos previamente rotulados e prever corretamente a classe de novos registos. 
 
-Para resolver este problema, serão testados diferentes modelos de classificação supervisionada, incluindo Regressão Logística como modelo de referência e modelos mais complexos baseados em árvores, como Random Forest, XGBoost e LightGBM. A comparação entre estes modelos permitirá avaliar qual apresenta melhor capacidade preditiva para a variável alvo `click`, tendo em conta métricas adequadas para classificação binária, como AUC-ROC, F1-Score, Precisão e Recall.
+Para resolver este problema, serão testados diferentes modelos de classificação supervisionada, 
+incluindo Regressão Logística como modelo de referência e modelos mais complexos baseados em árvores, como Random Forest,
+XGBoost e LightGBM. A comparação entre estes modelos permitirá avaliar qual apresenta melhor capacidade preditiva para a variável alvo `click`, 
+tendo em conta métricas adequadas para classificação binária, como AUC-ROC, F1-Score, Precisão e Recall.
 
 ### Objetivos do Projeto
 
