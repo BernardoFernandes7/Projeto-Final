@@ -6,9 +6,11 @@
 resultados compreensíveis para qualquer pessoa.
 
 * **O Problema Resolvido:**  
-O problema definido na Milestone 1 consistia em prever se um utilizador iria clicar ou não num anúncio digital, utilizando dados do dataset Avazu CTR Prediction. Este problema é relevante porque, em publicidade digital e *Real-Time Bidding*, os anunciantes precisam de decidir rapidamente em que impressões vale a pena investir.
+O problema definido na Milestone 1 consistia em prever se um utilizador iria clicar ou não num anúncio digital,
+utilizando dados do dataset Avazu CTR Prediction. Este problema é relevante porque, em publicidade digital e *Real-Time Bidding*, os anunciantes precisam de decidir rapidamente em que impressões vale a pena investir.
 
-O objetivo principal era desenvolver um modelo de classificação binária capaz de atingir pelo menos **AUC-ROC = 0.75** no conjunto de teste. Este objetivo foi alcançado, uma vez que o modelo final, baseado em **XGBoost otimizado**, obteve **AUC-ROC = 0.7509** no conjunto de teste.
+O objetivo principal era desenvolver um modelo de classificação binária capaz de atingir pelo menos **AUC-ROC = 0.75** no conjunto de teste. 
+Este objetivo foi alcançado, uma vez que o modelo final, baseado em **XGBoost otimizado**, obteve **AUC-ROC = 0.7509** no conjunto de teste.
 
 Também foi cumprido o objetivo de identificar as variáveis mais importantes para a previsão do clique. A análise de importância dos atributos mostrou que variáveis como `banner_area`, `C16`, `device_type`, `C21` e `site_id` tiveram maior peso na decisão do modelo.
 
