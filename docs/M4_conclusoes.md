@@ -25,7 +25,8 @@ O **F1-Score de 0.4223** mostra que o modelo consegue equilibrar, de forma moder
 positivas erradas. Este valor deve ser interpretado tendo em conta o forte desequilíbrio do dataset, onde apenas cerca de 17% dos registos correspondem a cliques.
 
 A matriz de confusão mostra que o modelo identificou corretamente **113.172 cliques reais**, mas ainda falhou **56.547 cliques** e classificou **253.084 impressões** como 
-potenciais cliques quando, na realidade, não geraram interação. Isto significa que o modelo já tem utilidade prática para priorizar impressões, mas ainda não deve ser visto como uma solução perfeita de decisão automática.
+potenciais cliques quando, na realidade, não geraram interação. Isto significa que o modelo já tem utilidade prática para priorizar impressões, mas ainda não deve ser visto como 
+uma solução perfeita de decisão automática.
 
 Comparando com o modelo inicial, a melhoria foi significativa. A Regressão Logística obteve **AUC-ROC = 0.6412** no teste, enquanto o XGBoost otimizado 
 atingiu **0.7509**, uma melhoria acumulada de **+0.1097**. Esta diferença justifica a escolha de um modelo mais complexo.
@@ -35,22 +36,28 @@ O principal valor deste projeto está na capacidade de apoiar decisões de inves
 igualmente relevantes, o modelo permite identificar quais têm maior probabilidade de gerar clique.
 
 Na prática, esta solução pode ajudar um anunciante a concentrar orçamento em contextos mais promissores, reduzindo desperdício em impressões com menor 
-probabilidade de interação. O modelo não decide sozinho se uma campanha terá sucesso, mas fornece uma pontuação útil para ordenar oportunidades e apoiar decisões em sistemas de *Real-Time Bidding*.
+probabilidade de interação. O modelo não decide sozinho se uma campanha terá sucesso, mas fornece uma pontuação útil para ordenar oportunidades e apoiar decisões em sistemas 
+de *Real-Time Bidding*.
 
-Além disso, a análise de importância das variáveis mostra que o formato visual do anúncio tem grande influência na probabilidade de clique. A variável `banner_area`, criada durante o projeto, foi a mais importante no modelo final, o que sugere que a dimensão e configuração visual do anúncio são fatores relevantes para otimizar campanhas digitais.
+Além disso, a análise de importância das variáveis mostra que o formato visual do anúncio tem grande influência na probabilidade de clique. A variável `banner_area`, criada durante
+o projeto, foi a mais importante no modelo final, o que sugere que a dimensão e configuração visual do anúncio são fatores relevantes para otimizar campanhas digitais.
 
 ## 2. Análise Crítica e Limitações
 
 > **Nota:** Identificar de forma honesta as fronteiras do projeto e onde o modelo pode falhar.
 
 * **Limitações dos Dados:**  
-Apesar de o dataset original Avazu conter cerca de 40 milhões de registos, o projeto trabalhou com uma amostra de **5.000.000 registos**, por razões de viabilidade computacional. Esta amostra permitiu desenvolver e testar os modelos, mas não representa a totalidade dos dados disponíveis.
+Apesar de o dataset original Avazu conter cerca de 40 milhões de registos, o projeto trabalhou com uma amostra de **5.000.000 registos**, por razões de viabilidade computacional.
+Esta amostra permitiu desenvolver e testar os modelos, mas não representa a totalidade dos dados disponíveis.
 
-Outra limitação importante é o forte desequilíbrio da variável alvo. Apenas cerca de **17%** dos registos correspondem a cliques, enquanto cerca de **83%** correspondem a não-cliques. Este desequilíbrio dificulta a aprendizagem do modelo, sobretudo na identificação correta da classe minoritária.
+Outra limitação importante é o forte desequilíbrio da variável alvo. Apenas cerca de **17%** dos registos correspondem a cliques, enquanto cerca de **83%** correspondem a não-cliques. 
+Este desequilíbrio dificulta a aprendizagem do modelo, sobretudo na identificação correta da classe minoritária.
 
-Também existem variáveis anónimas, como `C14` a `C21`, cujo significado real não é totalmente conhecido. Embora algumas destas variáveis tenham demonstrado importância para o modelo, a sua interpretação de negócio é limitada. Isto reduz a capacidade de explicar com precisão por que razão certas decisões são tomadas pelo algoritmo.
+Também existem variáveis anónimas, como `C14` a `C21`, cujo significado real não é totalmente conhecido. Embora algumas destas variáveis tenham demonstrado importância para o modelo, 
+a sua interpretação de negócio é limitada. Isto reduz a capacidade de explicar com precisão por que razão certas decisões são tomadas pelo algoritmo.
 
-Além disso, os dados representam um período específico de observações. O comportamento dos utilizadores, os formatos de anúncios e as estratégias de campanha podem mudar ao longo do tempo, o que significa que o desempenho do modelo pode diminuir se for aplicado a dados futuros muito diferentes dos dados usados no treino.
+Além disso, os dados representam um período específico de observações. O comportamento dos utilizadores, os formatos de anúncios e as estratégias de campanha podem mudar 
+ao longo do tempo, o que significa que o desempenho do modelo pode diminuir se for aplicado a dados futuros muito diferentes dos dados usados no treino.
 
 * **Limitações do Modelo:**  
 O modelo final, XGBoost otimizado, cumpre o objetivo definido, mas não é perfeito. O AUC-ROC de **0.7509** mostra boa capacidade de ordenação, mas não significa que o modelo acerte todas as previsões individuais.
