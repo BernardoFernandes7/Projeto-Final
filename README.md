@@ -30,7 +30,11 @@ O desafio central consiste em construir um modelo de classificação binária ca
 posição do banner e categoria da aplicação, se a variável alvo `click` assumirá o valor 1, correspondente a clique, ou 0, correspondente a não clique. Esta capacidade 
 preditiva tem valor direto no mercado, permitindo reduzir o desperdício de orçamento em impressões irrelevantes e aumentar a rentabilidade das campanhas digitais.
 
-Do ponto de vista da Aprendizagem Automática, este projeto enquadra-se num problema preditivo supervisionado de classificação binária. É um problema preditivo porque o objetivo é estimar o valor futuro ou desconhecido da variável alvo `click`; é supervisionado porque o dataset contém exemplos históricos já rotulados com o resultado real; e é de classificação binária porque a variável alvo possui apenas duas classes possíveis: `0` para não clique e `1` para clique. Assim, o problema não é descritivo nem não supervisionado, pois não se pretende apenas descobrir grupos, padrões ou associações nos dados. O objetivo principal é treinar modelos capazes de aprender a partir de exemplos previamente rotulados e prever corretamente a classe de novos registos. 
+Do ponto de vista da Aprendizagem Automática, este projeto enquadra-se num problema preditivo supervisionado de classificação binária. É um problema preditivo porque 
+o objetivo é estimar o valor futuro ou desconhecido da variável alvo `click`; é supervisionado porque o dataset contém exemplos históricos já rotulados com o resultado 
+real; e é de classificação binária porque a variável alvo possui apenas duas classes possíveis: `0` para não clique e `1` para clique. Assim, o problema não é descritivo 
+nem não supervisionado, pois não se pretende apenas descobrir grupos, padrões ou associações nos dados. O objetivo principal é treinar modelos capazes de aprender a partir 
+de exemplos previamente rotulados e prever corretamente a classe de novos registos. 
 
 Para resolver este problema, serão testados diferentes modelos de classificação supervisionada, incluindo Regressão Logística como modelo de referência e modelos mais complexos baseados em árvores, como Random Forest, XGBoost e LightGBM. A comparação entre estes modelos permitirá avaliar qual apresenta melhor capacidade preditiva para a variável alvo `click`, tendo em conta métricas adequadas para classificação binária, como AUC-ROC, F1-Score, Precisão e Recall.
 
