@@ -18,18 +18,24 @@ mostrou que variáveis como `banner_area`, `C16`, `device_type`, `C21` e `site_i
 
 * **Interpretação dos Resultados:**  
 Em linguagem simples, o modelo consegue distinguir anúncios com maior e menor probabilidade de clique de forma claramente superior a uma decisão aleatória.
-O AUC-ROC de **0.7509** significa que o modelo tem boa capacidade para ordenar impressões publicitárias: quando compara uma impressão que gerou clique com outra que não gerou clique, tende a atribuir maior probabilidade à impressão que realmente foi clicada.
+O AUC-ROC de **0.7509** significa que o modelo tem boa capacidade para ordenar impressões publicitárias: quando compara uma impressão que gerou clique com outra
+que não gerou clique, tende a atribuir maior probabilidade à impressão que realmente foi clicada.
 
-O **F1-Score de 0.4223** mostra que o modelo consegue equilibrar, de forma moderada, a identificação de cliques reais com o controlo de previsões positivas erradas. Este valor deve ser interpretado tendo em conta o forte desequilíbrio do dataset, onde apenas cerca de 17% dos registos correspondem a cliques.
+O **F1-Score de 0.4223** mostra que o modelo consegue equilibrar, de forma moderada, a identificação de cliques reais com o controlo de previsões 
+positivas erradas. Este valor deve ser interpretado tendo em conta o forte desequilíbrio do dataset, onde apenas cerca de 17% dos registos correspondem a cliques.
 
-A matriz de confusão mostra que o modelo identificou corretamente **113.172 cliques reais**, mas ainda falhou **56.547 cliques** e classificou **253.084 impressões** como potenciais cliques quando, na realidade, não geraram interação. Isto significa que o modelo já tem utilidade prática para priorizar impressões, mas ainda não deve ser visto como uma solução perfeita de decisão automática.
+A matriz de confusão mostra que o modelo identificou corretamente **113.172 cliques reais**, mas ainda falhou **56.547 cliques** e classificou **253.084 impressões** como 
+potenciais cliques quando, na realidade, não geraram interação. Isto significa que o modelo já tem utilidade prática para priorizar impressões, mas ainda não deve ser visto como uma solução perfeita de decisão automática.
 
-Comparando com o modelo inicial, a melhoria foi significativa. A Regressão Logística obteve **AUC-ROC = 0.6412** no teste, enquanto o XGBoost otimizado atingiu **0.7509**, uma melhoria acumulada de **+0.1097**. Esta diferença justifica a escolha de um modelo mais complexo.
+Comparando com o modelo inicial, a melhoria foi significativa. A Regressão Logística obteve **AUC-ROC = 0.6412** no teste, enquanto o XGBoost otimizado 
+atingiu **0.7509**, uma melhoria acumulada de **+0.1097**. Esta diferença justifica a escolha de um modelo mais complexo.
 
 * **Valor para o Utilizador/Negócio:**  
-O principal valor deste projeto está na capacidade de apoiar decisões de investimento em publicidade digital. Em vez de tratar todas as impressões como igualmente relevantes, o modelo permite identificar quais têm maior probabilidade de gerar clique.
+O principal valor deste projeto está na capacidade de apoiar decisões de investimento em publicidade digital. Em vez de tratar todas as impressões como
+igualmente relevantes, o modelo permite identificar quais têm maior probabilidade de gerar clique.
 
-Na prática, esta solução pode ajudar um anunciante a concentrar orçamento em contextos mais promissores, reduzindo desperdício em impressões com menor probabilidade de interação. O modelo não decide sozinho se uma campanha terá sucesso, mas fornece uma pontuação útil para ordenar oportunidades e apoiar decisões em sistemas de *Real-Time Bidding*.
+Na prática, esta solução pode ajudar um anunciante a concentrar orçamento em contextos mais promissores, reduzindo desperdício em impressões com menor 
+probabilidade de interação. O modelo não decide sozinho se uma campanha terá sucesso, mas fornece uma pontuação útil para ordenar oportunidades e apoiar decisões em sistemas de *Real-Time Bidding*.
 
 Além disso, a análise de importância das variáveis mostra que o formato visual do anúncio tem grande influência na probabilidade de clique. A variável `banner_area`, criada durante o projeto, foi a mais importante no modelo final, o que sugere que a dimensão e configuração visual do anúncio são fatores relevantes para otimizar campanhas digitais.
 
