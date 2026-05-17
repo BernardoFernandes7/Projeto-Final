@@ -46,6 +46,11 @@ baseline = LogisticRegression(
     class_weight='balanced'
 )
 ```
+O modelo *baseline* teve como objetivo criar um ponto de comparação simples e interpretável. A utilização de `class_weight='balanced'` permitiu compensar parcialmente o desequilíbrio entre cliques e não-cliques, atribuindo maior peso à classe minoritária.
+
+O `StandardScaler` foi ajustado apenas no conjunto de treino e depois aplicado ao conjunto de teste, garantindo que o conjunto de teste não influenciava a preparação dos dados.
+
+**Resultado:** Segundo o notebook, a Regressão Logística apresentou um desempenho estável, mas limitado, com AUC-ROC próximo de **0,62**. A curva de aprendizagem mostrou convergência entre treino e validação, indicando ausência de *overfitting*. No entanto, o desempenho ficou abaixo dos modelos mais complexos, confirmando que um modelo linear simples não consegue captar totalmente as relações não lineares presentes nos dados.
 
 
 ```text
