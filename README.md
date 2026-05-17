@@ -21,10 +21,14 @@ A estrutura deste projeto segue as boas práticas de Ciência de Dados e Engenha
 ## 1. Iniciação (Milestone 1)
 ### Contexto e Problema de Negócio
 
-O setor da publicidade digital movimenta milhares de milhões de euros anualmente, assentando em grande parte em leilões em tempo real (*Real-Time Bidding* (RTB)). Neste ecossistema, a taxa de clique (CTR — *Click-Through Rate*) é o principal indicador de eficácia: prever com precisão se um utilizador irá clicar num anúncio permite aos anunciantes otimizar os seus lances e às plataformas maximizar a relevância dos espaços publicitários exibidos.
+O setor da publicidade digital movimenta milhares de milhões de euros anualmente, assentando em grande parte em leilões em tempo real (*Real-Time Bidding* (RTB)). 
+Neste ecossistema, a taxa de clique (CTR — *Click-Through Rate*) é o principal indicador de eficácia: prever com precisão se um utilizador irá clicar num anúncio
+permite aos anunciantes otimizar os seus lances e às plataformas maximizar a relevância dos espaços publicitários exibidos.
 
-Este projeto utiliza o dataset Avazu CTR Prediction, que contém registos reais de impressões de anúncios em dispositivos móveis recolhidos ao longo de 10 dias. O desafio central consiste em construir um modelo de classificação binária capaz de prever, com base em variáveis contextuais como a hora do dia, tipo de dispositivo, 
-posição do banner e categoria da aplicação, se a variável alvo `click` assumirá o valor 1, correspondente a clique, ou 0, correspondente a não clique. Esta capacidade preditiva tem valor direto no mercado, permitindo reduzir o desperdício de orçamento em impressões irrelevantes e aumentar a rentabilidade das campanhas digitais.
+Este projeto utiliza o dataset Avazu CTR Prediction, que contém registos reais de impressões de anúncios em dispositivos móveis recolhidos ao longo de 10 dias.
+O desafio central consiste em construir um modelo de classificação binária capaz de prever, com base em variáveis contextuais como a hora do dia, tipo de dispositivo, 
+posição do banner e categoria da aplicação, se a variável alvo `click` assumirá o valor 1, correspondente a clique, ou 0, correspondente a não clique. Esta capacidade 
+preditiva tem valor direto no mercado, permitindo reduzir o desperdício de orçamento em impressões irrelevantes e aumentar a rentabilidade das campanhas digitais.
 
 Do ponto de vista da Aprendizagem Automática, este projeto enquadra-se num problema preditivo supervisionado de classificação binária. É um problema preditivo porque o objetivo é estimar o valor futuro ou desconhecido da variável alvo `click`; é supervisionado porque o dataset contém exemplos históricos já rotulados com o resultado real; e é de classificação binária porque a variável alvo possui apenas duas classes possíveis: `0` para não clique e `1` para clique. Assim, o problema não é descritivo nem não supervisionado, pois não se pretende apenas descobrir grupos, padrões ou associações nos dados. O objetivo principal é treinar modelos capazes de aprender a partir de exemplos previamente rotulados e prever corretamente a classe de novos registos. 
 
