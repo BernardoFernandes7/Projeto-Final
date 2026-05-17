@@ -150,6 +150,9 @@ Optámos por **não remover** nenhum destes valores porque representam comportam
 
 ### 2.1. Tratamento de Dados em Falta (*Missing Data*)
 
+O *dataset* Avazu não usa `NaN` para assinalar dados omissos — utiliza o valor **`-1`** como marcador de ausência de informação nas colunas anónimas `C14`–`C21`, prática comum em sistemas de registo de publicidade (He et al., 2014).
+
+O código percorreu todas essas colunas e imprimiu, para cada uma, a frequência absoluta e a percentagem de valores `-1`. Foi definido um **limiar de 1%**: colunas abaixo deste limiar foram consideradas limpas; acima disso, imputação pela moda.
 
 ```
 DADOS EM FALTA (Marcador -1):
