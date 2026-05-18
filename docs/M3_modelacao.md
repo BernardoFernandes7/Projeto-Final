@@ -87,19 +87,6 @@ Estes modelos foram escolhidos por serem adequados a problemas de classificaçã
 
 #### Random Forest
 
-O Random Forest foi treinado com 100 árvores, profundidade máxima de 10 e ponderação das classes.
-
-```python
-rf = RandomForestClassifier(
-    n_estimators=100,
-    max_depth=10,
-    random_state=42,
-    n_jobs=-1,
-    class_weight='balanced'
-)
-```
-
-Segundo o notebook, o Random Forest apresentou uma melhoria clara face à Regressão Logística, estabilizando num patamar de AUC-ROC aproximado de **0,725**. A curva de aprendizagem revelou boa generalização, com diferença reduzida entre treino e validação.
 
 #### XGBoost
 
