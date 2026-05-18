@@ -2,7 +2,7 @@
 
 ## 1. Síntese de Resultados e Impacto
 
-> **Nota:** Esta secção deve traduzir as métricas técnicas (F1-Score, RMSE, Silhouette, Lift) em
+> **Nota:** Esta secção deve traduzir as métricas técnicas (F1-Score, RMSE, Silhouette, Lift) em 
 resultados compreensíveis para qualquer pessoa.
 
 * **O Problema Resolvido:**  
