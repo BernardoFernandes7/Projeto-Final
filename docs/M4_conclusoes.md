@@ -130,6 +130,17 @@ A transparência também exige comunicar as limitações. O modelo não prevê c
 
 ## 4. Roadmap e Trabalhos Futuros
 
+> **Nota:** Sugestões concretas para quem quiser continuar ou escalar este projeto.
+
+1. **Melhoria Técnica:**  
+
+A primeira melhoria técnica deve ser a otimização do limiar de decisão. O modelo final apresenta boa capacidade de ordenação, mas a decisão prática depende do limiar usado para transformar probabilidades em classes. Como existem Falsos Positivos e Falsos Negativos com impactos diferentes, o limiar deve ser ajustado de acordo com a estratégia da campanha.
+
+Se o anunciante quiser captar o maior número possível de cliques reais, pode fazer sentido reduzir o limiar, aumentando o *Recall*. Se o objetivo for reduzir desperdício de orçamento, pode fazer sentido aumentar o limiar, melhorando a Precisão. Esta decisão deve ser apoiada por curvas Precisão-*Recall* e por uma análise do custo de cada tipo de erro.
+
+Outra melhoria técnica seria testar métodos de calibração de probabilidades. O modelo é útil para ordenar impressões, mas, numa aplicação real, seria importante garantir que as probabilidades previstas estão bem calibradas. Isto ajudaria a transformar a pontuação do modelo numa estimativa mais confiável para apoio à decisão.
+
+Também seria relevante testar técnicas adicionais para lidar com o desequilíbrio da variável alvo, como reamostragem ou ajuste mais fino dos pesos da classe positiva. No entanto, estas técnicas devem ser avaliadas com cuidado para evitar melhorar uma métrica à custa de piorar a capacidade de generalização.
 
 2. **Novas Variáveis:**  
 
