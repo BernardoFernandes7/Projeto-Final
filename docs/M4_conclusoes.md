@@ -2,7 +2,7 @@
 
 ## 1. Síntese de Resultados e Impacto
 
-> **Nota:** Esta secção deve traduzir as métricas técnicas (F1-Score, RMSE, Silhouette, Lift) em 
+> **Nota:** Esta secção deve traduzir as métricas técnicas (F1-Score, RMSE, Silhouette, Lift) em
 resultados compreensíveis para qualquer pessoa.
 
 * **O Problema Resolvido:**  
@@ -11,15 +11,22 @@ O problema definido na Milestone 1 consistia em desenvolver um modelo de classif
 
 A relevância do problema está ligada ao contexto da publicidade digital e do *Real-Time Bidding* (RTB). Neste tipo de ambiente, os anunciantes precisam de tomar decisões rápidas sobre onde investir o orçamento disponível. Se todas as impressões forem tratadas como igualmente relevantes, existe maior risco de desperdiçar investimento em anúncios com baixa probabilidade de interação. Por isso, prever a probabilidade de clique permite apoiar decisões mais informadas e melhorar a eficiência das campanhas digitais.
 
-A Milestone 1 definiu dois objetivos principais. O primeiro era desenvolver um modelo capaz de atingir pelo menos **AUC-ROC = 0.75** no conjunto de teste. O segundo era identificar as **5 variáveis mais determinantes** para a previsão do clique e diagnosticar os principais perfis de erro do modelo.
+A Milestone 1 definiu dois objetivos principais. O primeiro objetivo era desenvolver um modelo capaz de atingir pelo menos **AUC-ROC = 0.75** no conjunto de teste. O segundo objetivo era identificar as **5 variáveis mais determinantes** para a previsão do clique e diagnosticar os principais perfis de erro do modelo.
 
 Estes objetivos foram alcançados. Na fase de modelação, o modelo final escolhido foi o **XGBoost otimizado**, que obteve **AUC-ROC = 0.7509** no conjunto de teste, ultrapassando o objetivo mínimo definido. A análise de importância dos atributos também permitiu identificar as variáveis com maior peso na previsão: `banner_area`, `C16`, `device_type`, `C21` e `site_id`.
 
-A ligação entre as milestones é direta. Na Milestone 1 foi definido o problema de negócio e o objetivo de previsão. Na Milestone 2, os dados foram analisados, limpos e transformados, incluindo o tratamento de `C20`, a remoção de identificadores pouco úteis e a criação de novas variáveis como `hora_do_dia` e `banner_area`. Na Milestone 3, foram testados modelos de classificação, comparando Regressão Logística, Random Forest e XGBoost, sendo o XGBoost otimizado escolhido como modelo final. A Milestone 4 fecha o ciclo ao traduzir estes resultados em valor prático, limitações, implicações éticas e próximos passos.
+A ligação entre as milestones é direta. Na Milestone 1 foi definido o problema de negócio e o objetivo de previsão. Na Milestone 2, os dados foram analisados, limpos e transformados, incluindo o tratamento de `C20`, a remoção de identificadores pouco úteis e a criação de novas variáveis como `hora_do_dia` e `banner_area`. Na Milestone 3, foram testados modelos de classificação, comparando Regressão Logística, *Random Forest* e XGBoost, sendo o XGBoost otimizado escolhido como modelo final. A Milestone 4 fecha o ciclo ao traduzir estes resultados em valor prático, limitações, implicações éticas e próximos passos.
+
+| Fase | Contributo para o projeto | Ligação ao valor final |
+| :--- | :--- | :--- |
+| Milestone 1 | Definição do problema de negócio e da variável alvo `click` | Estabeleceu o objetivo de prever cliques e atingir AUC-ROC mínimo de 0.75 |
+| Milestone 2 | Análise exploratória, tratamento de `C20`, remoção de identificadores e criação de `hora_do_dia` e `banner_area` | Transformou dados brutos em variáveis utilizáveis pelos modelos |
+| Milestone 3 | Comparação entre Regressão Logística, *Random Forest* e XGBoost | Identificou o XGBoost otimizado como melhor modelo |
+| Milestone 4 | Interpretação dos resultados, limitações, ética e trabalhos futuros | Converte as métricas técnicas em valor prático para publicidade digital |
 
 ![Curvas ROC (Comparação de Modelos)](../reports/figures/curvas_roc_comparacao.png)
 
-*Figura 1 (Curvas ROC comparativas dos modelos testados). Esta figura deve ser usada para mostrar visualmente que o XGBoost otimizado apresenta melhor capacidade discriminativa do que o modelo baseline.*
+*Figura 1 (Curvas ROC comparativas dos modelos testados). Esta figura deve ser usada para mostrar visualmente que o XGBoost otimizado apresenta melhor capacidade discriminativa do que o modelo de referência.*
 
 * **Interpretação dos Resultados:**  
 
@@ -27,9 +34,18 @@ O resultado principal do projeto foi o **AUC-ROC = 0.7509** obtido pelo XGBoost 
 
 Este resultado é especialmente relevante porque o conjunto de dados está fortemente desequilibrado: cerca de **83%** dos registos correspondem a não-cliques e apenas cerca de **17%** correspondem a cliques. Neste contexto, a *Accuracy* seria enganadora, porque um modelo que previsse sempre “não clique” teria uma taxa de acerto elevada, mas não teria utilidade prática para identificar oportunidades reais de clique. Por isso, o **AUC-ROC** foi a métrica principal, e o **F1-Score** foi usado como métrica secundária.
 
-O **F1-Score = 0.4223** mostra que o modelo consegue algum equilíbrio entre identificar cliques reais e controlar previsões positivas erradas. Este valor não deve ser interpretado isoladamente como “baixo” ou “alto” sem considerar o desequilíbrio da variável alvo. Como os cliques representam apenas uma minoria dos registos, é natural que seja difícil obter simultaneamente elevada Precisão e elevado *Recall*. Ainda assim, o modelo final melhora claramente o desempenho do *baseline*.
+O **AUC-ROC** responde à pergunta: “O modelo consegue distinguir e ordenar impressões com maior e menor probabilidade de clique?”. Já o **F1-Score** responde a uma pergunta complementar: “Quando o modelo classifica uma impressão como provável clique ou provável não-clique, quão equilibrada é essa decisão entre encontrar cliques reais e evitar previsões positivas erradas?”.
 
-A comparação com a Regressão Logística confirma esta melhoria. O modelo *baseline* obteve **AUC-ROC = 0.6412** no conjunto de teste, enquanto o XGBoost otimizado atingiu **0.7509**. Isto representa uma melhoria acumulada de **+0.1097** em AUC-ROC. Esta diferença justifica a escolha de um modelo mais complexo, porque o ganho de desempenho é relevante para o objetivo do projeto.
+O **F1-Score = 0.4223** mostra que o modelo consegue algum equilíbrio entre identificar cliques reais e controlar previsões positivas erradas. Este valor não deve ser interpretado isoladamente como “baixo” ou “alto” sem considerar o desequilíbrio da variável alvo. Como os cliques representam apenas uma minoria dos registos, é natural que seja difícil obter simultaneamente elevada Precisão e elevado *Recall*. Ainda assim, o modelo final melhora claramente o desempenho do modelo de referência.
+
+A comparação com a Regressão Logística confirma esta melhoria. O modelo de referência obteve **AUC-ROC = 0.6412** no conjunto de teste, enquanto o XGBoost otimizado atingiu **0.7509**. Isto representa uma melhoria acumulada de **+0.1097** em AUC-ROC. Esta diferença justifica a escolha de um modelo mais complexo, porque o ganho de desempenho é relevante para o objetivo do projeto.
+
+| Modelo | Resultado no conjunto de teste | Interpretação |
+| :--- | :---: | :--- |
+| Regressão Logística | AUC-ROC = 0.6412 | Modelo de referência simples |
+| *Random Forest* | AUC-ROC = 0.7218 | Melhorou claramente face ao modelo de referência |
+| XGBoost base | AUC-ROC = 0.7419 | Melhor modelo antes da otimização |
+| XGBoost otimizado | AUC-ROC = 0.7509 | Modelo final, cumprindo o objetivo SMART |
 
 A validação cruzada também reforçou a estabilidade do modelo. O XGBoost otimizado apresentou média de **0.7504** e desvio padrão de **0.0006** em validação cruzada de 5 *folds*. Isto indica que o desempenho não depende apenas de uma divisão favorável dos dados, mas sim de um comportamento consistente do modelo.
 
@@ -39,7 +55,7 @@ A matriz de confusão permite interpretar os erros de forma mais concreta. O mod
 
 *Figura 2 (Matriz de confusão do modelo final). Esta figura deve ser usada para explicar os acertos e erros do XGBoost otimizado: Verdadeiros Negativos, Falsos Positivos, Falsos Negativos e Verdadeiros Positivos.*
 
-Em termos práticos, os **Falsos Positivos** representam impressões previstas como clique, mas que não foram clicadas. Num cenário real, isto pode traduzir-se em orçamento desperdiçado. Já os **Falsos Negativos** representam impressões que geraram clique, mas que o modelo não conseguiu identificar como oportunidades promissoras. Estes casos correspondem a oportunidades reais perdidas.
+Em termos práticos, os **Falsos Positivos** representam impressões previstas como clique, mas que não foram clicadas. Num cenário real, isto pode traduzir-se em orçamento potencialmente desperdiçado. Já os **Falsos Negativos** representam impressões que geraram clique, mas que o modelo não conseguiu identificar como oportunidades promissoras. Estes casos correspondem a oportunidades reais que o modelo deixou passar.
 
 A análise de importância dos atributos mostra ainda que a variável `banner_area`, criada durante a Milestone 2, foi a mais importante no modelo final, com importância de **0.326**. Este resultado valida a etapa de engenharia de atributos, porque uma variável criada a partir das dimensões do anúncio (`C15 × C16`) acabou por ser central para a previsão. Também se destacaram `C16`, `device_type`, `C21` e `site_id`.
 
@@ -47,22 +63,26 @@ A análise de importância dos atributos mostra ainda que a variável `banner_ar
 
 *Figura 3 (Importância dos atributos no XGBoost otimizado). Esta figura deve ser usada para mostrar que o modelo não depende apenas de uma variável, mas que o formato visual do anúncio e o contexto de exibição têm peso relevante na previsão.*
 
-Assim, a conclusão principal não é apenas que o modelo “tem AUC-ROC de 0.7509”. A conclusão real é que o modelo consegue ordenar impressões por probabilidade de clique melhor do que o *baseline*, que a engenharia de atributos contribuiu para o desempenho final e que variáveis associadas ao formato visual do anúncio e ao contexto de exibição têm impacto relevante na previsão.
+A importância de `banner_area` indica que, nos dados analisados, a área visual do anúncio ajudou o modelo a distinguir impressões com maior e menor probabilidade de clique. Isto não prova que aumentar sempre a dimensão do anúncio cause automaticamente mais cliques, mas mostra que esta variável tem valor preditivo relevante no conjunto de dados analisado.
+
+Assim, a conclusão principal não é apenas que o modelo “tem AUC-ROC de 0.7509”. A conclusão real é que o modelo consegue ordenar impressões por probabilidade de clique melhor do que o modelo de referência, que a engenharia de atributos contribuiu para o desempenho final e que variáveis associadas ao formato visual do anúncio e ao contexto de exibição têm impacto relevante na previsão.
 
 * **Valor para o Utilizador/Negócio:**  
 
 O valor prático deste projeto está em transformar dados históricos de publicidade digital numa ferramenta de apoio à decisão. Em vez de tratar todas as impressões como iguais, o modelo permite atribuir uma pontuação de probabilidade de clique a cada impressão. Isto pode ajudar anunciantes e plataformas a priorizar oportunidades com maior potencial de interação.
 
-Na prática, esta solução pode ser usada para apoiar decisões de licitação em campanhas digitais. Se uma impressão tiver maior probabilidade prevista de clique, pode justificar um lance mais competitivo. Se tiver menor probabilidade prevista de clique, o anunciante pode optar por não investir tanto nessa oportunidade. Desta forma, o modelo pode contribuir para reduzir desperdício de orçamento em impressões pouco promissoras.
+Na prática, esta solução pode ser usada para apoiar decisões de licitação em campanhas digitais. Se uma impressão tiver maior probabilidade prevista de clique, pode justificar análise ou prioridade adicional. Se tiver menor probabilidade prevista de clique, o anunciante pode optar por atribuir menor prioridade a essa oportunidade. Desta forma, o modelo pode contribuir para uma utilização mais informada do orçamento publicitário.
 
-O modelo também produz conhecimento acionável. A importância elevada de `banner_area` indica que o formato visual do anúncio é um fator relevante. A presença de `C16` reforça a importância das dimensões ou da configuração visual do anúncio. A presença de `device_type` mostra que o tipo de dispositivo influencia a probabilidade de clique. A presença de `site_id` indica que o contexto onde o anúncio é apresentado também tem peso na previsão.
+Em termos operacionais, a probabilidade prevista pelo modelo pode funcionar como uma camada de priorização. Impressões com pontuação mais elevada podem ser analisadas como oportunidades mais promissoras, enquanto impressões com pontuação baixa podem receber menor prioridade. Esta utilização não substitui a decisão humana nem garante retorno financeiro, mas transforma dados históricos em apoio objetivo à decisão.
+
+O modelo também produz conhecimento acionável. A importância elevada de `banner_area` indica que o formato visual do anúncio é um fator relevante no conjunto de dados analisado. A presença de `C16` reforça a importância das dimensões ou da configuração visual do anúncio. A presença de `device_type` mostra que o tipo de dispositivo influencia a probabilidade de clique. A presença de `site_id` indica que o contexto onde o anúncio é apresentado também tem peso na previsão.
 
 Contudo, o valor do modelo deve ser interpretado com prudência. O modelo prevê cliques, mas não prevê diretamente conversões, compras ou receita. Um clique pode ser útil, mas não garante retorno financeiro. Por isso, a solução é valiosa como ferramenta de priorização e apoio à decisão, mas não deve ser vista como uma garantia automática de rentabilidade.
 
 Em resumo, o projeto entrega valor porque responde às três perguntas essenciais da Milestone 4:
 
 1. **O que é que isto resolve?** Ajuda a prever quais impressões têm maior probabilidade de clique.
-2. **Posso confiar nestes números?** O modelo foi comparado com um *baseline*, testado em conjunto de teste e validado com *cross-validation*.
+2. **Posso confiar nestes números?** O modelo foi comparado com um modelo de referência, testado em conjunto de teste e validado com *cross-validation*.
 3. **E agora, o que fazemos com isto?** Podemos usar a probabilidade prevista para apoiar decisões de investimento em publicidade digital, ajustar estratégias de campanha e orientar trabalho futuro.
 
 ## 2. Análise Crítica e Limitações
@@ -93,6 +113,8 @@ Outra limitação é que o modelo identifica associações estatísticas, mas n�
 
 Também é importante reconhecer que o XGBoost é mais complexo do que a Regressão Logística. Embora tenha melhor desempenho, é menos simples de explicar. A análise de *Feature Importance* ajuda a interpretar o modelo, mas não torna todas as decisões totalmente transparentes.
 
+Também não é possível concluir, apenas com este modelo, que uma variável importante causa diretamente o clique. A *Feature Importance* mostra contribuição preditiva, não causalidade. Assim, o modelo ajuda a identificar padrões úteis, mas qualquer decisão de campanha deveria ser validada em contexto real antes de ser aplicada de forma definitiva.
+
 * **Contextos de Falha:**  
 
 O modelo pode falhar quando aplicado a contextos diferentes dos dados de treino. Exemplos incluem novos sites, novas aplicações, novos dispositivos, novos formatos de anúncio ou campanhas com públicos-alvo diferentes dos observados na amostra.
@@ -114,7 +136,6 @@ Esta remoção também reduz riscos associados ao uso de identificadores individ
 Ainda assim, é necessário cuidado. Mesmo quando os dados estão anonimizados, continuam a representar comportamentos observados. Por isso, a utilização do modelo deve limitar-se à otimização agregada de campanhas e não deve ser usada para tentar reconstruir perfis individuais de utilizadores.
 
 Também deve existir cuidado na forma como os resultados são usados. O facto de um determinado contexto ter maior probabilidade de clique não significa que seja adequado aumentar indefinidamente a pressão publicitária sobre esse contexto. A otimização para cliques deve ser equilibrada com a experiência do utilizador.
-
 
 * **Transparência:**  
 
@@ -163,6 +184,8 @@ Outra possibilidade seria desenvolver uma interface de programação de aplicaç
 Numa fase mais avançada, a solução poderia incluir um painel de monitorização com métricas como AUC-ROC, F1-Score, Precisão, *Recall*, distribuição das probabilidades previstas e importância das variáveis ao longo do tempo. Este painel ajudaria a detetar degradação de desempenho e a perceber quando o modelo precisa de ser reavaliado ou treinado novamente.
 
 O objetivo final do roadmap é transformar o projeto académico numa solução mais operacional: reprodutível, interpretável, monitorizável e útil para apoiar decisões de campanhas digitais.
+
+Em conclusão, o projeto cumpriu o objetivo definido na Milestone 1, demonstrou que a preparação dos dados da Milestone 2 teve impacto na qualidade da modelação e confirmou, na Milestone 3, que o XGBoost otimizado foi o modelo mais adequado entre os testados. A Milestone 4 mostra que o projeto não termina numa métrica: transforma essa métrica numa leitura prática sobre como priorizar impressões publicitárias, reconhecer limitações e definir próximos passos para uma solução mais operacional.
 
 **Data de Conclusão:** 15/05/2026  
 **Versão do Projeto:** v4.0 Final
