@@ -1,5 +1,6 @@
 # Previsão de Cliques em Publicidade Digital (Avazu CTR Prediction)
-
+Um projeto de pesquisa que compara modelos de sequência modernos para prever click em anúncio on-line, usando o conjunto de dados Avazu CTR Prediction.
+Nota: Link do vídeo:https://drive.google.com/file/d/1JhS-cE3PIqNkZGqZ6Ck42rTA5uDHOveo/view?usp=sharing
 ## Identificação da Equipa
 
 * **Grupo nº:** 6
