@@ -4,13 +4,18 @@
 
 **Divisão do dataset:** Utilizámos uma divisão de 80% para treino (4.000.000 registos) e 20% para teste (1.000.000 registos), com `stratify=y` e `random_state=42`.
 
-A estratificação garante que a proporção de cliques se mantém igual em ambos os conjuntos, o que é essencial dado o desequilíbrio da variável alvo. O conjunto de teste foi isolado desde o início e apenas utilizado para avaliar o desempenho final dos modelos.
+A estratificação garante que a proporção de cliques se mantém igual em ambos os conjuntos, o que é essencial dado o desequilíbrio da variável alvo. 
+O conjunto de teste foi isolado desde o início e apenas utilizado para avaliar o desempenho final dos modelos.
 
-O dataset utilizado nesta fase corresponde ao conjunto processado na Milestone 2, com **5.000.000 registos × 21 colunas**, incluindo a variável alvo `click` e 20 variáveis explicativas.
+O dataset utilizado nesta fase corresponde ao conjunto processado na Milestone 2, com **5.000.000 registos × 21 colunas**, 
+incluindo a variável alvo `click` e 20 variáveis explicativas.
 
-As variáveis categóricas de alta cardinalidade foram previamente transformadas através de **Label Encoding**, conforme implementado no notebook, permitindo que categorias como `site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category` e `device_model` fossem utilizadas pelos algoritmos de aprendizagem automática.
+As variáveis categóricas de alta cardinalidade foram previamente transformadas através de **Label Encoding**, conforme implementado 
+no notebook, permitindo que categorias como `site_id`, `site_domain`, `site_category`, `app_id`, `app_domain`, `app_category` e `device_model` 
+fossem utilizadas pelos algoritmos de aprendizagem automática.
 
-O `StandardScaler` foi aplicado no contexto da Regressão Logística, por ser um modelo sensível à escala das variáveis. O escalonamento foi ajustado exclusivamente no conjunto de treino (`fit_transform`) e depois aplicado ao conjunto de teste (`transform`), evitando fuga de informação.
+O `StandardScaler` foi aplicado no contexto da Regressão Logística, por ser um modelo sensível à escala das variáveis. O escalonamento 
+foi ajustado exclusivamente no conjunto de treino (`fit_transform`) e depois aplicado ao conjunto de teste (`transform`), evitando fuga de informação.
 
 ```text
 Treino : 4.000.000 registos (80%)
@@ -22,13 +27,19 @@ Proporção de cliques no teste  : 0.1697
 Proporções consistentes — divisão estratificada correcta.
 Isolamento garantido: X_test nunca será visto durante o treino nem o tuning.
 ```
-**Métrica de Sucesso:** A métrica principal escolhida foi o **AUC-ROC**, por três razões principais: é adequada para problemas de classificação binária, é robusta ao desequilíbrio de classes e mede a capacidade do modelo para ordenar impressões por probabilidade de clique.
+**Métrica de Sucesso:** A métrica principal escolhida foi o **AUC-ROC**, por três razões principais: é adequada para problemas de classificação binária, 
+é robusta ao desequilíbrio de classes e mede a capacidade do modelo para ordenar impressões por probabilidade de clique.
 
-Esta escolha é particularmente importante no contexto de publicidade digital e *Real-Time Bidding*, onde o objetivo não é apenas classificar uma impressão como clique ou não-clique, mas sim atribuir uma pontuação de probabilidade que permita priorizar oportunidades com maior potencial de interação.
+Esta escolha é particularmente importante no contexto de publicidade digital e *Real-Time Bidding*, onde o objetivo não é apenas classificar uma impressão 
+como clique ou não-clique, mas sim atribuir uma pontuação de probabilidade que permita priorizar oportunidades com maior potencial de interação.
 
-O **F1-Score** foi definido como métrica secundária porque equilibra Precisão e *Recall*, sendo relevante num cenário em que tanto os Falsos Positivos como os Falsos Negativos têm impacto prático. Os Falsos Positivos representam impressões classificadas como promissoras mas que não geram clique, enquanto os Falsos Negativos representam oportunidades reais de clique que o modelo não conseguiu identificar.
+O **F1-Score** foi definido como métrica secundária porque equilibra Precisão e *Recall*, sendo relevante num cenário em que tanto os Falsos Positivos como
+os Falsos Negativos têm impacto prático. Os Falsos Positivos representam impressões classificadas como promissoras mas que não geram clique, enquanto os Falsos 
+Negativos representam oportunidades reais de clique que o modelo não conseguiu identificar.
 
-A *Accuracy* foi excluída como métrica principal porque seria enganadora neste problema. Como cerca de 83% dos registos correspondem a não-cliques, um modelo que previsse sempre “não clique” teria uma taxa de acerto elevada, mas sem utilidade prática para o objetivo do projeto.
+A *Accuracy* foi excluída como métrica principal porque seria enganadora neste problema. 
+Como cerca de 83% dos registos correspondem a não-cliques, um modelo que previsse sempre “não clique” teria uma taxa de acerto elevada,
+mas sem utilidade prática para o objetivo do projeto.
 
 ---
 
