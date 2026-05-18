@@ -2,7 +2,7 @@
 
 > **Nota de Revisão:** Este documento pressupõe que o *dataset* já foi identificado e descrito no ficheiro `docs/M1_iniciacao.md`. O dicionário de variáveis original encontra-se nessa secção.
 
-*Data de última atualização: 23/04/2026*
+*Data de última atualização: 23/04/2026* 
 
 
 
