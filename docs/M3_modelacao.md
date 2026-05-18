@@ -103,22 +103,7 @@ Segundo o notebook, o Random Forest apresentou uma melhoria clara face à Regres
 
 #### XGBoost
 
-O XGBoost foi treinado como principal modelo candidato, usando 200 estimadores, profundidade máxima de 6, taxa de aprendizagem de 0.1 e `scale_pos_weight` para compensar o desequilíbrio da classe positiva.
 
-```python
-xgb = XGBClassifier(
-    n_estimators=200,
-    max_depth=6,
-    learning_rate=0.1,
-    scale_pos_weight=scale_pos_weight,
-    eval_metric='auc',
-    random_state=42,
-    n_jobs=-1,
-    verbosity=0
-)
-```
-
-O XGBoost apresentou o melhor desempenho entre os modelos candidatos antes do *tuning*, com AUC-ROC de teste de **0,7413**, sendo por isso selecionado para a fase de otimização.
 
 | Algoritmo | Parâmetros Base | AUC-ROC (Teste) | Notas |
 | :--- | :--- | :---: | :--- |
