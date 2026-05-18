@@ -7,15 +7,28 @@ resultados compreensíveis para qualquer pessoa.
 
 * **O Problema Resolvido:**  
 
-O problema definido na Milestone 1 consistia em desenvolver um modelo de classificação binária capaz de prever se uma impressão publicitária iria ou não gerar clique. A variável alvo do projeto é `click`, em que `0` representa “não clique” e `1` representa “clique”. Este problema foi trabalhado com o conjunto de dados **Avazu CTR Prediction**, composto por registos reais de impressões de anúncios digitais.
+O problema definido na Milestone 1 consistia em desenvolver um modelo de classificação binária capaz de prever se 
+uma impressão publicitária iria ou não gerar clique. A variável alvo do projeto é `click`, em que `0` representa “não clique” 
+e `1` representa “clique”. Este problema foi trabalhado com o conjunto de dados **Avazu CTR Prediction**, composto por registos reais 
+de impressões de anúncios digitais.
 
-A relevância do problema está ligada ao contexto da publicidade digital e do *Real-Time Bidding* (RTB). Neste tipo de ambiente, os anunciantes precisam de tomar decisões rápidas sobre onde investir o orçamento disponível. Se todas as impressões forem tratadas como igualmente relevantes, existe maior risco de desperdiçar investimento em anúncios com baixa probabilidade de interação. Por isso, prever a probabilidade de clique permite apoiar decisões mais informadas e melhorar a eficiência das campanhas digitais.
+A relevância do problema está ligada ao contexto da publicidade digital e do *Real-Time Bidding* (RTB). Neste tipo de ambiente, os 
+anunciantes precisam de tomar decisões rápidas sobre onde investir o orçamento disponível. Se todas as impressões forem tratadas como igualmente 
+relevantes, existe maior risco de desperdiçar investimento em anúncios com baixa probabilidade de interação. Por isso, prever a probabilidade de 
+clique permite apoiar decisões mais informadas e melhorar a eficiência das campanhas digitais.
 
-A Milestone 1 definiu dois objetivos principais. O primeiro objetivo era desenvolver um modelo capaz de atingir pelo menos **AUC-ROC = 0.75** no conjunto de teste. O segundo objetivo era identificar as **5 variáveis mais determinantes** para a previsão do clique e diagnosticar os principais perfis de erro do modelo.
+A Milestone 1 definiu dois objetivos principais. O primeiro objetivo era desenvolver um modelo capaz de atingir pelo menos **AUC-ROC = 0.75** 
+no conjunto de teste. O segundo objetivo era identificar as **5 variáveis mais determinantes** para a previsão do clique e diagnosticar os principais 
+perfis de erro do modelo.
 
-Estes objetivos foram alcançados. Na fase de modelação, o modelo final escolhido foi o **XGBoost otimizado**, que obteve **AUC-ROC = 0.7509** no conjunto de teste, ultrapassando o objetivo mínimo definido. A análise de importância dos atributos também permitiu identificar as variáveis com maior peso na previsão: `banner_area`, `C16`, `device_type`, `C21` e `site_id`.
+Estes objetivos foram alcançados. Na fase de modelação, o modelo final escolhido foi o **XGBoost otimizado**, que obteve **AUC-ROC = 0.7509** 
+no conjunto de teste, ultrapassando o objetivo mínimo definido. A análise de importância dos atributos também permitiu identificar as variáveis
+com maior peso na previsão: `banner_area`, `C16`, `device_type`, `C21` e `site_id`.
 
-A ligação entre as milestones é direta. Na Milestone 1 foi definido o problema de negócio e o objetivo de previsão. Na Milestone 2, os dados foram analisados, limpos e transformados, incluindo o tratamento de `C20`, a remoção de identificadores pouco úteis e a criação de novas variáveis como `hora_do_dia` e `banner_area`. Na Milestone 3, foram testados modelos de classificação, comparando Regressão Logística, *Random Forest* e XGBoost, sendo o XGBoost otimizado escolhido como modelo final. A Milestone 4 fecha o ciclo ao traduzir estes resultados em valor prático, limitações, implicações éticas e próximos passos.
+A ligação entre as milestones é direta. Na Milestone 1 foi definido o problema de negócio e o objetivo de previsão. Na Milestone 2, os dados foram analisados, 
+limpos e transformados, incluindo o tratamento de `C20`, a remoção de identificadores pouco úteis e a criação de nov
+as variáveis como `hora_do_dia` e `banner_area`. 
+Na Milestone 3, foram testados modelos de classificação, comparando Regressão Logística, *Random Forest* e XGBoost, sendo o XGBoost otimizado escolhido como modelo final. A Milestone 4 fecha o ciclo ao traduzir estes resultados em valor prático, limitações, implicações éticas e próximos passos.
 
 | Fase | Contributo para o projeto | Ligação ao valor final |
 | :--- | :--- | :--- |
@@ -30,11 +43,18 @@ A ligação entre as milestones é direta. Na Milestone 1 foi definido o problem
 
 * **Interpretação dos Resultados:**  
 
-O resultado principal do projeto foi o **AUC-ROC = 0.7509** obtido pelo XGBoost otimizado. Em linguagem simples, isto significa que o modelo tem uma boa capacidade para ordenar impressões publicitárias por probabilidade de clique. Ou seja, quando compara uma impressão que gerou clique com outra que não gerou clique, o modelo tende a atribuir uma pontuação mais elevada à impressão que realmente foi clicada.
+O resultado principal do projeto foi o **AUC-ROC = 0.7509** obtido pelo XGBoost otimizado. Em linguagem simples, isto significa que o
+modelo tem uma boa capacidade para ordenar impressões publicitárias por probabilidade de clique. Ou seja, quando compara uma impressão
+que gerou clique com outra que não gerou clique, o modelo tende a atribuir uma pontuação mais elevada à impressão que realmente foi clicada.
 
-Este resultado é especialmente relevante porque o conjunto de dados está fortemente desequilibrado: cerca de **83%** dos registos correspondem a não-cliques e apenas cerca de **17%** correspondem a cliques. Neste contexto, a *Accuracy* seria enganadora, porque um modelo que previsse sempre “não clique” teria uma taxa de acerto elevada, mas não teria utilidade prática para identificar oportunidades reais de clique. Por isso, o **AUC-ROC** foi a métrica principal, e o **F1-Score** foi usado como métrica secundária.
+Este resultado é especialmente relevante porque o conjunto de dados está fortemente desequilibrado: cerca de **83%** dos registos correspondem 
+a não-cliques e apenas cerca de **17%** correspondem a cliques. Neste contexto, a *Accuracy* seria enganadora, porque um modelo que previsse 
+sempre “não clique” teria uma taxa de acerto elevada, mas não teria utilidade prática para identificar oportunidades reais de clique. Por isso, 
+o **AUC-ROC** foi a métrica principal, e o **F1-Score** foi usado como métrica secundária.
 
-O **AUC-ROC** responde à pergunta: “O modelo consegue distinguir e ordenar impressões com maior e menor probabilidade de clique?”. Já o **F1-Score** responde a uma pergunta complementar: “Quando o modelo classifica uma impressão como provável clique ou provável não-clique, quão equilibrada é essa decisão entre encontrar cliques reais e evitar previsões positivas erradas?”.
+O **AUC-ROC** responde à pergunta: “O modelo consegue distinguir e ordenar impressões com maior e menor probabilidade de clique?”. Já o **F1-Score** 
+responde a uma pergunta complementar: “Quando o modelo classifica uma impressão como provável clique ou provável não-clique, quão equilibrada é essa decisão 
+entre encontrar cliques reais e evitar previsões positivas erradas?”.
 
 O **F1-Score = 0.4223** mostra que o modelo consegue algum equilíbrio entre identificar cliques reais e controlar previsões positivas erradas. Este valor não deve ser interpretado isoladamente como “baixo” ou “alto” sem considerar o desequilíbrio da variável alvo. Como os cliques representam apenas uma minoria dos registos, é natural que seja difícil obter simultaneamente elevada Precisão e elevado *Recall*. Ainda assim, o modelo final melhora claramente o desempenho do modelo de referência.
 
