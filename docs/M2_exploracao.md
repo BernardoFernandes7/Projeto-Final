@@ -3,7 +3,7 @@
 > **Nota de Revisão:** Este documento pressupõe que o *dataset* já foi identificado e descrito no ficheiro `docs/M1_iniciacao.md`. O dicionário de variáveis original encontra-se nessa secção.
 
 *Data de última atualização: 23/04/2026* 
-
+ 
 
 
 ## Nota Técnica: Estratégia de Amostragem
@@ -39,7 +39,7 @@ df = pd.read_csv(
 
 A primeira etapa consistiu numa auditoria técnica completa ao *dataset* carregado, verificando sistematicamente as seguintes dimensões:
 
-**Dimensões e estrutura:** Foram confirmados **5.000.000 registos × 24 colunas**, validando o sucesso da amostragem. As primeiras 5 linhas foram exibidas para inspeção visual da estrutura e dos valores reais.
+**Dimensões e estrutura:** Foram confirmados **5.000.000 registos × 21 colunas, incluindo a variável alvo `click` e 20 variáveis explicativas.**, validando o sucesso da amostragem. As primeiras 5 linhas foram exibidas para inspeção visual da estrutura e dos valores reais.
 
 **Tipos de dados:** Foi mapeado o `dtype` de cada coluna e comparado com um dicionário de tipos-alvo definido a priori. 
 O output gerou uma tabela com o estado de cada variável (`Correto` / `A corrigir`), confirmando que todas as 24 colunas estavam conformes (com exceção de `id`, que é `uint64` em vez de `float64`, diferença sem impacto prático uma vez que esta coluna é removida no pré-processamento).
@@ -320,7 +320,7 @@ df_proc.to_csv('train_processed.csv', index=False)
 O dataset final ficou com:
 
 ```text
-5.000.000 registos × 21 colunas
+5.000.000 registos × 21 colunas, incluindo a variável alvo `click` e 20 variáveis explicativas.
 ```
 
 Isto corresponde à variável alvo `click` e a 20 variáveis explicativas disponíveis para os modelos de classificação.
@@ -359,7 +359,7 @@ Combina a posição do anúncio na página com a sua dimensão. Usámos `banner_
 
 ## 4. Dicionário de Dados Final (Pós-Processamento)
 
-O *dataset* processado tem **5.000.000 registos × 18 colunas** e foi guardado em `data/processed/`.
+O *dataset* processado tem **5.000.000 registos × 21 colunas, incluindo a variável alvo `click` e 20 variáveis explicativas.** e foi guardado em `data/processed/`.
 
 | Atributo | Tipo | Descrição | Transformação |
 | :--- | :--- | :--- | :--- |
