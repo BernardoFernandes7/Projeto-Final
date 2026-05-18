@@ -168,7 +168,25 @@ nas estratégias de *bidding* sem necessidade de alterações técnicas adiciona
 
 ### Apresentação Final (Pitch)
 
+O vídeo de apresentação final foi estruturado como uma síntese narrativa do projeto, com o objetivo de comunicar o problema, a solução desenvolvida, a prova técnica dos resultados e o valor prático da solução para publicidade digital. Esta apresentação complementa os relatórios técnicos, traduzindo os resultados para uma linguagem acessível a uma audiência não técnica.
+
+O *pitch* segue a estrutura definida para a Milestone 4, organizada em quatro momentos principais:
+
+1. **O Problema:** apresentação do contexto da publicidade digital e da necessidade de prever a variável `click`, que indica se uma impressão publicitária gerou clique (`1`) ou não gerou clique (`0`). Nesta fase, é explicado o desafio do desequilíbrio da variável alvo, com cerca de 83% de não-cliques e 17% de cliques reais.
+
+2. **A Solução:** descrição resumida do percurso técnico desenvolvido ao longo do projeto. Primeiro, os dados foram preparados na Milestone 2, através do tratamento de valores em falta, remoção de identificadores com baixo poder preditivo, codificação das variáveis categóricas e criação de novas variáveis como `hora_do_dia` e `banner_area`. Depois, na Milestone 3, foram testados diferentes modelos de classificação, começando pela Regressão Logística como *baseline* e evoluindo para Random Forest e XGBoost.
+
+3. **A Prova:** apresentação dos resultados principais do modelo final. O XGBoost otimizado atingiu **AUC-ROC = 0.7509** no conjunto de teste, cumprindo o objetivo SMART definido na Milestone 1. O modelo também obteve **F1-Score = 0.4223** e apresentou uma melhoria acumulada de **+0.1097** em AUC-ROC face à Regressão Logística. No vídeo, esta parte corresponde ao momento de maior impacto, onde são mostradas as métricas principais, a matriz de confusão e a importância das variáveis.
+
+4. **O Valor:** explicação da utilidade prática do modelo. A solução permite ordenar impressões por probabilidade de clique, apoiando decisões em campanhas digitais. Em vez de tratar todas as impressões como igualmente relevantes, o modelo ajuda a identificar contextos com maior potencial de interação. A variável `banner_area`, criada durante o projeto, surgiu como a mais importante no modelo final, mostrando que a engenharia de atributos contribuiu para gerar conhecimento útil.
+
+O vídeo inclui também uma componente de demonstração prática, com referência aos resultados produzidos no notebook, nomeadamente a matriz de confusão, as curvas ROC comparativas e o gráfico de importância das variáveis. Esta demonstração permite mostrar, de forma visual, onde o modelo acerta, onde ainda falha e que variáveis tiveram maior peso na previsão.
+
+A apresentação foi preparada para ter uma duração máxima de 5 minutos, respeitando o formato exigido para a defesa final. A narrativa foi dividida entre os dois elementos do grupo, garantindo participação equilibrada e uma explicação progressiva: contexto e problema, preparação dos dados, comparação dos modelos, prova dos resultados, valor de negócio, limitações e trabalhos futuros.
+
 > **Vídeo de Apresentação:** [*inserir link após publicação*]
+
+Para apoiar o momento de avaliação e antecipar dúvidas técnicas, foi também preparado um ficheiro de perguntas e respostas assíncronas. Esse ficheiro resume as decisões mais importantes do projeto, nomeadamente a escolha do AUC-ROC, a seleção do XGBoost como modelo final e as principais limitações da solução.
 
 Para dúvidas técnicas sobre o modelo, consultar o ficheiro [`Q&A.md`](Q&A.md).
 
