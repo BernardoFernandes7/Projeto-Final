@@ -107,13 +107,6 @@ Por isso, o modelo não deve ser aplicado de forma automática e igual em todos 
 
 * **Privacidade:**  
 
-O conjunto de dados utilizado é anonimizado e não contém nomes, contactos ou identificadores pessoais diretos. Além disso, variáveis como `id`, `device_id` e `device_ip` foram removidas durante o pré-processamento, por terem elevada cardinalidade e baixo poder de generalização.
-
-Esta remoção também reduz riscos associados ao uso de identificadores individuais. O modelo final trabalha com padrões agregados relacionados com contexto, dispositivo, formato do anúncio e ambiente de exibição, sem procurar identificar pessoas concretas.
-
-Ainda assim, é necessário cuidado. Mesmo quando os dados estão anonimizados, continuam a representar comportamentos observados. Por isso, a utilização do modelo deve limitar-se à otimização agregada de campanhas e não deve ser usada para tentar reconstruir perfis individuais de utilizadores.
-
-Também deve existir cuidado na forma como os resultados são usados. O facto de um determinado contexto ter maior probabilidade de clique não significa que seja adequado aumentar indefinidamente a pressão publicitária sobre esse contexto. A otimização para cliques deve ser equilibrada com a experiência do utilizador.
 
 * **Transparência:**  
 
