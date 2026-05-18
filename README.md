@@ -146,7 +146,8 @@ atingindo o objetivo SMART definido no início do projeto.
 
 A variável mais importante descoberta pelo modelo foi `banner_area` — a área visual do anúncio em píxeis²,
 **criada durante este projeto** — com **32,6% do poder preditivo total**. Isto traduz-se numa recomendação direta:
-formatos publicitários de maior dimensão geram mais cliques, independentemente do site ou da hora.
+A importância de `banner_area` indica que, nos dados analisados, a área visual do anúncio ajudou o modelo a distinguir impressões com maior 
+e menor probabilidade de clique. Isto não prova que aumentar sempre a dimensão do anúncio cause mais cliques, mas mostra que esta variável tem valor preditivo relevante.
 
 
 ### Resposta ao Problema
@@ -164,7 +165,8 @@ nas estratégias de *bidding* sem necessidade de alterações técnicas adiciona
 ### Recomendações de Inovação
 1. **Implementar SMOTE** (*Synthetic Minority Over-sampling Technique*) para lidar melhor com o desequilíbrio de classes (1:5), reduzindo os 56.547 Falsos Negativos identificados na matriz de confusão e melhorando o *Recall* do modelo.
 2. **Integrar dados sazonais e de calendário** (dia da semana, feriados, eventos desportivos) para refinar as previsões de CTR ao longo do tempo — dimensão que o dataset de apenas 10 dias não permite captar.
-3. **Desenvolver uma API REST** (FastAPI ou Flask) que exponha o modelo para *scoring* em tempo real, integrável em sistemas de *Real-Time Bidding*, e uma interface web em Streamlit para utilização por gestores de marketing sem necessidade de código.
+3. **Desenvolver uma interface de programação de aplicações** (FastAPI ou Flask) que disponibilize o
+4.  modelo para classificação em tempo real, integrável em sistemas de *Real-Time Bidding*, e uma interface web em Streamlit para utilização por gestores de marketing sem necessidade de código.
 
 ### Apresentação Final (Pitch)
 
