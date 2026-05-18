@@ -1,7 +1,6 @@
 # Previsão de Cliques em Publicidade Digital (Avazu CTR Prediction)
 Um projeto de pesquisa que compara modelos de sequência modernos para prever click em anúncio on-line, usando o conjunto de dados Avazu CTR Prediction.
 
-Nota: Link do vídeo:https://drive.google.com/file/d/1JhS-cE3PIqNkZGqZ6Ck42rTA5uDHOveo/view?usp=sharing
 ## Identificação da Equipa
 
 * **Grupo nº:** 6
@@ -212,7 +211,7 @@ A apresentação foi preparada para ter uma duração máxima de 5 minutos, resp
 elementos do grupo, garantindo participação equilibrada e uma explicação progressiva: contexto e problema, preparação dos dados, comparação dos modelos, prova dos
 resultados, valor de negócio, limitações e trabalhos futuros.
 
-> **Vídeo de Apresentação:** [*inserir link após publicação*]
+> **Vídeo de Apresentação:** https://drive.google.com/file/d/1JhS-cE3PIqNkZGqZ6Ck42rTA5uDHOveo/view?usp=sharing
 
 Para apoiar o momento de avaliação e antecipar dúvidas técnicas, foi também preparado um ficheiro de perguntas e respostas assíncronas. Esse ficheiro resume as 
 decisões mais importantes do projeto, nomeadamente a escolha do AUC-ROC, a seleção do XGBoost como modelo final e as principais limitações da solução.
