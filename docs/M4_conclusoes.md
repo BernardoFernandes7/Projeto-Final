@@ -60,20 +60,29 @@ Além disso, os dados representam um período específico de observações. O co
 ao longo do tempo, o que significa que o desempenho do modelo pode diminuir se for aplicado a dados futuros muito diferentes dos dados usados no treino.
 
 * **Limitações do Modelo:**  
-O modelo final, XGBoost otimizado, cumpre o objetivo definido, mas não é perfeito. O AUC-ROC de **0.7509** mostra boa capacidade de ordenação, mas não significa que o modelo acerte todas as previsões individuais.
+O modelo final, XGBoost otimizado, cumpre o objetivo definido, mas não é perfeito. O AUC-ROC de **0.7509** mostra boa capacidade de ordenação,
+mas não significa que o modelo acerte todas as previsões individuais.
 
-A matriz de confusão evidencia que ainda existem muitos **Falsos Positivos**. Estes casos correspondem a impressões classificadas como potenciais cliques, mas que não geraram interação. Em contexto real, isto pode representar investimento publicitário pouco eficiente.
+A matriz de confusão evidencia que ainda existem muitos **Falsos Positivos**. Estes casos correspondem a impressões classificadas como potenciais cliques,
+mas que não geraram interação. Em contexto real, isto pode representar investimento publicitário pouco eficiente.
 
-Também existem **Falsos Negativos**, ou seja, impressões que geraram clique mas que o modelo classificou como não-clique. Estes casos representam oportunidades reais que o modelo não conseguiu identificar.
+Também existem **Falsos Negativos**, ou seja, impressões que geraram clique mas que o modelo classificou como não-clique. Estes casos representam oportunidades 
+reais que o modelo não conseguiu identificar.
 
-Outra limitação é que o modelo identifica padrões estatísticos, mas não prova causalidade. Por exemplo, o facto de `banner_area` ser uma variável muito importante não significa, por si só, que aumentar sempre a área do anúncio irá causar mais cliques. O modelo mostra associação preditiva, não uma relação causal garantida.
+Outra limitação é que o modelo identifica padrões estatísticos, mas não prova causalidade. Por exemplo, o facto de `banner_area` ser uma variável muito importante
+não significa, por si só, que aumentar sempre a área do anúncio irá causar mais cliques. O modelo mostra associação preditiva, não uma relação causal garantida.
 
 * **Contextos de Falha:**  
-O modelo pode falhar quando aplicado a contextos muito diferentes dos dados de treino, como novos sites, novas aplicações, novos dispositivos, novos formatos de anúncio ou campanhas com públicos-alvo diferentes.
+O modelo pode falhar quando aplicado a contextos muito diferentes dos dados de treino, como novos sites, novas aplicações, novos dispositivos,
+novos formatos de anúncio ou campanhas com públicos-alvo diferentes.
 
-Também pode ter menor fiabilidade em categorias pouco representadas no treino. Se uma determinada aplicação, site ou configuração de anúncio aparece poucas vezes nos dados, o modelo pode não ter exemplos suficientes para aprender um padrão robusto.
+Também pode ter menor fiabilidade em categorias pouco representadas no treino. Se uma determinada aplicação, site ou configuração de 
+anúncio aparece poucas vezes nos dados, o modelo pode não ter exemplos suficientes para aprender um padrão robusto.
 
-Outro contexto de falha está associado ao limiar de decisão utilizado. O modelo foi avaliado com um determinado *threshold*, mas este limiar pode não ser o ideal para todos os objetivos de negócio. Se o anunciante quiser captar o maior número possível de cliques, pode ser necessário reduzir o *threshold*, aceitando mais Falsos Positivos. Se o objetivo for reduzir desperdício de orçamento, pode ser preferível aumentar o *threshold*, aceitando perder alguns cliques reais.
+Outro contexto de falha está associado ao limiar de decisão utilizado. O modelo foi avaliado com um determinado *threshold*, 
+mas este limiar pode não ser o ideal para todos os objetivos de negócio. Se o anunciante quiser captar o maior número possível 
+de cliques, pode ser necessário reduzir o *threshold*, aceitando mais Falsos Positivos. Se o objetivo for reduzir desperdício de 
+orçamento, pode ser preferível aumentar o *threshold*, aceitando perder alguns cliques reais.
 
 Assim, o modelo não deve ser usado de forma isolada em decisões financeiras automáticas sem monitorização e ajuste ao objetivo concreto da campanha.
 
