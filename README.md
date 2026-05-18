@@ -43,8 +43,10 @@ tendo em conta métricas adequadas para classificação binária, como AUC-ROC, 
 
 ### Objetivos do Projeto
 
-* **Objetivo 1:** Desenvolver um modelo de classificação binária capaz de prever se um utilizador irá clicar num anúncio, atingindo um AUC-ROC mínimo de 0.75 no conjunto de teste, utilizando o dataset Avazu CTR Prediction até ao final do Milestone 3.
-* **Objetivo 2:** Identificar as 5 variáveis mais determinantes para a previsão do clique (através de Feature Importance) e diagnosticar os perfis de erro do modelo, fornecendo recomendações acionáveis sobre os contextos de anúncios com maior probabilidade de conversão, até à conclusão da fase de modelação.
+* **Objetivo 1:** Desenvolver um modelo de classificação binária capaz de prever se um utilizador irá clicar num anúncio, atingindo um AUC-ROC mínimo de 0.75
+* no conjunto de teste, utilizando o dataset Avazu CTR Prediction até ao final do Milestone 3.
+* **Objetivo 2:** Identificar as 5 variáveis mais determinantes para a previsão do clique (através de Feature Importance) e diagnosticar os perfis de erro do modelo,
+*  fornecendo recomendações acionáveis sobre os contextos de anúncios com maior probabilidade de conversão, até à conclusão da fase de modelação.
 
 ### Dicionário de Variáveis 
 
@@ -76,18 +78,25 @@ tendo em conta métricas adequadas para classificação binária, como AUC-ROC, 
 | `C21` | Categórica | Nominal codificada numericamente | Variável anonimizada relacionada com o contexto do anúncio. |
 
 ### Observações no Conjunto de Dados
-O conjunto de dados utilizado neste projeto é composto por registos de impressões de anúncios digitais em dispositivos móveis. Cada observação representa uma impressão de anúncio exibida a um utilizador, podendo ou não resultar num clique.
+O conjunto de dados utilizado neste projeto é composto por registos de impressões de anúncios digitais em dispositivos móveis. Cada observação representa 
+uma impressão de anúncio exibida a um utilizador, podendo ou não resultar num clique.
 
 A variável alvo do problema é `click`, que assume dois valores possíveis:
 
 - `0`: o anúncio foi exibido, mas não recebeu clique;
 - `1`: o anúncio foi exibido e recebeu clique.
 
-Desta forma, cada linha do dataset corresponde a uma observação individual do comportamento do utilizador perante um anúncio. O objetivo do projeto é utilizar as características associadas a cada impressão, como a hora, o tipo de dispositivo, a posição do banner, o site, a aplicação e outras variáveis contextuais, para prever a probabilidade de ocorrência de clique.
+Desta forma, cada linha do dataset corresponde a uma observação individual do comportamento do utilizador perante um anúncio. O objetivo do projeto é utilizar 
+as características associadas a cada impressão, como a hora, o tipo de dispositivo, a posição do banner, o site, a aplicação e outras variáveis contextuais, 
+para prever a probabilidade de ocorrência de clique.
 
-Uma característica importante deste conjunto de dados é o forte desbalanceamento da variável alvo. A maioria das observações pertence à classe `0`, ou seja, anúncios que não receberam clique, enquanto a classe `1`, correspondente aos cliques, representa uma proporção menor dos dados. Este aspeto é comum em problemas de publicidade digital, uma vez que a taxa de clique tende naturalmente a ser baixa.
+Uma característica importante deste conjunto de dados é o forte desbalanceamento da variável alvo. 
+A maioria das observações pertence à classe `0`, ou seja, anúncios que não receberam clique, enquanto a classe `1`, 
+correspondente aos cliques, representa uma proporção menor dos dados. Este aspeto é comum em problemas de publicidade digital, 
+uma vez que a taxa de clique tende naturalmente a ser baixa.
 
-Além disso, o dataset contém várias variáveis categóricas de elevada cardinalidade, como `site_id`, `app_id`, `device_id`, `device_ip` e `device_model`. Estas variáveis possuem muitos valores distintos, o que exige cuidados adicionais no pré-processamento, nomeadamente na codificação das categorias e na gestão de categorias raras.
+Além disso, o dataset contém várias variáveis categóricas de elevada cardinalidade, como `site_id`, `app_id`, `device_id`, `device_ip` e `device_model`. 
+Estas variáveis possuem muitos valores distintos, o que exige cuidados adicionais no pré-processamento, nomeadamente na codificação das categorias e na gestão de categorias raras.
 
 Assim, as observações do conjunto de dados refletem eventos reais de exposição a anúncios, sendo adequadas para a construção de modelos preditivos supervisionados de classificação binária.
 
@@ -130,16 +139,26 @@ Assim, as observações do conjunto de dados refletem eventos reais de exposiç�
 
 ### Resumo de Resultados
 
-O modelo **prevê se um utilizador vai clicar num anúncio com 75,3% de capacidade discriminativa (AUC-ROC)** — o que significa que, em 3 de cada 4 comparações entre uma impressão que será clicada e outra que não será, o modelo atribui a pontuação mais alta à impressão certa. Face ao modelo de referência inicial (Regressão Logística, AUC-ROC = 0,6412), a melhoria acumulada foi de **+17,1% na capacidade preditiva**, atingindo o objetivo SMART definido no início do projeto.
+O modelo **prevê se um utilizador vai clicar num anúncio com 75,3% de capacidade discriminativa (AUC-ROC)** — o que significa que, 
+em 3 de cada 4 comparações entre uma impressão que será clicada e outra que não será, o modelo atribui a pontuação mais alta à impressão certa.
+Face ao modelo de referência inicial (Regressão Logística, AUC-ROC = 0,6412), a melhoria acumulada foi de **+17,1% na capacidade preditiva**, atingindo o objetivo SMART definido no início do projeto.
 
-A variável mais importante descoberta pelo modelo foi `banner_area` — a área visual do anúncio em píxeis², **criada durante este projeto** — com **32,6% do poder preditivo total**. Isto traduz-se numa recomendação direta: formatos publicitários de maior dimensão geram mais cliques, independentemente do site ou da hora.
+A variável mais importante descoberta pelo modelo foi `banner_area` — a área visual do anúncio em píxeis²,
+**criada durante este projeto** — com **32,6% do poder preditivo total**. Isto traduz-se numa recomendação direta:
+formatos publicitários de maior dimensão geram mais cliques, independentemente do site ou da hora.
 
 
 ### Resposta ao Problema
 
-O objetivo central do projeto era desenvolver um modelo capaz de prever cliques em anúncios digitais com AUC-ROC ≥ 0,75. Esse objetivo foi **alcançado**: o XGBoost Otimizado atingiu AUC-ROC = 0,7509 no conjunto de teste, confirmado por validação cruzada com IC 95%: [0,7493 – 0,7516].
+O objetivo central do projeto era desenvolver um modelo capaz de prever cliques em anúncios digitais com AUC-ROC ≥ 0,75. 
+Esse objetivo foi **alcançado**: o XGBoost Otimizado atingiu AUC-ROC = 0,7509 no conjunto de teste, confirmado por validação 
+cruzada com IC 95%: [0,7493 – 0,7516].
 
-Com esta solução, os anunciantes em plataformas de *Real-Time Bidding* podem concentrar os seus lances nas impressões com maior probabilidade de clique, reduzindo o desperdício de orçamento em impressões irrelevantes e aumentando o retorno sobre o investimento (ROI) das campanhas digitais. As recomendações acionáveis identificadas — privilegiar banners de maior área visual, concentrar lances nas primeiras horas da madrugada (0h–6h) e focar em dispositivos móveis (`device_type = 0`) — podem ser implementadas diretamente nas estratégias de *bidding* sem necessidade de alterações técnicas adicionais.
+Com esta solução, os anunciantes em plataformas de *Real-Time Bidding* podem concentrar os seus lances nas impressões com maior 
+probabilidade de clique, reduzindo o desperdício de orçamento em impressões irrelevantes e aumentando o retorno sobre o investimento (ROI)
+das campanhas digitais. As recomendações acionáveis identificadas — privilegiar banners de maior área visual, concentrar lances 
+nas primeiras horas da madrugada (0h–6h) e focar em dispositivos móveis (`device_type = 0`) — podem ser implementadas diretamente 
+nas estratégias de *bidding* sem necessidade de alterações técnicas adicionais.
 
 ### Recomendações de Inovação
 1. **Implementar SMOTE** (*Synthetic Minority Over-sampling Technique*) para lidar melhor com o desequilíbrio de classes (1:5), reduzindo os 56.547 Falsos Negativos identificados na matriz de confusão e melhorando o *Recall* do modelo.
