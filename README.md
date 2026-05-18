@@ -141,7 +141,8 @@ Assim, as observações do conjunto de dados refletem eventos reais de exposiç�
 
 O modelo **prevê se um utilizador vai clicar num anúncio com 75,3% de capacidade discriminativa (AUC-ROC)** — o que significa que, 
 em 3 de cada 4 comparações entre uma impressão que será clicada e outra que não será, o modelo atribui a pontuação mais alta à impressão certa.
-Face ao modelo de referência inicial (Regressão Logística, AUC-ROC = 0,6412), a melhoria acumulada foi de **+17,1% na capacidade preditiva**, atingindo o objetivo SMART definido no início do projeto.
+Face ao modelo de referência inicial (Regressão Logística, AUC-ROC = 0,6412), a melhoria acumulada foi de **+17,1% na capacidade preditiva**, 
+atingindo o objetivo SMART definido no início do projeto.
 
 A variável mais importante descoberta pelo modelo foi `banner_area` — a área visual do anúncio em píxeis²,
 **criada durante este projeto** — com **32,6% do poder preditivo total**. Isto traduz-se numa recomendação direta:
