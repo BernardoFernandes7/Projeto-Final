@@ -96,9 +96,12 @@ correspondente aos cliques, representa uma proporção menor dos dados. Este asp
 uma vez que a taxa de clique tende naturalmente a ser baixa.
 
 Além disso, o dataset contém várias variáveis categóricas de elevada cardinalidade, como `site_id`, `app_id`, `device_id`, `device_ip` e `device_model`. 
-Estas variáveis possuem muitos valores distintos, o que exige cuidados adicionais no pré-processamento, nomeadamente na codificação das categorias e na gestão de categorias raras.
+Estas variáveis possuem muitos valores distintos, o que exige cuidados adicionais no pré-processamento, nomeadamente na codificação das categorias e na gestão
+de categorias raras.
 
-Assim, as observações do conjunto de dados refletem eventos reais de exposição a anúncios, sendo adequadas para a construção de modelos preditivos supervisionados de classificação binária.
+Assim, as observações do conjunto de dados refletem eventos reais de exposição a anúncios,
+sendo adequadas para a construção 
+de modelos preditivos supervisionados de classificação binária.
 
 
 ### Fonte de Dados
@@ -108,7 +111,8 @@ Assim, as observações do conjunto de dados refletem eventos reais de exposiç�
 ## 2. Exploração (Milestone 2)
 ### Limpeza e Preparação
 
-* A variável `C20` continha valores `-1` como marcador de dados omissos — foi aplicada imputação pela **moda**, estratégia justificada pela natureza categórica da variável e pela robustez da moda face a distribuições assimétricas. Detalhes em `docs/M2_exploracao.md`.
+* A variável `C20` continha valores `-1` como marcador de dados omissos — foi aplicada imputação pela **moda**, estratégia justificada pela natureza categórica
+da variável e pela robustez da moda face a distribuições assimétricas. Detalhes em `docs/M2_exploracao.md`.
 * Colunas sem valor preditivo (`id`, `device_id`, `device_ip`) foram removidas para reduzir ruído e dimensionalidade.
 * Os tipos de dados foram auditados e corrigidos para garantir conformidade com o perfil esperado.
 * Foram criadas duas novas variáveis por *feature engineering*: `hora_do_dia` (extraída de `hour`) e `banner_area` (produto de `C15 × C16`).
@@ -119,7 +123,8 @@ Assim, as observações do conjunto de dados refletem eventos reais de exposiç�
 
 > *Ver o gráfico de distribuição da variável `click` — `reports/figures/`*
 
-* **Ponto-chave 1:** A variável alvo `click` está fortemente desequilibrada — aproximadamente **83% de não-cliques (0)** e **17% de cliques (1)**, rácio de 1:5. Este desequilíbrio justifica a priorização do **AUC-ROC** como métrica principal.
+* **Ponto-chave 1:** A variável alvo `click` está fortemente desequilibrada — aproximadamente **83% de não-cliques (0)** e **17% de cliques (1)**,
+rácio de 1:5. Este desequilíbrio justifica a priorização do **AUC-ROC** como métrica principal.
 * **Ponto-chave 2:** O CTR varia significativamente ao longo do dia, com picos nas primeiras horas da madrugada, tornando `hora_do_dia` uma variável preditiva relevante.
 * **Ponto-chave 3:** As variáveis relacionadas com as dimensões do banner (`C16`, `banner_area`) apresentam correlação com a probabilidade de clique, confirmada posteriormente pelo modelo final.
 * **Ponto-chave 4:** A matriz de correlação de Pearson não revelou pares com correlação superior a 0,85, confirmando a ausência de multicolinearidade crítica.
@@ -129,7 +134,8 @@ Assim, as observações do conjunto de dados refletem eventos reais de exposiç�
 
 * **Modelos:** Regressão Logística (Baseline), Random Forest, XGBoost, XGBoost Otimizado (modelo final)
 * **Métrica Principal:** AUC-ROC — escolhida pela capacidade de avaliar modelos em datasets desequilibrados, independentemente do limiar de decisão
-* **Resultado Final:** O **XGBoost Otimizado** alcançou um **AUC-ROC de 0,7509** no conjunto de teste, superando o objetivo SMART de AUC-ROC > 0,75, com uma melhoria total de **+0,1097** face ao Baseline
+* **Resultado Final:** O **XGBoost Otimizado** alcançou um **AUC-ROC de 0,7509** no conjunto de teste, superando o objetivo SMART de AUC-ROC > 0,75, 
+com uma melhoria total de **+0,1097** face ao Baseline
 * **Validação Cruzada (5-Fold):** Média de **0,7504 ± 0,0006**, confirmando estabilidade excecional do modelo
 
 > *Ver o gráfico das Curvas ROC comparativas*
@@ -163,32 +169,51 @@ nas primeiras horas da madrugada (0h–6h) e focar em dispositivos móveis (`dev
 nas estratégias de *bidding* sem necessidade de alterações técnicas adicionais.
 
 ### Recomendações de Inovação
-1. **Implementar SMOTE** (*Synthetic Minority Over-sampling Technique*) para lidar melhor com o desequilíbrio de classes (1:5), reduzindo os 56.547 Falsos Negativos identificados na matriz de confusão e melhorando o *Recall* do modelo.
-2. **Integrar dados sazonais e de calendário** (dia da semana, feriados, eventos desportivos) para refinar as previsões de CTR ao longo do tempo — dimensão que o dataset de apenas 10 dias não permite captar.
+1. **Implementar SMOTE** (*Synthetic Minority Over-sampling Technique*) para lidar melhor com o desequilíbrio de classes (1:5), 
+reduzindo os 56.547 Falsos Negativos identificados na matriz de confusão e melhorando o *Recall* do modelo.
+2. **Integrar dados sazonais e de calendário** (dia da semana, feriados, eventos desportivos) para refinar as previsões de CTR ao 
+longo do tempo — dimensão que o dataset de apenas 10 dias não permite captar.
 3. **Desenvolver uma interface de programação de aplicações** (FastAPI ou Flask) que disponibilize o
-4.  modelo para classificação em tempo real, integrável em sistemas de *Real-Time Bidding*, e uma interface web em Streamlit para utilização por gestores de marketing sem necessidade de código.
+4.  modelo para classificação em tempo real, integrável em sistemas de *Real-Time Bidding*, e uma interface web em Streamlit para 
+utilização por gestores de marketing sem necessidade de código.
 
 ### Apresentação Final (Pitch)
 
-O vídeo de apresentação final foi estruturado como uma síntese narrativa do projeto, com o objetivo de comunicar o problema, a solução desenvolvida, a prova técnica dos resultados e o valor prático da solução para publicidade digital. Esta apresentação complementa os relatórios técnicos, traduzindo os resultados para uma linguagem acessível a uma audiência não técnica.
+O vídeo de apresentação final foi estruturado como uma síntese narrativa do projeto, com o objetivo de comunicar o problema, a solução
+desenvolvida, a prova técnica dos resultados e o valor prático da solução para publicidade digital. Esta apresentação complementa os relatórios
+técnicos, traduzindo os resultados para uma linguagem acessível a uma audiência não técnica.
 
 O *pitch* segue a estrutura definida para a Milestone 4, organizada em quatro momentos principais:
 
-1. **O Problema:** apresentação do contexto da publicidade digital e da necessidade de prever a variável `click`, que indica se uma impressão publicitária gerou clique (`1`) ou não gerou clique (`0`). Nesta fase, é explicado o desafio do desequilíbrio da variável alvo, com cerca de 83% de não-cliques e 17% de cliques reais.
+1. **O Problema:** apresentação do contexto da publicidade digital e da necessidade de prever a variável `click`, que indica se uma impressão 
+publicitária gerou clique (`1`) ou não gerou clique (`0`). Nesta fase, é explicado o desafio do desequilíbrio da variável alvo, com cerca de 83% de não-cliques e 17% de cliques reais.
 
-2. **A Solução:** descrição resumida do percurso técnico desenvolvido ao longo do projeto. Primeiro, os dados foram preparados na Milestone 2, através do tratamento de valores em falta, remoção de identificadores com baixo poder preditivo, codificação das variáveis categóricas e criação de novas variáveis como `hora_do_dia` e `banner_area`. Depois, na Milestone 3, foram testados diferentes modelos de classificação, começando pela Regressão Logística como *baseline* e evoluindo para Random Forest e XGBoost.
+2. **A Solução:** descrição resumida do percurso técnico desenvolvido ao longo do projeto. Primeiro, os dados foram 
+preparados na Milestone 2, através do tratamento de valores em falta, remoção de identificadores com baixo poder preditivo, 
+codificação das variáveis categóricas e criação de novas variáveis como `hora_do_dia` e `banner_area`. Depois, na Milestone 3, 
+foram testados diferentes modelos de classificação, começando pela Regressão Logística como *baseline* e evoluindo para Random Forest e XGBoost.
 
-3. **A Prova:** apresentação dos resultados principais do modelo final. O XGBoost otimizado atingiu **AUC-ROC = 0.7509** no conjunto de teste, cumprindo o objetivo SMART definido na Milestone 1. O modelo também obteve **F1-Score = 0.4223** e apresentou uma melhoria acumulada de **+0.1097** em AUC-ROC face à Regressão Logística. No vídeo, esta parte corresponde ao momento de maior impacto, onde são mostradas as métricas principais, a matriz de confusão e a importância das variáveis.
+3. **A Prova:** apresentação dos resultados principais do modelo final. O XGBoost otimizado atingiu **AUC-ROC = 0.7509** no conjunto de teste, 
+cumprindo o objetivo SMART definido na Milestone 1. O modelo também obteve **F1-Score = 0.4223** e apresentou uma melhoria acumulada de **+0.1097** 
+em AUC-ROC face à Regressão Logística. No vídeo, esta parte corresponde ao momento de maior impacto, onde são mostradas as métricas principais, 
+a matriz de confusão e a importância das variáveis.
 
-4. **O Valor:** explicação da utilidade prática do modelo. A solução permite ordenar impressões por probabilidade de clique, apoiando decisões em campanhas digitais. Em vez de tratar todas as impressões como igualmente relevantes, o modelo ajuda a identificar contextos com maior potencial de interação. A variável `banner_area`, criada durante o projeto, surgiu como a mais importante no modelo final, mostrando que a engenharia de atributos contribuiu para gerar conhecimento útil.
+4. **O Valor:** explicação da utilidade prática do modelo. A solução permite ordenar impressões por probabilidade de clique, apoiando decisões em campanhas digitais. 
+Em vez de tratar todas as impressões como igualmente relevantes, o modelo ajuda a identificar contextos com maior potencial de interação. A variável `banner_area`,
+criada durante o projeto, surgiu como a mais importante no modelo final, mostrando que a engenharia de atributos contribuiu para gerar conhecimento útil.
 
-O vídeo inclui também uma componente de demonstração prática, com referência aos resultados produzidos no notebook, nomeadamente a matriz de confusão, as curvas ROC comparativas e o gráfico de importância das variáveis. Esta demonstração permite mostrar, de forma visual, onde o modelo acerta, onde ainda falha e que variáveis tiveram maior peso na previsão.
+O vídeo inclui também uma componente de demonstração prática, com referência aos resultados produzidos no notebook, nomeadamente a matriz de confusão, 
+as curvas ROC comparativas e o gráfico de importância das variáveis. Esta demonstração permite mostrar, de forma visual, onde o modelo acerta, onde ainda 
+falha e que variáveis tiveram maior peso na previsão.
 
-A apresentação foi preparada para ter uma duração máxima de 5 minutos, respeitando o formato exigido para a defesa final. A narrativa foi dividida entre os dois elementos do grupo, garantindo participação equilibrada e uma explicação progressiva: contexto e problema, preparação dos dados, comparação dos modelos, prova dos resultados, valor de negócio, limitações e trabalhos futuros.
+A apresentação foi preparada para ter uma duração máxima de 5 minutos, respeitando o formato exigido para a defesa final. A narrativa foi dividida entre os dois 
+elementos do grupo, garantindo participação equilibrada e uma explicação progressiva: contexto e problema, preparação dos dados, comparação dos modelos, prova dos
+resultados, valor de negócio, limitações e trabalhos futuros.
 
 > **Vídeo de Apresentação:** [*inserir link após publicação*]
 
-Para apoiar o momento de avaliação e antecipar dúvidas técnicas, foi também preparado um ficheiro de perguntas e respostas assíncronas. Esse ficheiro resume as decisões mais importantes do projeto, nomeadamente a escolha do AUC-ROC, a seleção do XGBoost como modelo final e as principais limitações da solução.
+Para apoiar o momento de avaliação e antecipar dúvidas técnicas, foi também preparado um ficheiro de perguntas e respostas assíncronas. Esse ficheiro resume as 
+decisões mais importantes do projeto, nomeadamente a escolha do AUC-ROC, a seleção do XGBoost como modelo final e as principais limitações da solução.
 
 Para dúvidas técnicas sobre o modelo, consultar o ficheiro [`Q&A.md`](Q&A.md).
 
